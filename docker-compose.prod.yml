@@ -28,6 +28,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "30267:80"  # Produkcyjna wersja frontendu (nginx) nasłuchuje na porcie 80, mapowany do portu 30267
+    environment:
+      REACT_APP_API_URL: "http://192.168.2.167:20267"
     depends_on:
       - backend
 
