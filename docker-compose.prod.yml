@@ -9,7 +9,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: "http://*:80"
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
+      ConnectionStrings__DefaultConnection: "Host=192.168.2.167;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
     depends_on:
       - postgres
 
