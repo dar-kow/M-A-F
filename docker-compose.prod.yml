@@ -19,6 +19,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: yourpassword
       POSTGRES_DB: InvoiceDB
+    ports:
+    - "5432:5432"  # Dodaj tę linię aby expose port na hosta
     volumes:
       - pgdata:/var/lib/postgresql/data
 
