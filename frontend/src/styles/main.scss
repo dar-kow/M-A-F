@@ -1,0 +1,85 @@
+// Global reset for html and body
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+// Main container for content with centered layout
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Vertical centering */
+  align-items: center;
+  /* Horizontal centering */
+  min-height: 100vh;
+  /* Full viewport height */
+  padding: 20px;
+  text-align: center;
+}
+
+// Title style for main headings
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+// Buttons container styling
+.buttons {
+  display: inline-flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+// Default button style
+.button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.3s;
+  position: relative;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+// Tooltip styling when hovering over button with data-tooltip
+.button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #555;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  z-index: 1;
+  font-size: 0.9rem;
+}
+
+// Additional style for invoice action buttons
+.invoice-action-button {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+}

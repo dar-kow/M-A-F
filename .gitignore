@@ -1,0 +1,27 @@
+# Node.js dependencies
+node_modules/
+frontend/node_modules/
+
+# React/Vite build artifacts
+frontend/dist/
+frontend/build/
+
+# Environment files
+.env
+
+# VS Code settings & IDE folders
+.vscode/
+.idea/
+*.suo
+*.user
+
+# .NET build folders
+backend/bin/
+backend/obj/
+
+# Logs
+*.log
+
+# Other temporary files
+tmp/
+temp/

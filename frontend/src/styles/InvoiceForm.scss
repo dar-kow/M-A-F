@@ -1,0 +1,251 @@
+// Container for the invoice form
+.invoice-form-container {
+  width: 70%;
+  margin: 10px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+// Full and half width form groups
+.form-group.full {
+  width: 100%;
+  /* Full width for single element */
+}
+
+.form-group.half {
+  width: 50%;
+  /* Half width for side-by-side elements */
+}
+
+// Invoice form styling
+.invoice-form {
+  display: flex;
+  flex-direction: column;
+
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    .form-group {
+      width: 48%;
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      select,
+      .date-picker {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #555;
+        box-sizing: border-box;
+        width: 100%;
+
+        &:focus {
+          border-color: #007bff;
+          outline: none;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+      }
+
+      select {
+        height: 38px;
+      }
+
+      &.half {
+        width: 48%;
+      }
+
+      &.one-third {
+        width: 30%;
+      }
+
+      &.two-thirds {
+        width: 68%;
+      }
+
+      &.full {
+        width: 100%;
+      }
+    }
+  }
+
+  // Submit button styles
+  .submit-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.add-button {
+      background-color: #28a745;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    &.update-button {
+      background-color: #007bff;
+
+      &:hover {
+        background-color: #0069d9;
+      }
+    }
+  }
+}
+
+// Table and input customizations for items
+.invoice-items-table input.long-input {
+  width: 100%;
+  min-width: 350px;
+}
+
+/* Ilość ma mieć maksymalnie ok. 50px szerokości */
+.invoice-items-table input.number-input {
+  width: 70px;
+  min-width: 50px;
+}
+
+.invoice-items-table input.net-input {
+  width: 120px;
+  min-width: 50px;
+}
+
+// Custom select dimensions in invoice items table
+.invoice-items-table select.large-select {
+  height: 35px;
+  width: 100px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+// Styling for non-editable price input
+.invoice-items-table .price-input {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  min-width: 100px; // or column width value
+}
+
+// Summary section styling
+.summary-section {
+  border: 1px solid #ccc; // light border
+  border-radius: 4px; // rounded corners
+  padding: 8px; // inner spacing
+  margin-top: 20px; // spacing from above elements
+}
+
+// Table styling for summary display
+.summary-table {
+  border-collapse: separate;
+  border-spacing: 8px; // minimum 8px spacing between columns
+  width: auto; // adjust according to text or set to full width
+
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; // lighter background for odd rows
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #e9e9e9; // slightly darker for even rows
+  }
+}
+
+// Large textarea for extended notes or descriptions
+.large-textarea {
+  width: 100%; // Full available width
+  min-height: 150px; // Minimum height
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical; // Allow vertical resize
+}
+
+// Responsive table for invoice items
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  /* Enable horizontal scroll for narrow screens */
+  display: block;
+  /* Force block display for overflow to work */
+
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  /* Responsive adjustments via media query */
+  @media screen and (max-width: 768px) {
+    display: block;
+
+    // Hide table header
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+    }
+
+    tr {
+      display: block;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+    }
+
+    td {
+      display: block;
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+      border: none;
+      border-bottom: 1px solid #eee;
+
+      &:before {
+        position: absolute;
+        left: 6px;
+        top: 6px;
+        text-align: left;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-label);
+        /* Use data-label attribute as header */
+        font-weight: bold;
+      }
+    }
+  }
+}

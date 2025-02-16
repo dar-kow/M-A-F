@@ -1,0 +1,194 @@
+// Homepage container with gradient background
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+// Homepage title styling
+.homepage-title {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+// Homepage description styling
+.homepage-description {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 650px;
+  margin-bottom: 40px;
+}
+
+// Button group on homepage
+.homepage-buttons {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+// Individual homepage button styling
+.homepage-button {
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 25px;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition:
+    background-color 0.3s,
+    transform 0.3s;
+  position: relative;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+
+  &[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+    z-index: 10;
+  }
+}
+
+// Dashboard cards for future features
+.dashboard-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 800px;
+  width: 100%;
+  justify-content: center;
+
+  .dashboard-card {
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 220px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    cursor: default;
+
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p {
+      margin: 0;
+      color: #777;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+
+    &[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background-color: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 0.4rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeIn 0.3s forwards;
+      z-index: 10;
+    }
+  }
+}
+
+// Fade in animation for tooltips
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+// Graphic container for logo and subtitle
+.graphic-container {
+  margin-bottom: 2rem;
+
+  .maf-logo {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .maf-subtitle {
+    font-size: 1.5rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// Status card styling
+.status-card {
+  position: relative;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+// Status box for indicating status
+.status-box {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background-color: #e0f8e0; // subtle green background
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+// Icon color for status indication
+.status-icon {
+  color: #28a745;
+  font-size: 16px;
+}
+
+.github-link {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: inherit;
+  font-size: 2rem;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

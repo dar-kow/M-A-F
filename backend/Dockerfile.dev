@@ -1,0 +1,14 @@
+# Dockerfile.dev dla backendu (.NET)
+FROM mcr.microsoft.com/dotnet/sdk:9.0
+
+# Ustawiamy katalog roboczy na /src/backend
+WORKDIR /src/backend
+
+# Kopiujemy plik projektu do katalogu /src/backend
+COPY backend/*.csproj ./
+
+# Uruchamiamy restore na pliku backend.csproj (plik został skopiowany do /src/backend)
+RUN dotnet restore "backend.csproj"
+
+# Ustawiamy domyślną komendę – dotnet watch run
+CMD ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080"]

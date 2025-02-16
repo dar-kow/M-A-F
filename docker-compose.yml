@@ -1,0 +1,44 @@
+﻿version: '3.4'
+services:
+  invoiceapi:
+    image: backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://*:8080"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
+    depends_on:
+      - postgres
+    deploy:
+      resources:
+        limits:
+          memory: 512M  # Ustaw limit pamięci na 512MB
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: InvoiceDB
+    ports:
+      - "5432:5432"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Dostęp do panelu zarządzania
+
+
+  frontend:
+    image: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+

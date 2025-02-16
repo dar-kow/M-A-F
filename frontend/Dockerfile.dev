@@ -1,0 +1,13 @@
+# Dockerfile.dev dla frontendu (React/Vite)
+FROM node:20
+
+WORKDIR /app
+
+# Instalujemy zależności – kopiujemy package.json i package-lock.json (lub yarn.lock)
+COPY package*.json ./
+RUN npm ci
+
+# Nie kopiujemy całego kodu – będzie montowany volume
+
+# Domyślna komenda – uruchomienie serwera developerskiego
+CMD ["npm", "run", "dev"]

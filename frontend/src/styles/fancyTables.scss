@@ -1,0 +1,283 @@
+$table-header-bg: #4a90e2;
+$table-header-color: #ffffff;
+$hover-bg: #f0f8ff;
+$tooltip-bg: rgba(0, 0, 0, 0.75);
+
+/* Style dla tabeli */
+// Fancy table styling definitions
+table.fancy {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  table-layout: auto;
+
+  thead {
+    background-color: $table-header-bg;
+    color: $table-header-color;
+
+    th {
+      padding: 12px;
+      border: 1px solid darken($table-header-bg, 10%);
+      text-align: center;
+
+      &:last-child {
+        text-align: center;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      position: relative;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $hover-bg;
+      }
+
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+        word-break: break-all;
+        box-sizing: border-box;
+
+        &:last-child {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+/* Style dla kolumny Email */
+// Specific column width styles for table columns
+table.fancy tbody tr td.email-column {
+  width: 150px;
+}
+
+/* Style dla przycisku ellipsis */
+.ellipsis-button {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  display: inline-block;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}
+
+/* Style dla przycisku akcji */
+// Action button style (typically for table row actions)
+.action-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &[data-tooltip] {
+    position: relative;
+
+    &:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: $tooltip-bg;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      font-size: 0.8rem;
+      opacity: 0;
+      animation: fadeIn 0.3s forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+  }
+}
+
+/* Style dla menu kontekstowego */
+// Context menu styling
+.header-nav {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: #fff;
+  color: #333;
+  border-radius: 4px;
+  min-width: 120px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: fadeInDown 0.3s ease-in-out;
+  z-index: 1000;
+  margin-top: 5px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+
+    li {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #ddd;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #4a90e2;
+        color: #fff;
+      }
+
+      a,
+      button {
+        width: 100%;
+        text-align: center;
+        color: inherit;
+        background: none;
+        border: none;
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 0;
+      }
+    }
+  }
+}
+
+/* Style dla kolumn */
+.address-column {
+  width: 250px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.date-column {
+  max-width: 180px !important;
+  width: 180px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  word-break: normal !important;
+  color: #8b7e8b;
+}
+
+/* Style dla kolumny Nazwa */
+.name-column {
+  width: 200px;
+  /* Ustaw szerokość na 150px */
+}
+
+/* Style dla kolumny Imię */
+.firstName-column {
+  width: 150px;
+  /* Ustaw szerokość na 120px */
+}
+
+/* Style dla kolumny Nazwisko */
+.lastName-column {
+  width: 150px;
+  /* Ustaw szerokość na 120px */
+}
+
+/* Style dla kolumny NIP */
+.taxId-column {
+  width: 150px;
+  /* Ustaw szerokość na 150px */
+}
+
+.actions-column {
+  width: 100px;
+}
+
+/* Style dla komórek z tooltipem */
+.tooltip-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Dodatkowe style, które mogły być w list.scss */
+.actions-container {
+  margin: 1.5rem 0;
+}
+
+/* Styl dla scrollbara pionowego */
+// Vertical scrollbar styling
+::-webkit-scrollbar {
+  width: 5px;
+  /* Szerokość scrollbara */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4a90e2;
+  /* Kolor "rączki" */
+  border-radius: 4px;
+  /* Zaokrąglenie rogów */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  /* Kolor tła */
+}
+
+/* Styl dla scrollbara poziomego */
+// Horizontal scrollbar styling
+::-webkit-scrollbar {
+  height: 5px;
+  /* Wysokość scrollbara poziomego */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4a90e2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
