@@ -116,11 +116,11 @@ Zamiast `div` wszędzie, lepiej używać znaczących tagów: `header`, `nav`, `s
 # HOW TO 
 
 ## Po ściągnięciu repo - budujemy apkę w dockerze : (tryb dev - aktualizację w kodzie widoczne live)
-```ts
+```
 docker-compose -f docker-compose.dev.yml up --build
 ```
 w katalogu backendu wbijamy komende do załadowania danych testowych :
-```ts
+```
 dotnet ef database update
 ```
 
