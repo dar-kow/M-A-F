@@ -1,5 +1,5 @@
 # MAF - Moja Aplikacja Faktur
-[Zobacz changelog](https://github.com/darek9k/M-A-F/changelog.md)
+[Zobacz changelog](https://github.com/darek9k/M-A-F/blob/main/changelog.md)
 
 
 ## Opis projektu
@@ -49,7 +49,7 @@ useEffect(() => {
 - **Dodanie sticky nagłówków do list**
 - **Integracja z repozytorium:** dodanie changelog, linków do repo
 
-[Zobacz changelog](https://github.com/darek9k/M-A-F/changelog.md)
+[Zobacz changelog](https://github.com/darek9k/M-A-F/blob/main/changelog.md)
 <br><br><br> <!-- 3 puste linie -->
 
 # React i spółka – na chłopski rozum
