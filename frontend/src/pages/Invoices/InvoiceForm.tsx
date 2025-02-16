@@ -44,7 +44,7 @@ const InvoiceForm: React.FC = () => {
         lineNumber: 1,
         description: "",
         quantity: 0,
-        unit: "szt",
+        unit: Unit.szt,
         vatRate: 23,
         netPrice: 0,
         invoiceId: 0,

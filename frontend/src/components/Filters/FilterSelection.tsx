@@ -8,7 +8,7 @@ interface FilterSelectionProps {
   showFilterMenu: boolean;
   setShowFilterMenu: (show: boolean) => void;
   children: React.ReactNode;
-  filterId: string;
+  // filterId: string;
 }
 
 const FilterSelection: React.FC<FilterSelectionProps> = ({
@@ -18,7 +18,6 @@ const FilterSelection: React.FC<FilterSelectionProps> = ({
   showFilterMenu,
   setShowFilterMenu,
   children,
-  filterId,
 }) => {
   const menuContainerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
