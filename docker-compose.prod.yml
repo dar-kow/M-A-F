@@ -9,7 +9,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: "http://*:80"
-      ConnectionStrings__DefaultConnection: "Host=192.168.2.167;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
+      ConnectionStrings__DefaultConnection: "Host=posgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
     depends_on:
       - postgres
 
@@ -29,7 +29,7 @@ services:
     ports:
       - "30267:80"  # Produkcyjna wersja frontendu (nginx) nasłuchuje na porcie 80, mapowany do portu 30267
     environment:
-      REACT_APP_API_URL: "http://192.168.2.167:20267"
+      REACT_APP_API_URL: "http://192.168.2.167/api:20267"
     depends_on:
       - backend
 
