@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/loader.scss";
+import "..//styles/Loader.scss";
 
 const Loader: React.FC = () => {
   // Loader component: displays a loading spinner
