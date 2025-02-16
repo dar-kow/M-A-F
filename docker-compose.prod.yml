@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "20267:80"  # Produkcyjna wersja backendu nasłuchująca na porcie 80, mapowana do portu 20267
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: "http://*:80"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: InvoiceDB
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "30267:80"  # Produkcyjna wersja frontendu (nginx) nasłuchuje na porcie 80, mapowany do portu 30267
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
