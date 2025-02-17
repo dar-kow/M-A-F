@@ -2,7 +2,8 @@
 
 ##
 - poprawienie formularza dodawania faktur na urządzeniach mobilnych (responsywność)
-
+- poprawienie formularza dodawania kontrahenta na urządzeniach mobilnych 
+- poprawa stylowania pageHeadera pod kątem urządzeń mobilnych
 
 
 ## v0.4.1 - Obsługa płatności

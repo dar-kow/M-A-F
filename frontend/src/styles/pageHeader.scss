@@ -1,11 +1,7 @@
-// Header container styles
 .page-header {
   position: sticky;
-  /* Changed to sticky */
   top: 0;
-  /* Added top: 0 */
   z-index: 100;
-  /* Added z-index */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,19 +9,15 @@
   border-bottom: 1px solid #ddd;
   padding: 0.5rem 1rem;
   width: 100%;
-  /* Dodaj szerokość 100% */
   box-sizing: border-box;
-  /* Dodaj box-sizing */
 }
 
-// Left section styles
 .left-section,
 .right-section {
   display: flex;
   align-items: center;
 }
 
-// Center section with absolute centered content
 .center-section {
   position: absolute;
   left: 50%;
@@ -34,7 +26,6 @@
   align-items: center;
 }
 
-// Icon style for header elements
 .header-icon {
   margin-right: 0.5rem;
   font-size: 1.5rem;
@@ -42,26 +33,24 @@
   align-items: center;
 }
 
-// Title container styles
 .title-container h1 {
   margin: 0;
   font-size: 1.5rem;
   color: #333;
 }
 
-// Home container with modified hover and layout properties
 .home-container {
   margin-right: 1rem;
-  background-color: transparent; // removed blue background
-  padding: 0; // removed extra padding
-  border-radius: 0; // removed rounded corners
-  transition: none; // removed transition effects
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  transition: none;
 
   .home-link {
-    color: #007acc; // set desired icon color
+    color: #007acc;
     font-size: 1.5rem;
     display: block;
-    position: relative; // required for absolute positioning of tooltip
+    position: relative;
     transition: transform 0.3s ease;
 
     &::after {
@@ -91,22 +80,20 @@
   }
 
   &:hover {
-    background-color: transparent; // no hover background change
+    background-color: transparent;
     transform: none;
   }
 }
 
-// Additional section container styling
 .section-container {
   display: flex;
   align-items: center;
 
-  // Nested header icon style
   .header-icon {
     margin-right: 0.5rem;
     font-size: 1.5rem;
     display: flex;
-    align-items: center; // center icon vertically
+    align-items: center;
   }
 
   .title-container h1 {
@@ -116,7 +103,6 @@
   }
 }
 
-// Right section styling including dropdown menu and actions
 .right-section {
   position: relative;
   display: flex;
@@ -124,7 +110,7 @@
 
   .header-action {
     margin-right: 1rem;
-    color: #666; // muted color
+    color: #666;
     font-size: 1.5rem;
     display: inline-block;
     text-decoration: none;
@@ -163,9 +149,7 @@
     font-size: 1.5rem;
     cursor: pointer;
     color: #333;
-    transition:
-      transform 0.3s ease,
-      color 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease;
 
     &:hover {
       transform: scale(1.1);
@@ -173,13 +157,12 @@
     }
   }
 
-  // Dropdown navigation menu styles
   .header-nav {
     position: absolute;
     top: 30px;
     right: 0;
-    background-color: #fff; // default menu background
-    color: #333; // default text color
+    background-color: #fff;
+    color: #333;
     border-radius: 4px;
     min-width: 120px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -196,10 +179,8 @@
       li {
         padding: 8px 12px;
         cursor: pointer;
-        border-bottom: 1px solid #ddd; // light divider between options
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s ease, color 0.3s ease;
 
         &:last-child {
           border-bottom: none;
@@ -215,9 +196,7 @@
         button {
           width: 100%;
           text-align: center;
-          /* Center text */
           color: inherit;
-          /* Inherit li color */
           background: none;
           border: none;
           text-decoration: none;
@@ -229,7 +208,6 @@
   }
 }
 
-// Search input field styling
 .search-input {
   padding: 0.5rem;
   border: 1px solid #ddd;
@@ -238,7 +216,6 @@
   font-size: 1rem;
 }
 
-// Header navigation button styling
 .header-nav-btn {
   text-align: center;
   border: 0;
@@ -247,13 +224,10 @@
   text-decoration: none;
   font-size: 0.9rem;
   padding: 8px 12px;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 4px;
 }
 
-// Disabled state for header nav button
 .header-nav-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -263,20 +237,17 @@
 .header-nav-btn:hover {
   background-color: #4a90e2;
   color: #fff;
-  border: 0px solid #fff;
+  border: 0;
   cursor: pointer;
 }
 
-// Styling for dropdown options
 .dropdown-option {
   display: flex;
   align-items: center;
   line-height: 1;
   font-size: 0.9rem;
   cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdown-option:hover {
@@ -284,7 +255,6 @@
   color: #fff;
 }
 
-// Filter dropdown and label custom styles
 .filter-dropdown {
   position: fixed;
   width: 200px;
@@ -307,9 +277,7 @@
   text-decoration: none;
   font-size: 0.9rem;
   padding: 8px 12px;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 4px;
   cursor: pointer;
   display: inline-flex;
@@ -338,5 +306,28 @@
 .filter-label:hover label {
   color: #fff;
   background-color: #4a90e2;
-  /* Ensure text color changes on hover */
+}
+
+@media screen and (max-width: 768px) {
+  .header-icon {
+    display: none;
+  }
+
+  .center-section {
+    position: static;
+    transform: none;
+    width: 100%;
+    text-align: left;
+    padding-left: 1rem;
+  }
+
+  .title-container h1 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
 }
