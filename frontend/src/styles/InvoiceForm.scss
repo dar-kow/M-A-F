@@ -1,7 +1,5 @@
-// Container for the invoice form
 .invoice-form-container {
   width: 75%;
-  // max-width: 800px;
   margin: 10px auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -9,18 +7,14 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-// Full and half width form groups
 .form-group.full {
   width: 100%;
-  /* Full width for single element */
 }
 
 .form-group.half {
   width: 50%;
-  /* Half width for side-by-side elements */
 }
 
-// Invoice form styling
 .invoice-form {
   display: flex;
   flex-direction: column;
@@ -84,7 +78,6 @@
     }
   }
 
-  // Submit button styles
   .submit-button {
     padding: 10px 15px;
     border: none;
@@ -112,13 +105,11 @@
   }
 }
 
-// Table and input customizations for items
 .invoice-items-table input.long-input {
   width: 100%;
   min-width: 250px;
 }
 
-/* Ilość ma mieć maksymalnie ok. 50px szerokości */
 .invoice-items-table input.number-input {
   width: 70px;
   min-width: 50px;
@@ -129,7 +120,6 @@
   min-width: 50px;
 }
 
-// Custom select dimensions in invoice items table
 .invoice-items-table select.large-select {
   height: 35px;
   width: 100px;
@@ -137,7 +127,6 @@
   font-size: 16px;
 }
 
-// Styling for non-editable price input
 .invoice-items-table .price-input {
   background-color: #eee;
   border: 1px solid #ddd;
@@ -145,26 +134,24 @@
   padding: 8px;
   font-size: 16px;
   width: 100%;
-  min-width: 100px; // or column width value
+  min-width: 100px;
 }
 
-// Summary section styling
 .summary-section {
   margin-left: auto;
   margin-right: auto;
   max-width: 600px;
   width: 100%;
-  border: 1px solid #ccc; // light border
-  border-radius: 4px; // rounded corners
-  padding: 8px; // inner spacing
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
   margin-top: 5px;
   margin-bottom: 10px;
 }
 
-// Table styling for summary display
 .summary-table {
   border-collapse: separate;
-  border-spacing: 5px; // minimum 8px spacing between columns
+  border-spacing: 5px;
   width: auto;
   margin-bottom: 5px;
 
@@ -175,33 +162,29 @@
   }
 
   tbody tr:nth-child(odd) {
-    background-color: #f9f9f9; // lighter background for odd rows
+    background-color: #f9f9f9;
   }
 
   tbody tr:nth-child(even) {
-    background-color: #e9e9e9; // slightly darker for even rows
+    background-color: #e9e9e9;
   }
 }
 
-// Large textarea for extended notes or descriptions
 .large-textarea {
-  width: 100%; // Full available width
-  min-height: 150px; // Minimum height
+  width: 100%;
+  min-height: 150px;
   padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: vertical; // Allow vertical resize
+  resize: vertical;
 }
 
-// Responsive table for invoice items
 .responsive-table {
   width: 100%;
   border-collapse: collapse;
   overflow-x: auto;
-  /* Enable horizontal scroll for narrow screens */
   display: block;
-  /* Force block display for overflow to work */
 
   th,
   td {
@@ -214,11 +197,9 @@
     background-color: #f2f2f2;
   }
 
-  /* Responsive adjustments via media query */
   @media screen and (max-width: 768px) {
     display: block;
 
-    // Hide table header
     thead {
       display: none;
     }
@@ -231,11 +212,13 @@
       display: block;
       margin-bottom: 15px;
       border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
     }
 
     td {
       display: block;
-      text-align: right;
+      text-align: left;
       padding-left: 50%;
       position: relative;
       border: none;
@@ -250,20 +233,18 @@
         padding-right: 10px;
         white-space: nowrap;
         content: attr(data-label);
-        /* Use data-label attribute as header */
         font-weight: bold;
       }
     }
   }
 }
 
-/* Responsive Styles for Invoice Form */
 @media screen and (max-width: 768px) {
   .invoice-form-container {
     width: 100%;
     max-width: 100vw;
     margin: 0;
-    padding: 10px; // lub inna wartość, która nie powoduje overflow
+    padding: 10px;
     box-sizing: border-box;
   }
 
@@ -298,7 +279,6 @@
     border-bottom: 1px solid #eee;
   }
 
-  /* Pseudo-element z etykietą pobraną z atrybutu data-label */
   .invoice-items-table.responsive-table td:before {
     content: attr(data-label);
     position: absolute;
@@ -311,13 +291,11 @@
     color: #333;
   }
 
-  /* Opcjonalnie: jeśli inputy wychodzą za ramkę, ustaw je na pełną szerokość */
   .invoice-items-table.responsive-table td input,
   .invoice-items-table.responsive-table td select {
     width: 100%;
     box-sizing: border-box;
     margin-top: 25px;
-    /* Odstęp, aby nie nachodził na etykietę */
   }
 
   .summary-table {
@@ -325,12 +303,10 @@
     width: 100%;
   }
 
-  /* Ukryj nagłówek tabeli */
   .summary-table thead {
     display: none;
   }
 
-  /* Każdy wiersz jako blok */
   .summary-table tbody,
   .summary-table tr {
     display: block;
@@ -340,7 +316,6 @@
     border-radius: 4px;
   }
 
-  /* Każda komórka jako blok – padding left zwiększamy, by zrobić miejsce na labelkę */
   .summary-table td {
     display: block;
     text-align: right;
@@ -352,21 +327,16 @@
     padding-bottom: 0.75rem;
   }
 
-  /* Pseudo-element przed każdą komórką – definiujemy labelkę.
-     Wykorzystujemy nth-child, bo w tabeli mamy stałą strukturę:
-     w pierwszym wierszu: Kwota, Stawka VAT, Wartość Netto, VAT, Wartość Brutto,
-     w drugim: Zapłacono, w trzecim: Pozostało, w czwartym: Uwagi.
-  */
   .summary-row:nth-child(1) td:nth-child(1):before {
-    content: "Kwota:";
+    content: "Amount:";
   }
 
   .summary-row:nth-child(1) td:nth-child(2):before {
-    content: "Stawka VAT:";
+    content: "VAT Rate:";
   }
 
   .summary-row:nth-child(1) td:nth-child(3):before {
-    content: "Wartość Netto:";
+    content: "Net Value:";
   }
 
   .summary-row:nth-child(1) td:nth-child(4):before {
@@ -374,20 +344,19 @@
   }
 
   .summary-row:nth-child(1) td:nth-child(5):before {
-    content: "Wartość Brutto:";
+    content: "Gross Value:";
   }
 
   .summary-row:nth-child(2) td:nth-child(1):before {
-    content: "Zapłacono:";
+    content: "Paid:";
   }
 
-  /* Pozostałe komórki w 2-tym wierszu mogą nie potrzebować labelki, więc zostawiamy puste */
   .summary-row:nth-child(2) td:nth-child(n+2):before {
     content: "";
   }
 
   .summary-row:nth-child(3) td:nth-child(1):before {
-    content: "Pozostało:";
+    content: "Remaining:";
   }
 
   .summary-row:nth-child(3) td:nth-child(n+2):before {
@@ -395,14 +364,13 @@
   }
 
   .summary-row:nth-child(4) td:nth-child(1):before {
-    content: "Uwagi:";
+    content: "Remarks:";
   }
 
   .summary-row:nth-child(4) td:nth-child(n+2):before {
     content: "";
   }
 
-  /* Stylizacja pseudo-elementów */
   .summary-table td:before {
     position: absolute;
     left: 10px;
@@ -414,7 +382,6 @@
     font-size: 0.85rem;
   }
 
-  /* Dostosowanie inputów i textarea w podsumowaniu */
   .summary-section input,
   .summary-section textarea {
     width: 100%;
