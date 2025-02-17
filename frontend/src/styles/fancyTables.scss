@@ -1,9 +1,14 @@
+// ===================================================================
+// VARIABLES
+// ===================================================================
 $table-header-bg: #4a90e2;
 $table-header-color: #ffffff;
 $hover-bg: #f0f8ff;
 $tooltip-bg: rgba(0, 0, 0, 0.75);
 
-/* Fancy table styling */
+// ===================================================================
+// TABLE BASE STYLES (fancy table)
+// ===================================================================
 table.fancy {
   width: 100%;
   max-width: 100%;
@@ -13,6 +18,9 @@ table.fancy {
   font-size: 1rem;
   table-layout: auto;
 
+  // ------------------------
+  // THEAD STYLES
+  // ------------------------
   thead {
     background-color: $table-header-bg;
     color: $table-header-color;
@@ -21,9 +29,13 @@ table.fancy {
       padding: 12px;
       border: 1px solid darken($table-header-bg, 10%);
       text-align: center;
+      cursor: pointer;
     }
   }
 
+  // ------------------------
+  // TBODY STYLES
+  // ------------------------
   tbody {
     tr {
       position: relative;
@@ -48,12 +60,16 @@ table.fancy {
   }
 }
 
-/* Specific column widths */
+// ===================================================================
+// COLUMN WIDTHS (applied to both header and body cells)
+// ===================================================================
+table.fancy thead tr th.email-column,
 table.fancy tbody tr td.email-column {
   width: 150px;
 }
 
-.address-column {
+table.fancy thead tr th.address-column,
+table.fancy tbody tr td.address-column {
   width: 250px;
   max-width: 300px;
   white-space: nowrap;
@@ -61,7 +77,8 @@ table.fancy tbody tr td.email-column {
   text-overflow: ellipsis;
 }
 
-.date-column {
+table.fancy thead tr th.date-column,
+table.fancy tbody tr td.date-column {
   width: 180px !important;
   max-width: 180px !important;
   white-space: nowrap !important;
@@ -71,57 +88,34 @@ table.fancy tbody tr td.email-column {
   color: #8b7e8b;
 }
 
-.number-column {
-  width: 150px;
-}
-
-.contractor-column {
+table.fancy thead tr th.name-column,
+table.fancy tbody tr td.name-column {
   width: 200px;
 }
 
-.amount-column {
+table.fancy thead tr th.firstName-column,
+table.fancy tbody tr td.firstName-column {
   width: 150px;
 }
 
-.paymentStatus-column {
+table.fancy thead tr th.lastName-column,
+table.fancy tbody tr td.lastName-column {
   width: 150px;
 }
 
-.paymentMethod-column {
+table.fancy thead tr th.taxId-column,
+table.fancy tbody tr td.taxId-column {
   width: 150px;
 }
 
-.remaining-column {
-  width: 150px;
-}
-
-.dueDate-column {
-  width: 150px;
-}
-
-.name-column {
-  width: 200px;
-}
-
-.firstName-column {
-  width: 150px;
-}
-
-.lastName-column {
-  width: 150px;
-}
-
-.taxId-column {
-  width: 150px;
-}
-
-.actions-column {
+table.fancy thead tr th.actions-column,
+table.fancy tbody tr td.actions-column {
   width: 100px;
 }
 
-
-
-/* Tooltip cell */
+// ===================================================================
+// TOOLTIP STYLES
+// ===================================================================
 .tooltip-cell {
   white-space: nowrap;
   overflow: hidden;
@@ -130,7 +124,11 @@ table.fancy tbody tr td.email-column {
   padding: 8px;
 }
 
-/* Ellipsis button */
+// ===================================================================
+// BUTTON STYLES
+// ===================================================================
+
+// Ellipsis Button
 .ellipsis-button {
   background: transparent !important;
   border: none !important;
@@ -156,7 +154,7 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Action button */
+// Action Button
 .action-button {
   background: transparent;
   border: none;
@@ -169,7 +167,6 @@ table.fancy tbody tr td.email-column {
   &:focus {
     outline: none;
     box-shadow: none;
-    border: none;
   }
 
   &:hover {
@@ -203,7 +200,9 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Context menu styling */
+// ===================================================================
+// CONTEXT MENU STYLES
+// ===================================================================
 .header-nav {
   position: absolute;
   top: 30px;
@@ -253,7 +252,11 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Vertical scrollbar styling */
+// ===================================================================
+// SCROLLBAR STYLES
+// ===================================================================
+
+// Vertical Scrollbar
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -267,7 +270,7 @@ table.fancy tbody tr td.email-column {
   background-color: #f1f1f1;
 }
 
-/* Horizontal scrollbar styling */
+// Horizontal Scrollbar
 ::-webkit-scrollbar {
   height: 5px;
 }
@@ -279,20 +282,4 @@ table.fancy tbody tr td.email-column {
 
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-}
-
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-  /* Enables horizontal scroll for both header and body */
-}
-
-.table-wrapper {
-  width: 100%;
-  overflow: visible; // do not force scroll on the whole table wrapper
-}
-
-.table-body-wrapper {
-  max-height: calc(100vh - 120px); // adjust 200px to account for PageHeader, TableHeader and any padding/margins
-  overflow-y: auto;
 }
