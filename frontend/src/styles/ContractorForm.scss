@@ -1,6 +1,6 @@
 .contractor-form-container {
-  width: 100%;
-  max-width: 800px;
+  width: 70%;
+  // max-width: 800px;
   margin: 20px auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -65,8 +65,10 @@ input[type="number"] {
 
 /* Style dla placeholderów */
 input::placeholder {
-  color: #aaa; /* Jaśniejszy kolor czcionki */
-  font-style: italic; /* Opcjonalnie: dodaj kursywę */
+  color: #aaa;
+  /* Jaśniejszy kolor czcionki */
+  font-style: italic;
+  /* Opcjonalnie: dodaj kursywę */
 }
 
 .submit-button {
@@ -79,14 +81,18 @@ input::placeholder {
   transition: background-color 0.3s ease;
 
   &.add-button {
-    background-color: #5cb85c; /* Zielony dla "Dodaj" */
+    background-color: #5cb85c;
+
+    /* Zielony dla "Dodaj" */
     &:hover {
       background-color: #4cae4c;
     }
   }
 
   &.update-button {
-    background-color: #3498db; /* Niebieski dla "Aktualizuj" */
+    background-color: #3498db;
+
+    /* Niebieski dla "Aktualizuj" */
     &:hover {
       background-color: #2980b9;
     }
