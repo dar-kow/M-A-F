@@ -9,7 +9,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: "http://*:80"
-      ConnectionStrings__DefaultConnection: "Host=posgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
     depends_on:
       - postgres
 
@@ -19,8 +19,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: yourpassword
       POSTGRES_DB: InvoiceDB
+    ports:
+    - "5432:5432"  # Dodaj tę linię aby expose port na hosta
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Dostęp do panelu zarządzania RabbitMQ   
 
   frontend:
     build:
@@ -28,8 +36,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "30267:80"  # Produkcyjna wersja frontendu (nginx) nasłuchuje na porcie 80, mapowany do portu 30267
-    environment:
-      REACT_APP_API_URL: "http://192.168.2.167/api:20267"
+    # environment:
+    #    VITE_API_URL: "http://localhost:20267/api"
     depends_on:
       - backend
 
