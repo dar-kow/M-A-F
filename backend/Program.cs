@@ -8,36 +8,43 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Dodaj CORS
+// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowMyOrigin",
-        builder => builder.WithOrigins("http://localhost:3000") // Adres Twojej aplikacji frontendowej
+        policy => policy.WithOrigins("http://localhost:3000") // Address of your frontend application
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
 
-// Dodaj DbContext
+// Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Dodaj pozostałe usługi (np. kontrolery)
+// Add services (e.g. controllers)
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-// Dodaj Swaggera
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Rejestracja RabbitMqService – dependencies zostaną wstrzyknięte automatycznie
+// Register RabbitMqService – dependencies will be injected automatically
 builder.Services.AddSingleton<RabbitMqService>();
 
 var app = builder.Build();
 
-// Konfiguracja middleware
+// Apply pending migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+// Configure middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -46,9 +53,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Włącz CORS
+// Enable CORS
 app.UseCors("AllowMyOrigin");
 
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
