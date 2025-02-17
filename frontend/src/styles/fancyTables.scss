@@ -3,8 +3,7 @@ $table-header-color: #ffffff;
 $hover-bg: #f0f8ff;
 $tooltip-bg: rgba(0, 0, 0, 0.75);
 
-/* Style dla tabeli */
-// Fancy table styling definitions
+/* Fancy table styling */
 table.fancy {
   width: 100%;
   max-width: 100%;
@@ -22,10 +21,6 @@ table.fancy {
       padding: 12px;
       border: 1px solid darken($table-header-bg, 10%);
       text-align: center;
-
-      &:last-child {
-        text-align: center;
-      }
     }
   }
 
@@ -53,13 +48,89 @@ table.fancy {
   }
 }
 
-/* Style dla kolumny Email */
-// Specific column width styles for table columns
+/* Specific column widths */
 table.fancy tbody tr td.email-column {
   width: 150px;
 }
 
-/* Style dla przycisku ellipsis */
+.address-column {
+  width: 250px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.date-column {
+  width: 180px !important;
+  max-width: 180px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  word-break: normal !important;
+  color: #8b7e8b;
+}
+
+.number-column {
+  width: 150px;
+}
+
+.contractor-column {
+  width: 200px;
+}
+
+.amount-column {
+  width: 150px;
+}
+
+.paymentStatus-column {
+  width: 150px;
+}
+
+.paymentMethod-column {
+  width: 150px;
+}
+
+.remaining-column {
+  width: 150px;
+}
+
+.dueDate-column {
+  width: 150px;
+}
+
+.name-column {
+  width: 200px;
+}
+
+.firstName-column {
+  width: 150px;
+}
+
+.lastName-column {
+  width: 150px;
+}
+
+.taxId-column {
+  width: 150px;
+}
+
+.actions-column {
+  width: 100px;
+}
+
+
+
+/* Tooltip cell */
+.tooltip-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Ellipsis button */
 .ellipsis-button {
   background: transparent !important;
   border: none !important;
@@ -85,8 +156,7 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Style dla przycisku akcji */
-// Action button style (typically for table row actions)
+/* Action button */
 .action-button {
   background: transparent;
   border: none;
@@ -133,8 +203,7 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Style dla menu kontekstowego */
-// Context menu styling
+/* Context menu styling */
 .header-nav {
   position: absolute;
   top: 30px;
@@ -158,9 +227,7 @@ table.fancy tbody tr td.email-column {
       padding: 8px 12px;
       cursor: pointer;
       border-bottom: 1px solid #ddd;
-      transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
 
       &:last-child {
         border-bottom: none;
@@ -186,91 +253,23 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Style dla kolumn */
-.address-column {
-  width: 250px;
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.date-column {
-  max-width: 180px !important;
-  width: 180px !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  word-break: normal !important;
-  color: #8b7e8b;
-}
-
-/* Style dla kolumny Nazwa */
-.name-column {
-  width: 200px;
-  /* Ustaw szerokość na 150px */
-}
-
-/* Style dla kolumny Imię */
-.firstName-column {
-  width: 150px;
-  /* Ustaw szerokość na 120px */
-}
-
-/* Style dla kolumny Nazwisko */
-.lastName-column {
-  width: 150px;
-  /* Ustaw szerokość na 120px */
-}
-
-/* Style dla kolumny NIP */
-.taxId-column {
-  width: 150px;
-  /* Ustaw szerokość na 150px */
-}
-
-.actions-column {
-  width: 100px;
-}
-
-/* Style dla komórek z tooltipem */
-.tooltip-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  padding: 8px;
-}
-
-/* Dodatkowe style, które mogły być w list.scss */
-.actions-container {
-  margin: 1.5rem 0;
-}
-
-/* Styl dla scrollbara pionowego */
-// Vertical scrollbar styling
+/* Vertical scrollbar styling */
 ::-webkit-scrollbar {
   width: 5px;
-  /* Szerokość scrollbara */
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #4a90e2;
-  /* Kolor "rączki" */
   border-radius: 4px;
-  /* Zaokrąglenie rogów */
 }
 
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-  /* Kolor tła */
 }
 
-/* Styl dla scrollbara poziomego */
-// Horizontal scrollbar styling
+/* Horizontal scrollbar styling */
 ::-webkit-scrollbar {
   height: 5px;
-  /* Wysokość scrollbara poziomego */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -280,4 +279,20 @@ table.fancy tbody tr td.email-column {
 
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  /* Enables horizontal scroll for both header and body */
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow: visible; // do not force scroll on the whole table wrapper
+}
+
+.table-body-wrapper {
+  max-height: calc(100vh - 120px); // adjust 200px to account for PageHeader, TableHeader and any padding/margins
+  overflow-y: auto;
 }
