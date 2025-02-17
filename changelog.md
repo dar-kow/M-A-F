@@ -75,3 +75,5 @@
 - Testy i poprawki walidacji formularzy
 - Obsługa pozycji na fakturze
 - Doprecyzowanie wydruku faktury
+- Przeniesienie akcji pod pageHeader dla lepszej responsywności na urządzeniach mobilnych
+szukaj, filtry, dodaj fakturę / kontrahenta
