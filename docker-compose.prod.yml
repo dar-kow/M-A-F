@@ -9,7 +9,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: "http://*:80"
-      ConnectionStrings__DefaultConnection: "Host=posgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=InvoiceDB;Username=postgres;Password=yourpassword"
     depends_on:
       - postgres
 
@@ -23,6 +23,12 @@ services:
     - "5432:5432"  # Dodaj tę linię aby expose port na hosta
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Dostęp do panelu zarządzania RabbitMQ   
 
   frontend:
     build:
