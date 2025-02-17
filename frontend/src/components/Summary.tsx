@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/InvoiceForm.scss'
 
 interface SummaryProps {
   totalNet: number;

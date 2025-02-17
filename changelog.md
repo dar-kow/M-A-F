@@ -1,5 +1,10 @@
 # Changelog
 
+##
+- poprawienie formularza dodawania faktur na urządzeniach mobilnych (responsywność)
+
+
+
 ## v0.4.1 - Obsługa płatności
 - Aktualizacja statusu płatności faktury
 - Logika ograniczająca wprowadzanie kwoty większej niż brutto

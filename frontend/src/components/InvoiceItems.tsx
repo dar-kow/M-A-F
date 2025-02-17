@@ -40,7 +40,7 @@ const InvoiceItems: React.FC<InvoiceItemsProps> = ({
             return (
               <tr key={item.id} data-testid={`invoice_item_row_${index}`}>
                 <td data-label="Lp">{index + 1}</td>
-                <td data-label="Nazwa artykułu/usługi">
+                <td data-label="Nazwa artykułu">
                   <input
                     type="text"
                     className="long-input"
