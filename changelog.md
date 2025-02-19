@@ -1,5 +1,16 @@
 # Changelog
 
+## Rekonfiguracja - without releasing a version
+- zmiana na globalną obsługę endpointów api.ts 
+- dostosowanie modułów Redux dla Invoice i Contractor
+- modyfikacja lokalnego hooka dla InvoiceItems
+- przekonfigurowanie hooków aby korzystały z globalnego stanu
+- przygotowania do zastosowania Vertical Slice Architecture
+- poprawienie formularza dodawania faktur na urządzeniach mobilnych (responsywność)
+- poprawienie formularza dodawania kontrahenta na urządzeniach mobilnych 
+- poprawa stylowania pageHeadera pod kątem urządzeń mobilnych
+
+
 ## v0.4.1 - Obsługa płatności
 - Aktualizacja statusu płatności faktury
 - Logika ograniczająca wprowadzanie kwoty większej niż brutto
@@ -69,3 +80,5 @@
 - Testy i poprawki walidacji formularzy
 - Obsługa pozycji na fakturze
 - Doprecyzowanie wydruku faktury
+- Przeniesienie akcji pod pageHeader dla lepszej responsywności na urządzeniach mobilnych
+szukaj, filtry, dodaj fakturę / kontrahenta

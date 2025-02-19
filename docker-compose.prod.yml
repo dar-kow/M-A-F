@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: yourpassword
       POSTGRES_DB: InvoiceDB
     ports:
-    - "5432:5432"  # Dodaj tę linię aby expose port na hosta
+      - "5432:5432"  # Port udostępniony na hoście
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -28,7 +28,7 @@ services:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
-      - "15672:15672"  # Dostęp do panelu zarządzania RabbitMQ   
+      - "15672:15672"  # Dostęp do panelu zarządzania RabbitMQ
 
   frontend:
     build:
@@ -36,8 +36,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "30267:80"  # Produkcyjna wersja frontendu (nginx) nasłuchuje na porcie 80, mapowany do portu 30267
-    environment:
-       VITE_API_URL: "http://localhost:20267/api"
+    env_file:
+      - .env.prod
     depends_on:
       - backend
 

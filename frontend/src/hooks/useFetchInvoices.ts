@@ -1,31 +1,19 @@
-import { useState, useEffect, useCallback } from "react";
-import api from "../services/api";
-import { Invoice } from "../types/types";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchInvoicesRequest } from "../redux/actions/invoiceActions";
+import { RootState } from "../redux/store";
 
-const useFetchInvoices = () => {
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchInvoices = useCallback(async () => {
-    try {
-      const response = await api.get<Invoice[]>("/invoices");
-      setInvoices(response.data);
-    } catch (error) {
-      console.error("Error fetching invoices", error);
-      setError("Błąd pobierania danych faktur");
-      toast.error("Błąd pobierania danych faktur");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+const useFetchInvoicesRedux = () => {
+  const dispatch = useDispatch();
+  const invoices = useSelector((state: RootState) => state.invoices.data);
+  const loading = useSelector((state: RootState) => state.invoices.loading);
+  const error = useSelector((state: RootState) => state.invoices.error);
 
   useEffect(() => {
-    fetchInvoices();
-  }, [fetchInvoices]);
+    dispatch(fetchInvoicesRequest());
+  }, [dispatch]);
 
-  return { invoices, loading, error, fetchInvoices };
+  return { invoices, loading, error };
 };
 
-export default useFetchInvoices;
+export default useFetchInvoicesRedux;

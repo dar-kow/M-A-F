@@ -11,13 +11,15 @@ const useFetchInvoiceItems = (invoiceId: number) => {
     const fetchInvoiceItems = async () => {
       setLoading(true);
       try {
-        const response = await api.get<InvoiceItem[]>(
-          `/InvoiceItems?invoiceId=${invoiceId}`,
-        ); // Zaktualizuj URL
+        const response = await api.getInvoiceItems(invoiceId);
         setInvoiceItems(response.data);
         setError(null);
-      } catch (error: any) {
-        setError(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       } finally {
         setLoading(false);
       }

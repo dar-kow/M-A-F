@@ -25,3 +25,8 @@ backend/obj/
 # Other temporary files
 tmp/
 temp/
+
+backend_structure.txt
+frontend_structure.txt
+vertical-slice-backend.txt
+vertical-slice-frontend.txt

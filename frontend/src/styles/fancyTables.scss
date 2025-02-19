@@ -1,10 +1,14 @@
+// ===================================================================
+// VARIABLES
+// ===================================================================
 $table-header-bg: #4a90e2;
 $table-header-color: #ffffff;
 $hover-bg: #f0f8ff;
 $tooltip-bg: rgba(0, 0, 0, 0.75);
 
-/* Style dla tabeli */
-// Fancy table styling definitions
+// ===================================================================
+// TABLE BASE STYLES (fancy table)
+// ===================================================================
 table.fancy {
   width: 100%;
   max-width: 100%;
@@ -14,6 +18,9 @@ table.fancy {
   font-size: 1rem;
   table-layout: auto;
 
+  // ------------------------
+  // THEAD STYLES
+  // ------------------------
   thead {
     background-color: $table-header-bg;
     color: $table-header-color;
@@ -22,13 +29,13 @@ table.fancy {
       padding: 12px;
       border: 1px solid darken($table-header-bg, 10%);
       text-align: center;
-
-      &:last-child {
-        text-align: center;
-      }
+      cursor: pointer;
     }
   }
 
+  // ------------------------
+  // TBODY STYLES
+  // ------------------------
   tbody {
     tr {
       position: relative;
@@ -53,13 +60,75 @@ table.fancy {
   }
 }
 
-/* Style dla kolumny Email */
-// Specific column width styles for table columns
+// ===================================================================
+// COLUMN WIDTHS (applied to both header and body cells)
+// ===================================================================
+table.fancy thead tr th.email-column,
 table.fancy tbody tr td.email-column {
   width: 150px;
 }
 
-/* Style dla przycisku ellipsis */
+table.fancy thead tr th.address-column,
+table.fancy tbody tr td.address-column {
+  width: 250px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.fancy thead tr th.date-column,
+table.fancy tbody tr td.date-column {
+  width: 180px !important;
+  max-width: 180px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  word-break: normal !important;
+  color: #8b7e8b;
+}
+
+table.fancy thead tr th.name-column,
+table.fancy tbody tr td.name-column {
+  width: 200px;
+}
+
+table.fancy thead tr th.firstName-column,
+table.fancy tbody tr td.firstName-column {
+  width: 150px;
+}
+
+table.fancy thead tr th.lastName-column,
+table.fancy tbody tr td.lastName-column {
+  width: 150px;
+}
+
+table.fancy thead tr th.taxId-column,
+table.fancy tbody tr td.taxId-column {
+  width: 150px;
+}
+
+table.fancy thead tr th.actions-column,
+table.fancy tbody tr td.actions-column {
+  width: 100px;
+}
+
+// ===================================================================
+// TOOLTIP STYLES
+// ===================================================================
+.tooltip-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding: 8px;
+}
+
+// ===================================================================
+// BUTTON STYLES
+// ===================================================================
+
+// Ellipsis Button
 .ellipsis-button {
   background: transparent !important;
   border: none !important;
@@ -85,8 +154,7 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Style dla przycisku akcji */
-// Action button style (typically for table row actions)
+// Action Button
 .action-button {
   background: transparent;
   border: none;
@@ -99,7 +167,6 @@ table.fancy tbody tr td.email-column {
   &:focus {
     outline: none;
     box-shadow: none;
-    border: none;
   }
 
   &:hover {
@@ -133,8 +200,9 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Style dla menu kontekstowego */
-// Context menu styling
+// ===================================================================
+// CONTEXT MENU STYLES
+// ===================================================================
 .header-nav {
   position: absolute;
   top: 30px;
@@ -158,9 +226,7 @@ table.fancy tbody tr td.email-column {
       padding: 8px 12px;
       cursor: pointer;
       border-bottom: 1px solid #ddd;
-      transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
 
       &:last-child {
         border-bottom: none;
@@ -186,91 +252,27 @@ table.fancy tbody tr td.email-column {
   }
 }
 
-/* Style dla kolumn */
-.address-column {
-  width: 250px;
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+// ===================================================================
+// SCROLLBAR STYLES
+// ===================================================================
 
-.date-column {
-  max-width: 180px !important;
-  width: 180px !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  word-break: normal !important;
-  color: #8b7e8b;
-}
-
-/* Style dla kolumny Nazwa */
-.name-column {
-  width: 200px;
-  /* Ustaw szerokość na 150px */
-}
-
-/* Style dla kolumny Imię */
-.firstName-column {
-  width: 150px;
-  /* Ustaw szerokość na 120px */
-}
-
-/* Style dla kolumny Nazwisko */
-.lastName-column {
-  width: 150px;
-  /* Ustaw szerokość na 120px */
-}
-
-/* Style dla kolumny NIP */
-.taxId-column {
-  width: 150px;
-  /* Ustaw szerokość na 150px */
-}
-
-.actions-column {
-  width: 100px;
-}
-
-/* Style dla komórek z tooltipem */
-.tooltip-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-  padding: 8px;
-}
-
-/* Dodatkowe style, które mogły być w list.scss */
-.actions-container {
-  margin: 1.5rem 0;
-}
-
-/* Styl dla scrollbara pionowego */
-// Vertical scrollbar styling
+// Vertical Scrollbar
 ::-webkit-scrollbar {
   width: 5px;
-  /* Szerokość scrollbara */
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #4a90e2;
-  /* Kolor "rączki" */
   border-radius: 4px;
-  /* Zaokrąglenie rogów */
 }
 
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-  /* Kolor tła */
 }
 
-/* Styl dla scrollbara poziomego */
-// Horizontal scrollbar styling
+// Horizontal Scrollbar
 ::-webkit-scrollbar {
   height: 5px;
-  /* Wysokość scrollbara poziomego */
 }
 
 ::-webkit-scrollbar-thumb {

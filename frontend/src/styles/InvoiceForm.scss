@@ -1,6 +1,5 @@
-// Container for the invoice form
 .invoice-form-container {
-  width: 70%;
+  width: 75%;
   margin: 10px auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -8,18 +7,14 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-// Full and half width form groups
 .form-group.full {
   width: 100%;
-  /* Full width for single element */
 }
 
 .form-group.half {
   width: 50%;
-  /* Half width for side-by-side elements */
 }
 
-// Invoice form styling
 .invoice-form {
   display: flex;
   flex-direction: column;
@@ -83,7 +78,6 @@
     }
   }
 
-  // Submit button styles
   .submit-button {
     padding: 10px 15px;
     border: none;
@@ -111,24 +105,21 @@
   }
 }
 
-// Table and input customizations for items
 .invoice-items-table input.long-input {
   width: 100%;
-  min-width: 350px;
+  min-width: 250px;
 }
 
-/* Ilość ma mieć maksymalnie ok. 50px szerokości */
 .invoice-items-table input.number-input {
   width: 70px;
   min-width: 50px;
 }
 
 .invoice-items-table input.net-input {
-  width: 120px;
+  width: 110px;
   min-width: 50px;
 }
 
-// Custom select dimensions in invoice items table
 .invoice-items-table select.large-select {
   height: 35px;
   width: 100px;
@@ -136,7 +127,6 @@
   font-size: 16px;
 }
 
-// Styling for non-editable price input
 .invoice-items-table .price-input {
   background-color: #eee;
   border: 1px solid #ddd;
@@ -144,22 +134,26 @@
   padding: 8px;
   font-size: 16px;
   width: 100%;
-  min-width: 100px; // or column width value
+  min-width: 100px;
 }
 
-// Summary section styling
 .summary-section {
-  border: 1px solid #ccc; // light border
-  border-radius: 4px; // rounded corners
-  padding: 8px; // inner spacing
-  margin-top: 20px; // spacing from above elements
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
-// Table styling for summary display
 .summary-table {
   border-collapse: separate;
-  border-spacing: 8px; // minimum 8px spacing between columns
-  width: auto; // adjust according to text or set to full width
+  border-spacing: 5px;
+  width: auto;
+  margin-bottom: 5px;
 
   th,
   td {
@@ -168,33 +162,29 @@
   }
 
   tbody tr:nth-child(odd) {
-    background-color: #f9f9f9; // lighter background for odd rows
+    background-color: #f9f9f9;
   }
 
   tbody tr:nth-child(even) {
-    background-color: #e9e9e9; // slightly darker for even rows
+    background-color: #e9e9e9;
   }
 }
 
-// Large textarea for extended notes or descriptions
 .large-textarea {
-  width: 100%; // Full available width
-  min-height: 150px; // Minimum height
+  width: 100%;
+  min-height: 150px;
   padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: vertical; // Allow vertical resize
+  resize: vertical;
 }
 
-// Responsive table for invoice items
 .responsive-table {
   width: 100%;
   border-collapse: collapse;
   overflow-x: auto;
-  /* Enable horizontal scroll for narrow screens */
   display: block;
-  /* Force block display for overflow to work */
 
   th,
   td {
@@ -207,11 +197,9 @@
     background-color: #f2f2f2;
   }
 
-  /* Responsive adjustments via media query */
   @media screen and (max-width: 768px) {
     display: block;
 
-    // Hide table header
     thead {
       display: none;
     }
@@ -224,11 +212,13 @@
       display: block;
       margin-bottom: 15px;
       border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
     }
 
     td {
       display: block;
-      text-align: right;
+      text-align: left;
       padding-left: 50%;
       position: relative;
       border: none;
@@ -243,9 +233,169 @@
         padding-right: 10px;
         white-space: nowrap;
         content: attr(data-label);
-        /* Use data-label attribute as header */
         font-weight: bold;
       }
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .invoice-form-container {
+    width: 100%;
+    max-width: 100vw;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .invoice-items-table.responsive-table {
+    display: block;
+  }
+
+  .invoice-items-table.responsive-table thead {
+    display: none;
+  }
+
+  .invoice-items-table.responsive-table tbody,
+  .invoice-items-table.responsive-table tr {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .invoice-items-table.responsive-table td {
+    display: block;
+    text-align: left;
+    padding: 8px;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .invoice-items-table.responsive-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    width: 40%;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: #333;
+  }
+
+  .invoice-items-table.responsive-table td input,
+  .invoice-items-table.responsive-table td select {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 25px;
+  }
+
+  .summary-table {
+    display: block;
+    width: 100%;
+  }
+
+  .summary-table thead {
+    display: none;
+  }
+
+  .summary-table tbody,
+  .summary-table tr {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .summary-table td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .summary-row:nth-child(1) td:nth-child(1):before {
+    content: "Amount:";
+  }
+
+  .summary-row:nth-child(1) td:nth-child(2):before {
+    content: "VAT Rate:";
+  }
+
+  .summary-row:nth-child(1) td:nth-child(3):before {
+    content: "Net Value:";
+  }
+
+  .summary-row:nth-child(1) td:nth-child(4):before {
+    content: "VAT:";
+  }
+
+  .summary-row:nth-child(1) td:nth-child(5):before {
+    content: "Gross Value:";
+  }
+
+  .summary-row:nth-child(2) td:nth-child(1):before {
+    content: "Paid:";
+  }
+
+  .summary-row:nth-child(2) td:nth-child(n+2):before {
+    content: "";
+  }
+
+  .summary-row:nth-child(3) td:nth-child(1):before {
+    content: "Remaining:";
+  }
+
+  .summary-row:nth-child(3) td:nth-child(n+2):before {
+    content: "";
+  }
+
+  .summary-row:nth-child(4) td:nth-child(1):before {
+    content: "Remarks:";
+  }
+
+  .summary-row:nth-child(4) td:nth-child(n+2):before {
+    content: "";
+  }
+
+  .summary-table td:before {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    font-weight: bold;
+    text-align: left;
+    font-size: 0.85rem;
+  }
+
+  .summary-section input,
+  .summary-section textarea {
+    width: 100%;
+    margin-top: 1rem;
+    box-sizing: border-box;
+  }
+
+  .invoice-items-table.responsive-table td[data-label="Lp"]::before {
+    font-size: 0.75rem;
+    left: 5px;
+    width: 25%;
+  }
+
+  .invoice-items-table.responsive-table td[data-label="Lp"] {
+    padding-left: 30px;
   }
 }
