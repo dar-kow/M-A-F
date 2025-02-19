@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { Contractor, Invoice } from "../types/types";
 class ApiService {
   private axiosInstance: AxiosInstance;
 
@@ -19,12 +20,12 @@ class ApiService {
     return this.axiosInstance.get(`/invoices/${id}`);
   }
 
-  public createInvoice(invoiceData: any): Promise<AxiosResponse> {
-    return this.axiosInstance.post("/invoices", invoiceData);
+  public createInvoice(invoice: Invoice): Promise<AxiosResponse> {
+    return this.axiosInstance.post("/invoices", invoice);
   }
 
-  public updateInvoice(id: number, invoiceData: any): Promise<AxiosResponse> {
-    return this.axiosInstance.put(`/invoices/${id}`, invoiceData);
+  public updateInvoice(id: number, invoice: Invoice): Promise<AxiosResponse> {
+    return this.axiosInstance.put(`/invoices/${id}`, invoice);
   }
 
   public deleteInvoice(id: number): Promise<AxiosResponse> {
@@ -51,12 +52,12 @@ class ApiService {
     return this.axiosInstance.get(`/contractors/${id}`);
   }
 
-  public createContractor(contractorData: any): Promise<AxiosResponse> {
-    return this.axiosInstance.post("/contractors", contractorData);
+  public createContractor(contractor: Contractor): Promise<AxiosResponse> {
+    return this.axiosInstance.post("/contractors", contractor);
   }
 
-  public updateContractor(id: number, contractorData: any): Promise<AxiosResponse> {
-    return this.axiosInstance.put(`/contractors/${id}`, contractorData);
+  public updateContractor(id: number, contractor: Contractor): Promise<AxiosResponse> {
+    return this.axiosInstance.put(`/contractors/${id}`, contractor);
   }
 
   public deleteContractor(id: number): Promise<AxiosResponse> {
