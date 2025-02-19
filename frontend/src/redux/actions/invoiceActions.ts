@@ -16,7 +16,6 @@ export const DELETE_INVOICE_REQUEST = "DELETE_INVOICE_REQUEST";
 export const DELETE_INVOICE_SUCCESS = "DELETE_INVOICE_SUCCESS";
 export const DELETE_INVOICE_FAILURE = "DELETE_INVOICE_FAILURE";
 
-// Przykładowe akcje
 export const fetchInvoicesRequest = () => ({
   type: FETCH_INVOICES_REQUEST,
 });
@@ -31,4 +30,47 @@ export const fetchInvoicesFailure = (error: string) => ({
   payload: error,
 });
 
-// Analogicznie możesz utworzyć akcje dla dodawania, aktualizacji i usuwania
+export const addInvoiceRequest = (invoice: Invoice) => ({
+  type: ADD_INVOICE_REQUEST,
+  payload: invoice,
+});
+
+export const addInvoiceSuccess = (invoice: Invoice) => ({
+  type: ADD_INVOICE_SUCCESS,
+  payload: invoice,
+});
+
+export const addInvoiceFailure = (error: string) => ({
+  type: ADD_INVOICE_FAILURE,
+  payload: error,
+});
+
+export const updateInvoiceRequest = (invoice: Invoice) => ({
+  type: UPDATE_INVOICE_REQUEST,
+  payload: invoice,
+});
+
+export const updateInvoiceSuccess = (invoice: Invoice) => ({
+  type: UPDATE_INVOICE_SUCCESS,
+  payload: invoice,
+});
+
+export const updateInvoiceFailure = (error: string) => ({
+  type: UPDATE_INVOICE_FAILURE,
+  payload: error,
+});
+
+export const deleteInvoiceRequest = (invoiceId: number) => ({
+  type: DELETE_INVOICE_REQUEST,
+  payload: invoiceId,
+});
+
+export const deleteInvoiceSuccess = (invoiceId: number) => ({
+  type: DELETE_INVOICE_SUCCESS,
+  payload: invoiceId,
+});
+
+export const deleteInvoiceFailure = (error: string) => ({
+  type: DELETE_INVOICE_FAILURE,
+  payload: error,
+});

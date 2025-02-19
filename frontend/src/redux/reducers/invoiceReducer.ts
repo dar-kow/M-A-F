@@ -28,22 +28,18 @@ const initialState: InvoiceState = {
 
 const invoiceReducer = (state = initialState, action: any): InvoiceState => {
   switch (action.type) {
-    // Request actions set loading true
     case FETCH_INVOICES_REQUEST:
     case ADD_INVOICE_REQUEST:
     case UPDATE_INVOICE_REQUEST:
     case DELETE_INVOICE_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
 
-    // Successful fetch updates invoice data
     case FETCH_INVOICES_SUCCESS:
       return { ...state, loading: false, data: action.payload };
 
-    // Successful add appends new invoice
     case ADD_INVOICE_SUCCESS:
       return { ...state, loading: false, data: [...state.data, action.payload] };
 
-    // Successful update modifies invoice in list
     case UPDATE_INVOICE_SUCCESS:
       return {
         ...state,
@@ -53,7 +49,6 @@ const invoiceReducer = (state = initialState, action: any): InvoiceState => {
         ),
       };
 
-    // Successful delete filters out the removed invoice
     case DELETE_INVOICE_SUCCESS:
       return {
         ...state,
@@ -61,7 +56,6 @@ const invoiceReducer = (state = initialState, action: any): InvoiceState => {
         data: state.data.filter((invoice) => invoice.id !== action.payload),
       };
 
-    // Failure actions capture the error
     case FETCH_INVOICES_FAILURE:
     case ADD_INVOICE_FAILURE:
     case UPDATE_INVOICE_FAILURE:
