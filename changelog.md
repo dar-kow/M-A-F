@@ -1,6 +1,11 @@
 # Changelog
 
-##
+## Rekonfiguracja - without releasing a version
+- zmiana na globalną obsługę endpointów api.ts 
+- dostosowanie modułów Redux dla Invoice i Contractor
+- modyfikacja lokalnego hooka dla InvoiceItems
+- przekonfigurowanie hooków aby korzystały z globalnego stanu
+- przygotowania do zastosowania Vertical Slice Architecture
 - poprawienie formularza dodawania faktur na urządzeniach mobilnych (responsywność)
 - poprawienie formularza dodawania kontrahenta na urządzeniach mobilnych 
 - poprawa stylowania pageHeadera pod kątem urządzeń mobilnych
