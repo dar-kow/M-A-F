@@ -1,0 +1,193 @@
+.sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: #1e293b;
+    color: #fff;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    will-change: width;
+    transform: translateZ(0);
+    contain: layout;
+    display: flex;
+    flex-direction: column;
+
+    &.sidebar-collapsed {
+        width: 64px;
+    }
+
+    .sidebar-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        height: auto;
+        min-height: 64px;
+        gap: 4px;
+        box-sizing: border-box;
+
+        .app-title {
+            margin: 0;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s;
+            will-change: opacity;
+            transform: translateZ(0);
+
+            &:first-child {
+                font-size: 20px;
+                font-weight: 700;
+                letter-spacing: 1px;
+            }
+
+            &:last-child {
+                font-size: 14px;
+                font-weight: 400;
+                color: rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        .toggle-button {
+            background: none;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            will-change: transform;
+            transform: translateZ(0);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+    .menu {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+
+        .menu-item {
+            &.active {
+                .menu-link {
+                    background-color: rgba(255, 255, 255, 0.1);
+                    border-left: 3px solid #3498db;
+                }
+            }
+
+            .menu-link {
+                display: flex;
+                align-items: center;
+                padding: 16px;
+                text-decoration: none;
+                color: #fff;
+                transition: all 0.2s ease;
+                border-left: 3px solid transparent;
+                will-change: background-color;
+                transform: translateZ(0);
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.05);
+                }
+
+                .menu-icon {
+                    font-size: 20px;
+                    min-width: 24px;
+                }
+
+                .menu-text {
+                    margin-left: 16px;
+                    white-space: nowrap;
+                    font-size: 14px;
+                    opacity: 1;
+                    transition: opacity 0.3s;
+                    will-change: opacity;
+                    transform: translateZ(0);
+                }
+            }
+        }
+    }
+}
+
+.sidebar {
+    position: relative;
+}
+
+.vertical-logo {
+    position: absolute;
+    bottom: 170px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.vertical-text {
+    transform: rotate(-90deg);
+    transform-origin: center;
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+
+.sidebar-collapsed .vertical-logo {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.vertical-logo,
+.vertical-text {
+    transition: all 0.3s ease;
+}
+
+@keyframes rotate-icon {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+.sidebar-social {
+    margin-top: auto;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    .social-icon-link {
+        color: rgba(255, 255, 255, 0.7);
+        transition: color 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+    }
+
+    .social-icon {
+        font-size: 24px;
+    }
+}
+
+// Usprawnienia dla całej aplikacji
+html,
+body,
+#root {
+    overscroll-behavior: none; // Zapobiega przesuwaniu strony
+}

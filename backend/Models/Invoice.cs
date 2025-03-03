@@ -15,12 +15,14 @@ namespace backend.Models
         public DateTime CreatedAt { get; set; }
 
         public string Number { get; set; }
-        public DateTime Date { get; set; }
-        public decimal Amount { get; set; }
+        public DateTime IssueDate { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public PaymentStatus PaymentStatus { get; set; }
-        public DateTime? DueDate { get; set; }
+        public DateTime DueDate { get; set; }
         public decimal PaidAmount { get; set; } = 0;
+
+        public string Description { get; set; }
 
         // Relacja z kontrahentem
         public int ContractorId { get; set; }

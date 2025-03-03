@@ -54,7 +54,7 @@ namespace backend.Controllers
 
             foreach (var item in invoice.InvoiceItems)
             {
-                item.InvoiceId = invoice.Id; // Ustaw InvoiceId
+                item.InvoiceId = invoice.Id;
             }
 
             _context.Invoices.Add(invoice);
@@ -107,6 +107,32 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET: api/invoices/last-number
+        [HttpGet("last-number")]
+        public async Task<ActionResult<string>> GetLastInvoiceNumber()
+        {
+            try
+            {
+                // Pobierz fakturę z największym ID (zakładamy, że najnowsze faktury mają wyższe ID)
+                var lastInvoice = await _context.Invoices
+                    .OrderByDescending(i => i.Id)
+                    .FirstOrDefaultAsync();
+
+                if (lastInvoice == null)
+                {
+                    return Ok("");
+                }
+
+                _logger.LogInformation($"Ostatni numer faktury: {lastInvoice.Number}");
+                return Ok(lastInvoice.Number);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Błąd podczas pobierania ostatniego numeru faktury");
+                return StatusCode(500, "Wystąpił błąd podczas przetwarzania żądania");
+            }
         }
     }
 }

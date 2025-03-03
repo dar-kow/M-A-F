@@ -1,0 +1,32 @@
+.navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+
+    .navbar-section {
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            margin: 0;
+            color: #333;
+        }
+    }
+
+    .navbar-actions {
+        display: flex;
+        align-items: center;
+
+        .print-button {
+            margin-right: 16px;
+        }
+
+        .navbar-icon {
+            margin-left: 8px;
+        }
+    }
+}

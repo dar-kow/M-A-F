@@ -1,0 +1,17 @@
+.invoice-items-table {
+    .MuiTable-root {
+        margin-bottom: 1rem;
+    }
+
+    .MuiTableHead-root {
+        background-color: #f5f5f5;
+
+        .MuiTableCell-head {
+            font-weight: bold;
+        }
+    }
+
+    .item-totals {
+        font-weight: bold;
+    }
+}

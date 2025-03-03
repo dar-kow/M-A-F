@@ -8,11 +8,10 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowMyOrigin",
-        policy => policy.WithOrigins("http://localhost:3000") // Address of your frontend application
+        policy => policy.WithOrigins("http://localhost:3003")
             .AllowAnyMethod()
             .AllowAnyHeader());
 });

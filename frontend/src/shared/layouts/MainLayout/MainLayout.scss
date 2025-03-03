@@ -1,0 +1,29 @@
+.app-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+
+    .main-content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        .page-content {
+            flex: 1;
+            overflow: auto;
+            padding: 24px;
+            background-color: #f8f9fa;
+        }
+    }
+}
+
+// Globalne style dla body i html
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}

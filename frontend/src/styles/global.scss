@@ -1,12 +1,141 @@
-// Global CSS resets and font settings
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+$separator-color: rgba(25, 118, 210, 0.4);
+$separator-hover-color: rgba(25, 118, 210, 0.8);
+$border-color: rgba(0, 0, 0, 0.08);
+
+.MuiDataGrid-root {
+    .MuiDataGrid-cell {
+        border-right: 1px solid $border-color;
+        border-bottom: 1px solid $border-color;
+    }
+
+    .MuiDataGrid-columnHeader {
+        border-right: 1px solid $border-color;
+        border-bottom: 1px solid $border-color;
+        position: relative;
+    }
+
+    .MuiDataGrid-columnSeparator {
+        visibility: visible;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        color: $separator-color;
+        width: 15px !important;
+        right: -5.5px !important;
+        position: absolute;
+        transition: all 0.2s ease;
+        cursor: col-resize;
+        z-index: 10;
+
+        .MuiSvgIcon-root {
+            visibility: hidden;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 40%;
+            background-color: $separator-color;
+            opacity: 0.1;
+            transition: all 0.2s ease;
+        }
+    }
+
+    .MuiDataGrid-columnSeparator:hover {
+        opacity: 1 !important;
+
+        &::after {
+            opacity: 1;
+            width: 3px;
+            background-color: $separator-hover-color;
+            box-shadow: 0 0 4px rgba(25, 118, 210, 0.5);
+        }
+    }
+
+    .MuiDataGrid-columnHeader:last-child .MuiDataGrid-columnSeparator,
+    .last-normal-column .MuiDataGrid-columnSeparator {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    .MuiDataGrid-columnHeadersInner {
+        .MuiDataGrid-columnHeader {
+            &:not(:last-child) {
+                position: relative;
+            }
+        }
+    }
 }
 
+
+// .MuiDataGrid-columnHeader[data-filtered="true"] {
+//     border: 1px solid #1976d2 !important;
+//     position: relative;
+
+//     // Pasek z filtrem na dole nagłówka
+//     &::after {
+//         content: attr(data-filter-value);
+//         position: absolute;
+//         bottom: 0;
+//         left: 0;
+//         width: calc(100% - 16px);
+//         font-size: 0.65rem;
+//         color: #1976d2;
+//         padding: 1px 4px;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         border-top: 1px dashed rgba(25, 118, 210, 0.4);
+//         font-style: italic;
+//         background-color: rgba(255, 255, 255, 0.95);
+//     }
+
+//     // Ikona X do anulowania filtra
+//     &::before {
+//         content: "×";
+//         position: absolute;
+//         bottom: 0;
+//         right: 0;
+//         width: 16px;
+//         height: 16px;
+//         line-height: 14px;
+//         text-align: center;
+//         font-size: 12px;
+//         font-weight: bold;
+//         color: #1976d2;
+//         cursor: pointer;
+//         background-color: rgba(255, 255, 255, 0.95);
+//         border-left: 1px dashed rgba(25, 118, 210, 0.4);
+//         z-index: 10;
+//     }
+// }
+
+/* Globalne optymalizacje wydajności */
+* {
+    text-rendering: optimizeSpeed;
+}
+
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+/* Zapobieganie migotaniu podczas animacji */
 body {
-  font-family: "Mulish", sans-serif;
-  margin: 0;
-  padding: 0;
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optymalizacja dla MUI komponentów */
+.MuiDataGrid-root,
+.MuiPaper-root {
+    isolation: isolate;
+    contain: content;
 }
