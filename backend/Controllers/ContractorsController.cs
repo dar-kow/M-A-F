@@ -40,7 +40,6 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Ustawienie CreatedAt, jeśli nie jest już ustawione
             if (contractor.CreatedAt == default(DateTime))
             {
                 contractor.CreatedAt = DateTime.UtcNow;
@@ -51,6 +50,7 @@ namespace backend.Controllers
             return CreatedAtAction(nameof(GetContractor), new { id = contractor.Id }, contractor);
         }
 
+        // PUT: api/contractors/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateContractor(int id, [FromBody] Contractor contractor)
         {
@@ -65,7 +65,6 @@ namespace backend.Controllers
                 return NotFound();
             }
 
-            // Aktualizujemy tylko pola, które mają ulec zmianie
             existingContractor.Name = contractor.Name;
             existingContractor.Email = contractor.Email;
             existingContractor.FirstName = contractor.FirstName;
@@ -76,7 +75,6 @@ namespace backend.Controllers
             existingContractor.ApartmentNumber = contractor.ApartmentNumber;
             existingContractor.City = contractor.City;
             existingContractor.PostalCode = contractor.PostalCode;
-            // Pole CreatedAt pozostaje niezmienione
 
             try
             {
@@ -96,6 +94,7 @@ namespace backend.Controllers
 
             return NoContent();
         }
+
         // DELETE: api/contractors/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContractor(int id)
@@ -103,7 +102,6 @@ namespace backend.Controllers
             var contractor = await _context.Contractors.FirstOrDefaultAsync(c => c.Id == id);
             if (contractor == null) return NotFound();
 
-            // Zabezpieczenie – nie można usunąć kontrahenta, który ma przypisane faktury
             var hasInvoices = await _context.Invoices.AnyAsync(i => i.ContractorId == id);
             if (hasInvoices)
             {

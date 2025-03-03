@@ -1,0 +1,30 @@
+.invoice-summary {
+    margin-top: 1.5rem;
+    background-color: #f5f5f5 !important;
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        min-width: 250px;
+
+        &.total {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #dddddd;
+
+            .summary-label,
+            .summary-value {
+                font-weight: bold;
+            }
+        }
+
+        .summary-label {
+            margin-right: 1rem;
+        }
+
+        .summary-value {
+            font-weight: 500;
+        }
+    }
+}

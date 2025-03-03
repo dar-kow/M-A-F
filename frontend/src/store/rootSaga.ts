@@ -1,6 +1,11 @@
-import { all, call } from "redux-saga/effects";
-import { watchInvoices } from "./invoiceSaga";
+// Zaimportuj wszystkie saga watchery
+import { all, fork } from 'redux-saga/effects';
+import { watchContractorSagas } from '../features/contractors/redux/contractorSaga';
+import { watchInvoiceSagas } from '../features/invoices/redux/invoiceSaga';
 
 export default function* rootSaga() {
-  yield all([call(watchInvoices)]);
+    yield all([
+        fork(watchContractorSagas),
+        fork(watchInvoiceSagas),
+    ]);
 }

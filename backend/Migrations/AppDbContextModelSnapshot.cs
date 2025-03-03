@@ -339,9 +339,6 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
                     b.Property<int>("ContractorId")
                         .HasColumnType("integer");
 
@@ -349,10 +346,14 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("DueDate")
+                    b.Property<DateTime>("IssueDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Number")
@@ -370,6 +371,9 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("numeric");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContractorId");
@@ -380,197 +384,212 @@ namespace backend.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 150.50m,
                             ContractorId = 1,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "1/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/1/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Cash",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 150.50m
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 250.75m,
                             ContractorId = 2,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "2/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/2/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Transfer",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 250.75m
                         },
                         new
                         {
                             Id = 3,
-                            Amount = 350.00m,
                             ContractorId = 3,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "3/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/3/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Card",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 350.00m
                         },
                         new
                         {
                             Id = 4,
-                            Amount = 450.25m,
                             ContractorId = 4,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "4/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/4/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Other",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 450.25m
                         },
                         new
                         {
                             Id = 5,
-                            Amount = 550.50m,
                             ContractorId = 5,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "5/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/5/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Cash",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 550.50m
                         },
                         new
                         {
                             Id = 6,
-                            Amount = 650.75m,
                             ContractorId = 6,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "6/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/6/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Transfer",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 650.75m
                         },
                         new
                         {
                             Id = 7,
-                            Amount = 750.00m,
                             ContractorId = 7,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "7/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/7/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Card",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 750.00m
                         },
                         new
                         {
                             Id = 8,
-                            Amount = 850.25m,
                             ContractorId = 8,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "8/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/8/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Other",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 850.25m
                         },
                         new
                         {
                             Id = 9,
-                            Amount = 950.50m,
                             ContractorId = 9,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "9/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/9/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Cash",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 950.50m
                         },
                         new
                         {
                             Id = 10,
-                            Amount = 1050.75m,
                             ContractorId = 10,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "10/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/10/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Transfer",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 1050.75m
                         },
                         new
                         {
                             Id = 11,
-                            Amount = 1150.00m,
                             ContractorId = 11,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "11/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/11/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Card",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 1150.00m
                         },
                         new
                         {
                             Id = 12,
-                            Amount = 1250.25m,
                             ContractorId = 12,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "12/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/12/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Other",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 1250.25m
                         },
                         new
                         {
                             Id = 13,
-                            Amount = 1350.50m,
                             ContractorId = 13,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "13/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/13/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Cash",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 1350.50m
                         },
                         new
                         {
                             Id = 14,
-                            Amount = 1450.75m,
                             ContractorId = 14,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "14/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/14/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Transfer",
-                            PaymentStatus = "Unpaid"
+                            PaymentStatus = "Unpaid",
+                            TotalAmount = 1450.75m
                         },
                         new
                         {
                             Id = 15,
-                            Amount = 1550.00m,
                             ContractorId = 15,
                             CreatedAt = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Date = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Faktura VAT 23%",
                             DueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Number = "15/2025",
+                            IssueDate = new DateTime(2025, 2, 8, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Number = "FV/15/2025",
                             PaidAmount = 0m,
                             PaymentMethod = "Card",
-                            PaymentStatus = "Paid"
+                            PaymentStatus = "Paid",
+                            TotalAmount = 1550.00m
                         });
                 });
 
