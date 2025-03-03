@@ -9,12 +9,12 @@ type InvoiceBasicInfoProps = {
     control: any;
     errors: any;
     contractors: Contractor[];
-    totals?: {
-        grossTotal: number;
-    };
+    // totals?: {
+    //     grossTotal: number;
+    // };
 };
 
-const InvoiceBasicInfo = ({ control, errors, contractors, totals }: InvoiceBasicInfoProps) => {
+const InvoiceBasicInfo = ({ control, errors, contractors }: InvoiceBasicInfoProps) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>

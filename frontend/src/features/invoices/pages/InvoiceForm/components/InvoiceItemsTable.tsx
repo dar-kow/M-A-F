@@ -78,6 +78,7 @@ const InvoiceItemsTable = ({
     }, [forceUpdate, localForceUpdate]);
 
     // Funkcja wywoływana przy zmianie pola liczbowego
+    // Poprawione: wyraźne określenie typu dla parametru e
     const handleNumberFieldChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, onChange: (value: any) => void) => {
         const value = parseFloat(e.target.value) || 0;
         onChange(value);
@@ -164,16 +165,16 @@ const InvoiceItemsTable = ({
                                                     {...field}
                                                     type="number"
                                                     size="small"
-                                                    // Zamiana inputProps na slotProps.input
+                                                    // Poprawione: prawidłowa struktura inputProps
                                                     inputProps={{
-                                                        input: {
-                                                            step: '0.01',
-                                                            min: '0.01'
-                                                        }
+                                                        step: '0.01',
+                                                        min: '0.01'
                                                     }}
                                                     error={!!errors.items?.[index]?.quantity}
-                                                    onChange={(e) => handleNumberFieldChange(e, field.onChange)}
-                                                    onBlur={(e) => {
+                                                    // Poprawione: dodany as do konwersji typu zdarzenia
+                                                    onChange={(e) => handleNumberFieldChange(e as React.ChangeEvent<HTMLInputElement>, field.onChange)}
+                                                    // Poprawione: usunięty nieużywany parametr e
+                                                    onBlur={() => {
                                                         field.onBlur();
                                                         safeForceUpdate();
                                                     }}
@@ -228,19 +229,19 @@ const InvoiceItemsTable = ({
                                                     {...field}
                                                     type="number"
                                                     size="small"
+                                                    // Poprawione: prawidłowa struktura inputProps i InputProps
                                                     inputProps={{
-                                                        input: {
-                                                            step: '0.01',
-                                                            min: '0'
-                                                        },
-                                                        // Konfiguracja adornment (ozdobnika) w nowym API
-                                                        InputProps: {
-                                                            endAdornment: <InputAdornment position="end">zł</InputAdornment>
-                                                        }
+                                                        step: '0.01',
+                                                        min: '0'
+                                                    }}
+                                                    InputProps={{
+                                                        endAdornment: <InputAdornment position="end">zł</InputAdornment>
                                                     }}
                                                     error={!!errors.items?.[index]?.unitPrice}
-                                                    onChange={(e) => handleNumberFieldChange(e, field.onChange)}
-                                                    onBlur={(e) => {
+                                                    // Poprawione: dodany as do konwersji typu zdarzenia
+                                                    onChange={(e) => handleNumberFieldChange(e as React.ChangeEvent<HTMLInputElement>, field.onChange)}
+                                                    // Poprawione: usunięty nieużywany parametr e
+                                                    onBlur={() => {
                                                         field.onBlur();
                                                         safeForceUpdate();
                                                     }}
