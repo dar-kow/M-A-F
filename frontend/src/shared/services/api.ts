@@ -1,5 +1,14 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { Contractor, Invoice } from "../../types/types";
+interface ImportMetaEnv {
+  VITE_API_URL: string;
+  [key: string]: string;
+}
+
+interface ImportMeta {
+  env: ImportMetaEnv;
+}
+
 class ApiService {
   private axiosInstance: AxiosInstance;
 

@@ -1,11 +1,12 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import api from '../../../shared/services/api';
+import api from '@/shared/services/api';
 import * as actions from './contractorActions';
 
 // Fetch all contractors
 function* fetchContractorsSaga() {
     try {
-        const response = yield call([api, api.getContractors]);
+        // Poprawione wywołanie call
+        const response = yield call(api.getContractors.bind(api));
         yield put(actions.fetchContractorsSuccess(response.data));
     } catch (error: any) {
         yield put(actions.fetchContractorsFailure(error.message || 'Failed to fetch contractors'));
@@ -15,7 +16,8 @@ function* fetchContractorsSaga() {
 // Fetch single contractor
 function* fetchContractorSaga(action: ReturnType<typeof actions.fetchContractorRequest>) {
     try {
-        const response = yield call([api, api.getContractor], action.payload);
+        // Poprawione wywołanie call
+        const response = yield call(api.getContractor.bind(api), action.payload);
         yield put(actions.fetchContractorSuccess(response.data));
     } catch (error: any) {
         yield put(actions.fetchContractorFailure(error.message || 'Failed to fetch contractor'));
@@ -25,7 +27,8 @@ function* fetchContractorSaga(action: ReturnType<typeof actions.fetchContractorR
 // Create contractor
 function* createContractorSaga(action: ReturnType<typeof actions.createContractorRequest>) {
     try {
-        const response = yield call([api, api.createContractor], action.payload);
+        // Poprawione wywołanie call
+        const response = yield call(api.createContractor.bind(api), action.payload);
         yield put(actions.createContractorSuccess(response.data));
     } catch (error: any) {
         yield put(actions.createContractorFailure(error.message || 'Failed to create contractor'));
@@ -35,7 +38,8 @@ function* createContractorSaga(action: ReturnType<typeof actions.createContracto
 // Update contractor
 function* updateContractorSaga(action: ReturnType<typeof actions.updateContractorRequest>) {
     try {
-        const response = yield call([api, api.updateContractor], action.payload.id, action.payload);
+        // Poprawione wywołanie call
+        const response = yield call(api.updateContractor.bind(api), action.payload.id, action.payload);
         yield put(actions.updateContractorSuccess(response.data));
     } catch (error: any) {
         yield put(actions.updateContractorFailure(error.message || 'Failed to update contractor'));
@@ -45,7 +49,8 @@ function* updateContractorSaga(action: ReturnType<typeof actions.updateContracto
 // Delete contractor
 function* deleteContractorSaga(action: ReturnType<typeof actions.deleteContractorRequest>) {
     try {
-        yield call([api, api.deleteContractor], action.payload);
+        // Poprawione wywołanie call
+        yield call(api.deleteContractor.bind(api), action.payload);
         yield put(actions.deleteContractorSuccess(action.payload));
     } catch (error: any) {
         yield put(actions.deleteContractorFailure(error.message || 'Failed to delete contractor'));

@@ -308,9 +308,6 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
             }}
         >
             <DataGrid
-                disableExtendRowFullWidth={true}
-                disableColumnReorder={true}
-                showColumnRightBorder={true}
                 showCellVerticalBorder={false}
                 rows={showData ? filteredData : []}
                 columns={sortedColumns}
@@ -342,23 +339,10 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
                             height: '100%'
                         }
                     },
-                    virtualScroller: {
-                        sx: {
-                            overflowX: 'hidden',
-                            "&::-webkit-scrollbar": {
-                                width: "6px",
-                                height: "0",
-                            },
-                            // Wyraźnie ustawiamy marginBottom na 0
-                            marginBottom: 0
-                        }
-                    },
                     footer: {
                         sx: {
-                            // Upewniamy się, że stopka nie ma dolnego marginesu
                             marginBottom: 0,
                             borderTop: '1px solid #e0e0e0',
-                            // Usuwamy jakikolwiek padding na dole
                             paddingBottom: 0
                         }
                     }
@@ -377,12 +361,16 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
                     },
                     '.MuiDataGrid-virtualScroller': {
                         overflow: 'auto !important',
-                        // Usuwamy niepotrzebne właściwości transform
+                        overflowX: 'hidden',
+                        "&::-webkit-scrollbar": {
+                            width: "6px",
+                            height: "0",
+                        },
+                        marginBottom: 0
                     },
                     '.MuiDataGrid-cell': {
                         overflow: 'hidden',
                     },
-                    // Naprawienie pozycjonowania tooltipów i poperów
                     [`.${gridClasses.columnHeader}, .${gridClasses.cell}`]: {
                         position: 'relative',
                         '& .MuiTooltip-popper, & .MuiPopover-root': {
@@ -393,14 +381,12 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
                             position: 'absolute !important'
                         }
                     },
-                    // Zapewnij, że poper z filtrem jest nad innymi elementami
                     '& .filter-popover': {
                         zIndex: 10001,
                         '& .MuiPaper-root': {
                             overflow: 'visible',
                         }
                     },
-                    // Upewniamy się, że stopka jest na dole kontenera
                     '.MuiDataGrid-footerContainer': {
                         marginTop: 'auto',
                         paddingBottom: 0,

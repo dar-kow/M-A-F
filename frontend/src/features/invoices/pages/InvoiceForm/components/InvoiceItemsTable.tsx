@@ -165,7 +165,7 @@ const InvoiceItemsTable = ({
                                                     type="number"
                                                     size="small"
                                                     // Zamiana inputProps na slotProps.input
-                                                    slotProps={{
+                                                    inputProps={{
                                                         input: {
                                                             step: '0.01',
                                                             min: '0.01'
@@ -228,7 +228,7 @@ const InvoiceItemsTable = ({
                                                     {...field}
                                                     type="number"
                                                     size="small"
-                                                    slotProps={{
+                                                    inputProps={{
                                                         input: {
                                                             step: '0.01',
                                                             min: '0'

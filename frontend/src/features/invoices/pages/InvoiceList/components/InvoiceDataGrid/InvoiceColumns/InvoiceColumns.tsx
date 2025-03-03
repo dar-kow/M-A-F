@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, IconButton, Chip, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Chip, Tooltip, Typography } from '@mui/material';
 import {
     GridColDef,
     GridRenderCellParams
@@ -234,7 +234,6 @@ export const getInvoiceColumns = (
             flex: 0,
             cellClassName: 'actions-cell',
             headerClassName: 'actions-header',
-            pinned: 'right',
             colSpan: 1,
             editable: false,
             renderHeader: () => (

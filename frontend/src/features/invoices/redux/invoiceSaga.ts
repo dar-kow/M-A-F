@@ -1,11 +1,12 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import api from '../../../shared/services/api';
+import api from '@/shared/services/api';
 import * as actions from './invoiceActions';
 
 // Fetch all invoices
 function* fetchInvoicesSaga() {
     try {
-        const response = yield call([api, api.getInvoices]);
+        // Poprawione wywołanie call
+        const response = yield call(api.getInvoices.bind(api));
         yield put(actions.fetchInvoicesSuccess(response.data));
     } catch (error: any) {
         yield put(actions.fetchInvoicesFailure(error.message || 'Failed to fetch invoices'));
@@ -15,7 +16,8 @@ function* fetchInvoicesSaga() {
 // Fetch single invoice
 function* fetchInvoiceSaga(action: ReturnType<typeof actions.fetchInvoiceRequest>) {
     try {
-        const response = yield call([api, api.getInvoice], action.payload);
+        // Poprawione wywołanie call
+        const response = yield call(api.getInvoice.bind(api), action.payload);
         yield put(actions.fetchInvoiceSuccess(response.data));
     } catch (error: any) {
         yield put(actions.fetchInvoiceFailure(error.message || 'Failed to fetch invoice'));
@@ -25,7 +27,8 @@ function* fetchInvoiceSaga(action: ReturnType<typeof actions.fetchInvoiceRequest
 // Create invoice
 function* createInvoiceSaga(action: ReturnType<typeof actions.createInvoiceRequest>) {
     try {
-        const response = yield call([api, api.createInvoice], action.payload);
+        // Poprawione wywołanie call
+        const response = yield call(api.createInvoice.bind(api), action.payload);
         yield put(actions.createInvoiceSuccess(response.data));
     } catch (error: any) {
         yield put(actions.createInvoiceFailure(error.message || 'Failed to create invoice'));
@@ -35,7 +38,8 @@ function* createInvoiceSaga(action: ReturnType<typeof actions.createInvoiceReque
 // Update invoice
 function* updateInvoiceSaga(action: ReturnType<typeof actions.updateInvoiceRequest>) {
     try {
-        const response = yield call([api, api.updateInvoice], action.payload.id, action.payload);
+        // Poprawione wywołanie call
+        const response = yield call(api.updateInvoice.bind(api), action.payload.id, action.payload);
         yield put(actions.updateInvoiceSuccess(response.data));
     } catch (error: any) {
         yield put(actions.updateInvoiceFailure(error.message || 'Failed to update invoice'));
@@ -45,7 +49,8 @@ function* updateInvoiceSaga(action: ReturnType<typeof actions.updateInvoiceReque
 // Delete invoice
 function* deleteInvoiceSaga(action: ReturnType<typeof actions.deleteInvoiceRequest>) {
     try {
-        yield call([api, api.deleteInvoice], action.payload);
+        // Poprawione wywołanie call
+        yield call(api.deleteInvoice.bind(api), action.payload);
         yield put(actions.deleteInvoiceSuccess(action.payload));
     } catch (error: any) {
         yield put(actions.deleteInvoiceFailure(error.message || 'Failed to delete invoice'));
@@ -55,12 +60,13 @@ function* deleteInvoiceSaga(action: ReturnType<typeof actions.deleteInvoiceReque
 function* fetchLastInvoiceNumberSaga() {
     try {
         console.log("Wywołuję API: getLastInvoiceNumber");
-        const response = yield call([api, api.getLastInvoiceNumber]);
+        // Poprawione wywołanie call
+        const response = yield call(api.getLastInvoiceNumber.bind(api));
         console.log("Otrzymana odpowiedź:", response.data);
         yield put(actions.fetchLastInvoiceNumberSuccess(response.data));
     } catch (error: any) {
+        // Pozostała obsługa błędu bez zmian
         console.error("Błąd podczas pobierania numeru faktury:", error);
-        // Bardziej szczegółowa obsługa błędu
         let errorMessage = 'Błąd pobierania ostatniego numeru faktury';
         if (error.response) {
             console.error("Status błędu:", error.response.status);
