@@ -3,6 +3,7 @@
     "skipLibCheck": true,       // pomija sprawdzanie typów w plikach deklaracji
     "noEmitOnError": false,     // pozwala na emitowanie plików, nawet gdy występują błędy
     "strict": false, // wyłącza rygorystyczne sprawdzanie typów (możesz ustawić na true, gdy naprawisz błędy)
+    "noImplicitAny": false,        // Pozwala na 'any' w przypadkach niejawnych
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -22,9 +23,7 @@
       // "@hooks/*": ["src/hooks/*"],
       "@assets/*": ["src/assets/*"],
       "@styles/*": ["src/style/*"],
-      "include": [
-      "global.d.ts"
-      ]
+      "include": ["src/*", "global.d.ts"]
     },
 
     /* Bundler mode */
