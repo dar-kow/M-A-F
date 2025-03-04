@@ -2,13 +2,18 @@ import { useLocation } from 'react-router-dom';
 import {
     Notifications as NotificationsIcon,
     Settings as SettingsIcon,
-    // Person as PersonIcon
+    Print as PrintIcon
 } from '@mui/icons-material';
 import { IconButton, Badge, Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useState, MouseEvent } from 'react';
 import './Navbar.scss';
 
-function Navbar() {
+interface NavbarProps {
+    pageTitle?: string;
+    onPrint?: () => void;
+}
+
+function Navbar({ pageTitle, onPrint }: NavbarProps) {
     const location = useLocation();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -20,21 +25,30 @@ function Navbar() {
         setAnchorEl(null);
     };
 
-    // Określenie tytułu sekcji na podstawie ścieżki
-    const getSectionTitle = () => {
+    // Użyj przekazanego pageTitle jeśli istnieje, w przeciwnym razie określ go na podstawie ścieżki
+    const displayTitle = pageTitle || (() => {
         const path = location.pathname;
         if (path === '/') return 'Dashboard';
         if (path.includes('/invoices')) return 'Faktury';
         if (path.includes('/contractors')) return 'Kontrahenci';
         return 'Moja Aplikacja Faktur';
-    };
+    })();
 
     return (
         <nav className="navbar">
             <div className="navbar-section">
-                <h1 className="section-title">{getSectionTitle()}</h1>
+                <h1 className="section-title">{displayTitle}</h1>
             </div>
             <div className="navbar-actions">
+                {/* Dodajemy przycisk do drukowania, jeśli onPrint zostało przekazane */}
+                {onPrint && (
+                    <Tooltip title="Drukuj">
+                        <IconButton onClick={onPrint} color="inherit" className="navbar-icon">
+                            <PrintIcon />
+                        </IconButton>
+                    </Tooltip>
+                )}
+
                 <Tooltip title="Powiadomienia">
                     <IconButton color="inherit" className="navbar-icon">
                         <Badge badgeContent={3} color="error">
