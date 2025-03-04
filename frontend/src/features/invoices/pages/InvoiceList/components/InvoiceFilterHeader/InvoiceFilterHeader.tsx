@@ -13,14 +13,14 @@ interface InvoiceFilterHeaderProps {
     isActive?: boolean;
 }
 
-const InvoiceFilterHeader: React.FC<InvoiceFilterHeaderProps> = ({
+const InvoiceFilterHeader = ({
     params,
     placeholder,
     value,
     onChange,
     onClear,
     isActive = false
-}) => {
+}: InvoiceFilterHeaderProps) => {
     const [filterOpen, setFilterOpen] = useState(false);
     const headerRef = useRef<HTMLDivElement>(null);
     const [localValue, setLocalValue] = useState(value);
@@ -29,7 +29,7 @@ const InvoiceFilterHeader: React.FC<InvoiceFilterHeaderProps> = ({
 
     // Stan dla tooltipa i popera
     const [showTooltip, setShowTooltip] = useState(true);
-    const [tooltipEnabled, setTooltipEnabled] = useState(true); // Dodatkowy stan kontrolujący globalnie możliwość pokazania tooltipa
+    const [tooltipEnabled, setTooltipEnabled] = useState(true);
     const [showFilterPopup, setShowFilterPopup] = useState(false);
 
     // Stan pozycjonowania tooltipa i popera
@@ -56,8 +56,9 @@ const InvoiceFilterHeader: React.FC<InvoiceFilterHeaderProps> = ({
         // Tylko dodajemy, gdy popup jest otwarty
         if (!showFilterPopup) return;
 
-        const handleGlobalContextMenu = (e: MouseEvent) => {
-            // Jeśli poper jest otwarty i kliknięcie jest poza nim, zamykamy go
+        // Usunięto nieużywany parametr e z tej funkcji
+        const handleGlobalContextMenu = () => {
+            // Jeśli poper jest otwarty, zamykamy go
             if (showFilterPopup) {
                 handleCloseFilterPopup();
             }
