@@ -4,7 +4,8 @@ import {
     Receipt as ReceiptIcon,
     People as PeopleIcon,
     GitHub as GitHubIcon,
-    LinkedIn as LinkedInIcon
+    LinkedIn as LinkedInIcon,
+    Api as SwaggerIcon
 } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import { useState, useEffect } from 'react';
@@ -23,6 +24,14 @@ function Sidebar() {
             const timer = setTimeout(() => {
                 setCollapsed(false);
             }, 100); // Małe opóźnienie po załadowaniu dashboardu
+
+            return () => clearTimeout(timer);
+        }
+        //zwijamy menu jeśli nie jesteśmy na stronie głównej
+        else if (location.pathname !== '/' && !isTransitioning) {
+            const timer = setTimeout(() => {
+                setCollapsed(true);
+            }, 100);
 
             return () => clearTimeout(timer);
         }
@@ -111,6 +120,16 @@ function Sidebar() {
             {/* Social media icons - only when sidebar is expanded */}
             {!collapsed && (
                 <div className="sidebar-social">
+                    <Tooltip title="Swagger - Dokumentacja API" placement="top">
+                        <a
+                            href="http://srv10.mikr.us:44484/swagger/index.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="social-icon-link"
+                        >
+                            <SwaggerIcon className="social-icon" />
+                        </a>
+                    </Tooltip>
                     <Tooltip title="GitHub - Zobacz kod źródłowy" placement="top">
                         <a
                             href="https://github.com/darek9k/M-A-F"
