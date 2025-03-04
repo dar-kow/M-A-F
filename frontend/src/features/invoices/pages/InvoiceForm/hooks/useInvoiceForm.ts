@@ -95,7 +95,7 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
     // Effect dla obserwacji zmian w polach
     useEffect(() => {
         // To wymusza przeliczenie wartości po każdej zmianie w items
-        const subscription = formMethods.watch((value, { name }) => {
+        const subscription = formMethods.watch((_, { name }) => {
             // Jeśli zmiana dotyczy pozycji faktury
             if (name?.startsWith('items.') && (
                 name.includes('.quantity') ||
