@@ -164,8 +164,8 @@ export class PrintService {
      * @returns true jeśli wydruk został zainicjowany pomyślnie
      */
     static printInvoiceDetails(
-        invoice: InvoiceWithContractorName,
-        config: PrintConfig = {}
+        _invoice: InvoiceWithContractorName,
+        _config: PrintConfig = {}
     ): boolean {
         // Implementacja drukowania szczegółów faktury
         // Możesz ją dodać w przyszłości
