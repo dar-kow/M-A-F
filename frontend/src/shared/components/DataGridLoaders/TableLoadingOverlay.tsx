@@ -7,7 +7,7 @@ import { GridOverlay } from '@mui/x-data-grid';
  * @returns JSX.Element - Komponent nakładki ładowania
  */
 export const TableLoadingOverlay: React.FC = () => {
-    const [counter, setCounter] = useState(0);
+    const [, setCounter] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
