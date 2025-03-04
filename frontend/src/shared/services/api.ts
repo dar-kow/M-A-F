@@ -1,13 +1,6 @@
+/// <reference types="vite/client" />
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { Contractor, Invoice } from "../../types/types";
-interface ImportMetaEnv {
-  VITE_API_URL: string;
-  [key: string]: string;
-}
-
-interface ImportMeta {
-  env: ImportMetaEnv;
-}
+import { Contractor, Invoice } from "@/types/types";
 
 class ApiService {
   private axiosInstance: AxiosInstance;
