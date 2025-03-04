@@ -10,8 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowMyOrigin",
-        policy => policy.WithOrigins("http://localhost:3003")
+    options.AddPolicy("AllowAll",
+        policy => policy
+            .AllowAnyOrigin() // AllowAllOrigins
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -51,7 +52,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // Enable CORS
-app.UseCors("AllowMyOrigin");
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 app.MapControllers();
