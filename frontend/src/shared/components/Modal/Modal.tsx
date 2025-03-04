@@ -1,10 +1,14 @@
-import React from 'react'
-import './Modal.scss'
+import './Modal.scss';
 
-const Modal = (props) => {
-  return (
-    <div className="modal">{props.children}</div>
-  )
+interface ModalProps {
+  children: React.ReactNode;
+  className?: string;
 }
 
-export default Modal
+const Modal = ({ children, className = '' }: ModalProps) => {
+  return (
+    <div className={`modal ${className}`.trim()}>{children}</div>
+  );
+};
+
+export default Modal;
