@@ -3,6 +3,7 @@ import { Box, Typography, TextField, IconButton, InputAdornment, Paper, ClickAwa
 import { FilterList as FilterIcon, Clear as ClearIcon } from '@mui/icons-material';
 import { GridColumnHeaderParams } from '@mui/x-data-grid';
 import ReactDOM from 'react-dom';
+import './FilterHeaderStyles.scss'; // Importujemy nowy plik ze stylami
 
 interface InvoiceFilterHeaderProps {
     params: GridColumnHeaderParams;
@@ -308,111 +309,56 @@ const InvoiceFilterHeader = ({
 
     return (
         <>
-            {/* Główny kontener nagłówka */}
-            <Box
+            <div
                 ref={headerRef}
-                sx={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    p: '6px 4px 4px 8px', // tutaj zrób miejsce na ikonkę do sortowania żeby nie uciakała jak szalona
-                    position: 'relative',
-                    overflow: 'visible' // Pozwala na przelewanie się zawartości
-                }}
+                className="header-container"
                 onMouseEnter={handleHeaderMouseEnter}
                 onMouseLeave={handleHeaderMouseLeave}
                 onContextMenu={handleContextMenu}
             >
-                {filterOpen ? (
-                    // Tryb filtrowania - pokazuje pole input
-                    <TextField
-                        variant="outlined"
-                        size="small"
-                        placeholder={placeholder}
-                        value={value}
+                {/* Główny wiersz z nazwą kolumny - bez zmian oprócz koloru */}
+                <div className="header-main-row">
+                    <Typography
+                        variant="subtitle2"
+                        component="div"
+                        className="header-title"
+                        sx={{
+                            color: isFilterActive ? 'primary.main' : 'inherit',
+                        }}
+                    >
+                        {params.colDef.headerName}
+                    </Typography>
+                </div>
+
+                {/* Wiersz z wartością filtra - tylko gdy filtr jest aktywny */}
+                {isFilterActive && (
+                    <div
+                        className="filter-value-row"
                         onClick={(e) => {
                             handleOpenFilterPopup();
                             e.stopPropagation();
                         }}
-                        InputProps={{
-                            readOnly: true,
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="clear filter"
-                                        onClick={handleClearFilter}
-                                        edge="end"
-                                        size="small"
-                                    >
-                                        <ClearIcon fontSize="small" />
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                        label={params.colDef.headerName}
-                        className="column-filter-input"
-                        sx={{
-                            width: '100%',
-                            maxWidth: '90%',
-                            '& .MuiInputBase-root': {
-                                width: '100%',
-                                maxWidth: '100%',
-                                overflow: 'hidden',
-                            },
-                            '& .MuiInputLabel-root': {
-                                width: '100%',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                            },
-                            '& .MuiOutlinedInput-input': {
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                            },
-                            '& .MuiOutlinedInput-root': {
-                                cursor: 'pointer',
-                                width: '100%',
-                                maxWidth: '100%',
-                                '& fieldset': {
-                                    borderColor: isFilterActive ? 'primary.main' : 'rgba(0, 0, 0, 0.23)'
-                                },
-                                '&:hover fieldset': {
-                                    borderColor: isFilterActive ? 'primary.main' : 'rgba(0, 0, 0, 0.23)'
-                                }
-                            }
-                        }}
-                    />
-                ) : (
-                    // Tryb nagłówka - pokazuje nazwę kolumny 
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        width: '100%',
-                        position: 'relative',
-                        minHeight: '24px'
-                    }}>
-                        <Typography
-                            variant="subtitle2"
-                            component="div"
-                            sx={{
-                                fontWeight: 'bold',
-                                color: isFilterActive ? 'primary.main' : 'inherit',
-                                maxWidth: '100%',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap'
-                            }}
-                        >
-                            {params.colDef.headerName}
-                        </Typography>
-                    </Box>
-                )}
-            </Box>
+                    >
+                        <div className="filter-value-container">
+                            <FilterIcon className="mini-filter-icon" />
+                            <div className="filter-value">
+                                {value || placeholder}
+                            </div>
+                        </div>
 
-            {/* Renderowanie tooltipa i popupa przez portal */}
+                        <IconButton
+                            aria-label="usuń filtr"
+                            onClick={handleClearFilter}
+                            size="small"
+                            className="clear-filter-btn"
+                        >
+                            <ClearIcon />
+                        </IconButton>
+                    </div>
+                )}
+            </div>
+
+            {/* Renderowanie tooltipa i popupa */}
             {renderTooltip()}
             {renderFilterPopup()}
         </>
