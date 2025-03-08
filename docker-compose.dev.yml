@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile.dev
     ports:
-      - "5005:8080"  # Mapowanie portu 8080 z kontenera (ustawionego w CMD) na port 5000 lokalnie
+      - "5005:8080"  # Mapowanie portu 8080 z kontenera (ustawionego w CMD) na port 5005 lokalnie
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "http://*:8080"
@@ -40,7 +40,7 @@ services:
     ports:
       - "3003:5173"  # Mapowanie portu domyślnego Vite (5173) na port 3000 lokalnie
     environment:
-      VITE_API_URLL: "localhost:5005/api"
+      VITE_API_URL: "http://localhost:5005/api"
     volumes:
       - ./frontend:/app  # Podmontowanie lokalnego katalogu frontendu do /app w kontenerze
       - /app/node_modules
