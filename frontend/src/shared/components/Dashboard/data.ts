@@ -11,15 +11,16 @@ export const projectStatus = [
         title: "Zaimplementowane",
         color: "primary",
         items: [
-            "Zarządzanie fakturami",
-            "Zarządzanie kontrahentami",
-            "Zaawansowane filtry w tabeli faktur",
-            "Nowy responsywny interfejs",
-            "System sortowania kolumn",
-            "Drukowanie tabeli faktur",
-            "Sekcja podsumowania nowej faktury",
-            "Loader podczas ładowania danych",
+            "Dodanie animacje do sidebaru",
             "Optymalizacja wydajności",
+            "Loader podczas ładowania danych",
+            "Sekcja podsumowania nowej faktury",
+            "Drukowanie tabeli faktur",
+            "System sortowania kolumn",
+            "Nowy responsywny interfejs",
+            "Zaawansowane filtry w tabeli faktur",
+            "Zarządzanie kontrahentami",
+            "Zarządzanie fakturami"
         ]
     },
     {
