@@ -15,7 +15,6 @@ import { styled } from '@mui/material/styles';
 import { useState, useEffect, useRef } from 'react';
 import './Sidebar.scss';
 
-// Stworzenie stylizowanego komponentu tooltipa dla ujednoliconego wyglądu
 const StyledTooltip = styled(({ className, ...props }: { className?: string } & Omit<TooltipProps, 'classes'>) => (
     <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
@@ -35,113 +34,96 @@ const StyledTooltip = styled(({ className, ...props }: { className?: string } & 
     },
 }));
 
+// Klucz dla localStorage
+const SIDEBAR_STATE_KEY = 'maf_sidebar_collapsed';
+
 function Sidebar() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [collapsed, setCollapsed] = useState(false);
+    // Pobierz zapisany stan sidebara z localStorage lub użyj false jako domyślny
+    const savedCollapsedState = localStorage.getItem(SIDEBAR_STATE_KEY) === 'true';
+    const [collapsed, setCollapsed] = useState(savedCollapsedState);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [showTitle, setShowTitle] = useState(true);
-    const [showVerticalIcons, setShowVerticalIcons] = useState(false);
+    const [showTitle, setShowTitle] = useState(!savedCollapsedState);
+    const [showVerticalIcons, setShowVerticalIcons] = useState(savedCollapsedState);
     const [showMenuIcons, setShowMenuIcons] = useState(true);
-    const [showLogoIcon, setShowLogoIcon] = useState(false);
+    const [showLogoIcon, setShowLogoIcon] = useState(savedCollapsedState);
+    // Ustaw toggleActive na true jeśli sidebar jest rozwinięty
+    const [toggleActive, setToggleActive] = useState(!savedCollapsedState);
     const sidebarRef = useRef<HTMLElement>(null);
+    const toggleRef = useRef<HTMLDivElement>(null);
 
-    // Konfiguracje dla tooltipów - wspólne właściwości
     const tooltipProps = {
         arrow: true,
         enterDelay: 700,
         leaveDelay: 100,
     };
 
-    // Sprawdzanie czy jest to urządzenie mobilne
     const isMobile = useMediaQuery('(max-width: 768px)');
-
-    // Efekt do wykrywania kliknięć w wybrzuszenie
-    useEffect(() => {
-        if (isMobile) return; // Na urządzeniach mobilnych nie używamy wybrzuszenia
-
-        const handleClick = (event: MouseEvent) => {
-            if (!sidebarRef.current) return;
-
-            const sidebarRect = sidebarRef.current.getBoundingClientRect();
-
-            // Obliczamy obszar kliknięcia dla wybrzuszenia
-            const bulgeTop = sidebarRect.top + 50; // Pozycja wybrzuszenia
-            const bulgeBottom = bulgeTop + 30; // wysokość 50px
-            const bulgeLeft = sidebarRect.right - 4; // początek 8px przed krawędzią
-            const bulgeRight = sidebarRect.right + 8; // 8px szerokości
-
-            // Sprawdzamy, czy kliknięcie było w obszarze wybrzuszenia
-            if (
-                event.clientX >= bulgeLeft &&
-                event.clientX <= bulgeRight &&
-                event.clientY >= bulgeTop &&
-                event.clientY <= bulgeBottom
-            ) {
-                toggleSidebar();
-            }
-        };
-
-        document.addEventListener('click', handleClick);
-
-        return () => {
-            document.removeEventListener('click', handleClick);
-        };
-    }, [isMobile]);
 
     // Funkcja przełączająca sidebar
     const toggleSidebar = () => {
         setIsTransitioning(true);
 
         if (!collapsed) {
-            // Jeśli zwijamy sidebar:
+            // Zwijamy sidebar
             setShowTitle(false);
             setShowVerticalIcons(false);
-            setShowMenuIcons(false); // Ukrywamy ikony menu
-            setShowLogoIcon(false); // Ukrywamy ikonę logo
+            setShowMenuIcons(false);
+            setShowLogoIcon(false);
+            // Toggle aktywny podczas zwijania
+            setToggleActive(true);
         } else {
-            // Jeśli rozwijamy sidebar:
+            // Rozwijamy sidebar
             setShowVerticalIcons(false);
-            setShowMenuIcons(false); // Ukrywamy ikony menu podczas animacji
-            setShowLogoIcon(false); // Ukrywamy ikonę logo
+            setShowMenuIcons(false);
+            setShowLogoIcon(false);
+            // Toggle aktywny podczas rozwijania
+            setToggleActive(true);
         }
 
-        setCollapsed(prev => !prev);
+        const newCollapsedState = !collapsed;
+        setCollapsed(newCollapsedState);
 
-        // Po zakończeniu animacji zmiany szerokości
+        // Zapisz stan w localStorage
+        localStorage.setItem(SIDEBAR_STATE_KEY, String(newCollapsedState));
+
         setTimeout(() => {
             setIsTransitioning(false);
 
             if (collapsed) {
-                // Jeśli rozwijaliśmy sidebar
+                // Po rozwinięciu sidebara
                 setTimeout(() => {
                     setShowTitle(true);
-                    setShowMenuIcons(true); // Pokazujemy ikony menu
+                    setShowMenuIcons(true);
                 }, 50);
             } else {
-                // Jeśli zwijaliśmy sidebar
+                // Po zwinięciu sidebara
                 setTimeout(() => {
                     setShowVerticalIcons(true);
-                    setShowMenuIcons(true); // Pokazujemy ikony menu
-                    setShowLogoIcon(true); // Pokazujemy ikonę logo
+                    setShowMenuIcons(true);
+                    setShowLogoIcon(true);
+                    // Toggle dezaktywowany po zakończeniu zwijania
+                    setToggleActive(false);
                 }, 50);
             }
-        }, 300); // 300ms to czas animacji
+        }, 300);
     };
 
-    // Aktualizacja klasy na body
+    const handleToggleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        toggleSidebar();
+    };
+
     useEffect(() => {
         document.body.classList.toggle('sidebar-collapsed', collapsed);
-
         return () => {
             document.body.classList.remove('sidebar-collapsed');
         };
     }, [collapsed]);
 
-    // Obsługa zakończenia animacji sidebara
     const handleTransitionEnd = () => {
-        // Dodatkowe zabezpieczenie - pokazujemy odpowiednie elementy po zakończeniu animacji
         if (!collapsed) {
             if (!showTitle) setShowTitle(true);
             if (!showMenuIcons) setShowMenuIcons(true);
@@ -152,29 +134,21 @@ function Sidebar() {
         }
     };
 
-    // Sprawdzanie aktywnej ścieżki
     const isActive = (path: string) => {
         return location.pathname === path ||
             (path !== '/' && location.pathname.startsWith(path));
     };
 
-    // Obsługa nawigacji
     const handleNavigation = (path: string) => {
         if (location.pathname === path) return;
-
-        if (isMobile) {
-            setMobileOpen(false);
-        }
-
+        if (isMobile) setMobileOpen(false);
         navigate(path);
     };
 
-    // Obsługa kliknięcia przycisku hamburger
     const handleMobileToggle = () => {
         setMobileOpen(!mobileOpen);
     };
 
-    // Zamknięcie menu mobilnego po kliknięciu poza nim
     const handleOverlayClick = (e: React.MouseEvent) => {
         if ((e.target as HTMLElement).classList.contains('mobile-overlay')) {
             setMobileOpen(false);
@@ -185,7 +159,6 @@ function Sidebar() {
         ? `sidebar mobile-sidebar ${mobileOpen ? 'mobile-open' : 'mobile-closed'}`
         : `sidebar ${collapsed ? 'sidebar-collapsed' : ''} ${isTransitioning ? 'is-transitioning' : ''}`;
 
-    // Social media links array - do użycia w obu widokach
     const socialLinks = [
         {
             title: "Swagger - Dokumentacja API",
@@ -206,7 +179,6 @@ function Sidebar() {
 
     return (
         <>
-            {/* Przycisk hamburgera dla urządzeń mobilnych */}
             {isMobile && (
                 <div className="mobile-hamburger-container">
                     <IconButton
@@ -221,16 +193,23 @@ function Sidebar() {
                 </div>
             )}
 
-            {/* Przyciemnione tło dla menu mobilnego */}
             {isMobile && mobileOpen && (
                 <div className="mobile-overlay" onClick={handleOverlayClick}></div>
             )}
+
             <aside
                 className={sidebarClass}
                 ref={sidebarRef}
                 onTransitionEnd={handleTransitionEnd}
             >
-                {/* Nagłówek dla rozwiniętego menu */}
+                {!isMobile && (
+                    <div
+                        className={`sidebar-toggle ${toggleActive ? 'active' : ''}`}
+                        onClick={handleToggleClick}
+                        ref={toggleRef}
+                    />
+                )}
+
                 {(!collapsed || isMobile) && (
                     <div className="sidebar-header">
                         <div className={`header-content ${showTitle ? 'show-title' : 'hide-title'}`}>
@@ -240,7 +219,6 @@ function Sidebar() {
                     </div>
                 )}
 
-                {/* Ikona logo dla zwiniętego sidebara z ujednoliconym tooltipem */}
                 {collapsed && !isMobile && (
                     <div className="sidebar-header">
                         <div className={`logo-icon-container ${showLogoIcon ? 'show-logo-icon' : 'hide-logo-icon'}`}>
@@ -264,7 +242,6 @@ function Sidebar() {
                                 handleNavigation('/');
                             }}
                         >
-                            {/* Dodany tooltip dla ikony menu w zwiniętym sidebarze */}
                             {collapsed && !isMobile ? (
                                 <StyledTooltip title="Dashboard" placement="right" {...tooltipProps}>
                                     <div className={`menu-icon-container ${showMenuIcons ? 'show-menu-icon' : 'hide-menu-icon'}`}>
@@ -291,7 +268,6 @@ function Sidebar() {
                                 handleNavigation('/invoices');
                             }}
                         >
-                            {/* Dodany tooltip dla ikony menu w zwiniętym sidebarze */}
                             {collapsed && !isMobile ? (
                                 <StyledTooltip title="Faktury" placement="right" {...tooltipProps}>
                                     <div className={`menu-icon-container ${showMenuIcons ? 'show-menu-icon' : 'hide-menu-icon'}`}>
@@ -318,7 +294,6 @@ function Sidebar() {
                                 handleNavigation('/contractors');
                             }}
                         >
-                            {/* Dodany tooltip dla ikony menu w zwiniętym sidebarze */}
                             {collapsed && !isMobile ? (
                                 <StyledTooltip title="Kontrahenci" placement="right" {...tooltipProps}>
                                     <div className={`menu-icon-container ${showMenuIcons ? 'show-menu-icon' : 'hide-menu-icon'}`}>
@@ -339,7 +314,6 @@ function Sidebar() {
                     </li>
                 </ul>
 
-                {/* Social media icons z ujednoliconymi tooltipami */}
                 {(!collapsed || isMobile) && (
                     <div className={`sidebar-social ${showTitle ? 'show-title' : 'hide-title'}`}>
                         {socialLinks.map((link, index) => (
@@ -362,7 +336,6 @@ function Sidebar() {
                     </div>
                 )}
 
-                {/* Pionowe ikony social media z ujednoliconymi tooltipami */}
                 {collapsed && !isMobile && (
                     <div className={`vertical-social ${showVerticalIcons ? 'show-vertical-icons' : 'hide-vertical-icons'}`}>
                         {socialLinks.map((link, index) => (
