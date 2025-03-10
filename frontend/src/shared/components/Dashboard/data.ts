@@ -11,6 +11,7 @@ export const projectStatus = [
         title: "Zaimplementowane",
         color: "primary",
         items: [
+            "Refaktoryzacja kodu InvoiceDataGrid - wydzielenie hooków",
             "Dodanie animacje do sidebaru",
             "Optymalizacja wydajności",
             "Loader podczas ładowania danych",
