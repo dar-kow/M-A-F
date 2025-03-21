@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# Kopiowanie pliku projektu i przywrócenie zależności
 COPY ["*.csproj", "./"]
 RUN dotnet restore
 
