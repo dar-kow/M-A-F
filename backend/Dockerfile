@@ -4,7 +4,6 @@ WORKDIR /src
 COPY ["*.csproj", "./"]
 RUN dotnet restore
 
-# Kopiowanie reszty plików i publikacja
 COPY . .
 RUN dotnet publish -c Release -o /app/publish
 
