@@ -51,7 +51,7 @@ const globalStyles = css`
 function App() {
   useEffect(() => {
     // Nazwa "main" dla głównej strony
-    initializeGA('main');
+    initializeGA('maf');
   }, []);
   // Użyj useRoutes do renderowania tras
   const routeElements = useRoutes(routes);
