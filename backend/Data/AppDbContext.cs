@@ -10,9 +10,9 @@ namespace backend.Data
         // Definicje statyczne seed danych z datami – niezmienne
         private static readonly DateTime[] FixedContractorDates = new[]
         {
-            new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 2, 7, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 2, 6, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 1, 8, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 1, 7, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 1, 6, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 5, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 1, 0, 0, 0, DateTimeKind.Utc),
@@ -21,10 +21,10 @@ namespace backend.Data
             new DateTime(2025, 2, 11, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 2, 2, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 2, 6, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc)
+            new DateTime(2025, 3, 3, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 3, 2, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 3, 6, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 3, 8, 0, 0, 0, DateTimeKind.Utc)
         };
 
         private static readonly DateTime FixedInvoiceDate = new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc);
