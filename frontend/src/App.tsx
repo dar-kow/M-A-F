@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useRoutes } from 'react-router-dom';
 import routes from './routes';
 import Loader from './shared/components/Loader/Loader';
@@ -8,6 +8,7 @@ import Sidebar from './shared/components/Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Global, css } from '@emotion/react';
+import { initializeGA } from './analytics';
 
 // Globalne style aplikacji
 const globalStyles = css`
@@ -48,6 +49,10 @@ const globalStyles = css`
 `;
 
 function App() {
+  useEffect(() => {
+    // Nazwa "main" dla głównej strony
+    initializeGA('main');
+  }, []);
   // Użyj useRoutes do renderowania tras
   const routeElements = useRoutes(routes);
 
