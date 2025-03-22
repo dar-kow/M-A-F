@@ -10,9 +10,9 @@ namespace backend.Data
         // Definicje statyczne seed danych z datami – niezmienne
         private static readonly DateTime[] FixedContractorDates = new[]
         {
-            new DateTime(2025, 1, 8, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 1, 7, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 1, 6, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 2, 7, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 2, 6, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 5, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 1, 0, 0, 0, DateTimeKind.Utc),
@@ -21,10 +21,10 @@ namespace backend.Data
             new DateTime(2025, 2, 11, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc),
             new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 3, 3, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 3, 2, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 3, 6, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2025, 3, 8, 0, 0, 0, DateTimeKind.Utc)
+            new DateTime(2025, 2, 3, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 2, 2, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 2, 6, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc)
         };
 
         private static readonly DateTime FixedInvoiceDate = new DateTime(2025, 2, 8, 0, 0, 0, DateTimeKind.Utc);
@@ -100,21 +100,21 @@ namespace backend.Data
             // Seed faktur – wszystkie z tą samą, stałą datą
             var invoices = new Invoice[]
             {
-                new Invoice { Id = 1, Number = "FV/1/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 150.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 1, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 2, Number = "FV/2/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 250.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 2, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 3, Number = "FV/3/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 350.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 3, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 4, Number = "FV/4/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 450.25m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 4, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Other, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 5, Number = "FV/5/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 550.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 5, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 6, Number = "FV/6/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 650.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 6, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 7, Number = "FV/7/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 750.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 7, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 8, Number = "FV/8/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 850.25m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 8, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Other, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 9, Number = "FV/9/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 950.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 9, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 10, Number = "FV/10/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1050.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 10, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 11, Number = "FV/11/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1150.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 11, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 12, Number = "FV/12/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1250.25m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 12, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Other, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 13, Number = "FV/13/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1350.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 13, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 14, Number = "FV/14/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1450.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 14, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
-                new Invoice { Id = 15, Number = "FV/15/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1550.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 15, CreatedAt = FixedInvoiceDate, PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" }
+                new Invoice { Id = 1, Number = "FV/1/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 150.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 1, CreatedAt = new DateTime(2025, 1, 2, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 2, Number = "FV/2/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 250.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 2, CreatedAt = new DateTime(2025, 1, 3, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 3, Number = "FV/3/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 350.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 3, CreatedAt = new DateTime(2025, 1, 4, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 4, Number = "FV/4/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 450.25m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 4, CreatedAt = new DateTime(2025, 1, 5, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Other, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 5, Number = "FV/5/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 550.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 5, CreatedAt = new DateTime(2025, 1, 6, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 6, Number = "FV/6/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 650.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 6, CreatedAt = new DateTime(2025, 2, 12, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 7, Number = "FV/7/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 750.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 7, CreatedAt = new DateTime(2025, 2, 16, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 8, Number = "FV/8/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 850.25m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 8, CreatedAt = new DateTime(2025, 2, 22, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Other, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 9, Number = "FV/9/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 950.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 9, CreatedAt = new DateTime(2025, 2, 2, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 10, Number = "FV/10/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1050.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 10, CreatedAt = new DateTime(2025, 3, 3, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 11, Number = "FV/11/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1150.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 11, CreatedAt = new DateTime(2025, 3, 5, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 12, Number = "FV/12/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1250.25m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 12, CreatedAt = new DateTime(2025, 3, 8, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Other, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 13, Number = "FV/13/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1350.50m, PaymentStatus = PaymentStatus.Paid, ContractorId = 13, CreatedAt = new DateTime(2025, 3, 20, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Cash, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 14, Number = "FV/14/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1450.75m, PaymentStatus = PaymentStatus.Unpaid, ContractorId = 14, CreatedAt = new DateTime(2025, 3, 21, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Transfer, Description = "Faktura VAT 23%" },
+                new Invoice { Id = 15, Number = "FV/15/2025", IssueDate = FixedInvoiceDate, DueDate = FixedInvoiceDate, TotalAmount = 1550.00m, PaymentStatus = PaymentStatus.Paid, ContractorId = 15, CreatedAt = new DateTime(2025, 3, 22, 0, 0, 0, DateTimeKind.Utc), PaymentMethod = PaymentMethod.Card, Description = "Faktura VAT 23%" }
             };
 
             modelBuilder.Entity<Invoice>().HasData(invoices);
