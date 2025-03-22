@@ -162,17 +162,17 @@ function Sidebar() {
     const socialLinks = [
         {
             title: "Swagger - Dokumentacja API",
-            href: "http://srv10.mikr.us:44484/swagger/index.html",
+            href: "https://maf.sdet.pl/swagger/index.html",
             icon: <SwaggerIcon className="social-icon" />
         },
         {
             title: "GitHub - Zobacz kod źródłowy",
-            href: "https://github.com/darek9k/M-A-F",
+            href: "https://github.com/dar-kow/M-A-F",
             icon: <GitHubIcon className="social-icon" />
         },
         {
             title: "LinkedIn - Skontaktuj się ze mną",
-            href: "https://www.linkedin.com/in/darecki9k/",
+            href: "https://www.linkedin.com/in/dar-kow/",
             icon: <LinkedInIcon className="social-icon" />
         }
     ];
