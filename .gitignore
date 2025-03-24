@@ -30,3 +30,7 @@ backend_structure.txt
 frontend_structure.txt
 vertical-slice-backend.txt
 vertical-slice-frontend.txt
+
+/playwright/.cache/
+/test-results/
+/playwright-report/
