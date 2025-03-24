@@ -176,10 +176,46 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
     // Wypełnianie formularza danymi faktury
     useEffect(() => {
         if (isEdit && invoice && invoice.invoiceItems) {
+            console.log('Dane faktury z API:', invoice);
+
+            // Funkcja pomocnicza do bezpiecznej konwersji dat
+            const safeToDateTime = (date: any) => {
+                if (!date) return DateTime.now();
+
+                try {
+                    if (date instanceof Date) {
+                        return DateTime.fromJSDate(date);
+                    }
+
+                    if (typeof date === 'string') {
+                        // Próba parsowania jako string ISO
+                        const dt = DateTime.fromISO(date);
+                        if (dt.isValid) return dt;
+
+                        // Jeśli ISO nie zadziała, spróbuj z normalnym konstruktorem Date
+                        return DateTime.fromJSDate(new Date(date));
+                    }
+
+                    return DateTime.now();
+                } catch (error) {
+                    console.error('Błąd konwersji daty:', error);
+                    return DateTime.now();
+                }
+            };
+
+            // Użyj funkcji pomocniczej do bezpiecznej konwersji dat
+            const issueDateObj = safeToDateTime(invoice.issueDate);
+            const dueDateObj = safeToDateTime(invoice.dueDate);
+
+            console.log('Skonwertowane do DateTime:', {
+                issueDate: issueDateObj.toISO(),
+                dueDate: dueDateObj.toISO()
+            });
+
             reset({
                 invoiceNumber: invoice.number,
-                issueDate: DateTime.fromJSDate(invoice.issueDate),
-                dateDue: DateTime.fromJSDate(invoice.dueDate),
+                issueDate: issueDateObj,
+                dateDue: dueDateObj,
                 contractorId: invoice.contractorId,
                 paymentMethod: invoice.paymentMethod,
                 paymentStatus: invoice.paymentStatus,
