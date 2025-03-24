@@ -10,6 +10,7 @@ import InvoiceBasicInfo from './components/InvoiceBasicInfo';
 import InvoiceItemsTable from './components/InvoiceItemsTable';
 import InvoiceSummary from './components/InvoiceSummary';
 import InvoiceActions from './components/InvoiceActions';
+import { DateTime } from 'luxon';
 import './InvoiceForm.scss';
 
 function InvoiceForm() {
@@ -58,8 +59,17 @@ function InvoiceForm() {
                 const currentDueDate = value.dateDue;
 
                 // Jeśli data płatności jest przed datą wystawienia, zaktualizuj ją
-                if (currentDueDate < issueDate) {
-                    formMethods.setValue('dateDue', issueDate.plus({ days: 14 }));
+                if (issueDate && currentDueDate && currentDueDate < issueDate) {
+                    // Dodaj sprawdzenie typu i rzutowanie do DateTime
+                    if ('plus' in issueDate) {
+                        // Użyj bezpiecznego dostępu do metody plus
+                        formMethods.setValue('dateDue', (issueDate as DateTime).plus({ days: 14 }));
+                    } else {
+                        // Alternatywne podejście dla innych typów dat
+                        const newDate = new Date(issueDate as string | number | Date);
+                        newDate.setDate(newDate.getDate() + 14);
+                        formMethods.setValue('dateDue', DateTime.fromJSDate(newDate));
+                    }
                 }
             }
         });
