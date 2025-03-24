@@ -28,6 +28,8 @@ export const projectStatus = [
         title: "W trakcie",
         color: "info",
         items: [
+            "Poprawa funkcjonalności Faktury",
+            "Poprawa statusów płaności",
             "Dashboard z dynamicznymi wykresami",
             "System powiadomień",
             "Optymalizacja wydajności",
