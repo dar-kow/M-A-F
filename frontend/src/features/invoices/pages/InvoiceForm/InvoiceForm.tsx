@@ -49,6 +49,24 @@ function InvoiceForm() {
         }
     }, [error]);
 
+    // Dodany efekt do aktualizacji daty płatności gdy zmienia się data wystawienia
+    useEffect(() => {
+        const subscription = formMethods.watch((value, { name }) => {
+            if (name === 'issueDate') {
+                // Pobierz aktualne wartości
+                const issueDate = value.issueDate;
+                const currentDueDate = value.dateDue;
+
+                // Jeśli data płatności jest przed datą wystawienia, zaktualizuj ją
+                if (currentDueDate < issueDate) {
+                    formMethods.setValue('dateDue', issueDate.plus({ days: 14 }));
+                }
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [formMethods]);
+
     if (loading && isEdit) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
@@ -71,6 +89,7 @@ function InvoiceForm() {
                         control={formMethods.control}
                         errors={formMethods.formState.errors}
                         contractors={contractors}
+                        getValues={formMethods.getValues} // Dodane przekazanie funkcji getValues
                     />
 
                     {/* Sekcja z pozycjami faktury */}
