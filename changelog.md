@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.1 - Poprawa funkcjonalności faktur
+- walidacja daty płatości nie może być wcześnejsza niż wystawienia
+- pobieranie daty podczas edycji faktury
+- Polski format daty dd.mm.yyyy
+- polskie nazewnictwo w dataPickerze
+
 ## v0.5.0 - Refaktoryzacja i poprawki TypeScript - 2025.03.04
 - Rozwiązanie wszystkich błędów kompatybilności TypeScript w aplikacji
 - Optymalizacja typów w komponentach React
