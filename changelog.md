@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.2 - Kosmetyka dashboard'u
+- zmiana reakcji toogle na hover w sidebarze
+- wyrównanie kafelków
+
 ## v0.5.1 - Poprawa funkcjonalności faktur
 - walidacja daty płatości nie może być wcześnejsza niż wystawienia
 - pobieranie daty podczas edycji faktury

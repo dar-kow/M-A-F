@@ -209,9 +209,9 @@ function Dashboard() {
                 <Grid container spacing={3}>
                     {/* Wykres płatności */}
                     <Grid size={{ xs: 12, md: 6 }}>
-                        <Paper sx={{ p: 4, height: '300px', display: 'flex', flexDirection: 'column' }}>
+                        <Paper sx={{ p: 3, height: '300px', display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="h6" gutterBottom>Status płatności</Typography>
-                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                                 {loading ? (
                                     <CircularProgress />
                                 ) : (
@@ -229,12 +229,12 @@ function Dashboard() {
 
                     {/* Wykres kategorii */}
                     <Grid size={{ xs: 12, md: 6 }}>
-                        <Paper sx={{ p: 2, height: '300px', display: 'flex', flexDirection: 'column' }}>
+                        <Paper sx={{ p: 3, height: '300px', display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="h6" gutterBottom>Struktura obrotu</Typography>
                             <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
                                 Całkowity obrót: {categoriesData.totalValue.toLocaleString()} PLN
                             </Typography>
-                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                                 {loading ? (
                                     <CircularProgress />
                                 ) : (
@@ -246,7 +246,7 @@ function Dashboard() {
                                             scales: {
                                                 y: {
                                                     beginAtZero: true,
-                                                    max: 100 // Dla procentów
+                                                    max: 100
                                                 }
                                             }
                                         }}
