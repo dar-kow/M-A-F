@@ -4,17 +4,24 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { Contractor, PaymentMethod, PaymentStatus } from '@app-types/types';
+import { Settings } from 'luxon';
+
+// Ustawienie globalnej lokalizacji dla biblioteki Luxon
+Settings.defaultLocale = 'pl';
+
+// Konfiguracja formatów dat dla Polski
+const PL_FORMATS = {
+    normalDate: 'dd.MM.yyyy', // Format daty w kontrolce
+};
 
 type InvoiceBasicInfoProps = {
     control: any;
     errors: any;
     contractors: Contractor[];
-    // totals?: {
-    //     grossTotal: number;
-    // };
+    getValues: (name: string) => any;
 };
 
-const InvoiceBasicInfo = ({ control, errors, contractors }: InvoiceBasicInfoProps) => {
+const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBasicInfoProps) => {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -70,7 +77,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors }: InvoiceBasicInfoProp
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="pl">
                     <Controller
                         name="issueDate"
                         control={control}
@@ -80,6 +87,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors }: InvoiceBasicInfoProp
                                 label="Data wystawienia"
                                 value={field.value}
                                 onChange={(date) => field.onChange(date)}
+                                format={PL_FORMATS.normalDate}
                                 slotProps={{
                                     textField: {
                                         fullWidth: true,
@@ -94,16 +102,26 @@ const InvoiceBasicInfo = ({ control, errors, contractors }: InvoiceBasicInfoProp
             </Grid>
 
             <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="pl">
                     <Controller
                         name="dateDue"
                         control={control}
-                        rules={{ required: 'Termin płatności jest wymagany' }}
+                        rules={{
+                            required: 'Termin płatności jest wymagany',
+                            validate: (value) => {
+                                const issueDate = getValues('issueDate');
+                                if (value && issueDate && value < issueDate) {
+                                    return 'Termin płatności nie może być wcześniejszy niż data wystawienia';
+                                }
+                                return true;
+                            }
+                        }}
                         render={({ field }) => (
                             <DatePicker
                                 label="Termin płatności"
                                 value={field.value}
                                 onChange={(date) => field.onChange(date)}
+                                format={PL_FORMATS.normalDate}
                                 slotProps={{
                                     textField: {
                                         fullWidth: true,
@@ -111,6 +129,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors }: InvoiceBasicInfoProp
                                         helperText: errors.dateDue?.message
                                     }
                                 }}
+                                minDate={getValues('issueDate')}
                             />
                         )}
                     />
