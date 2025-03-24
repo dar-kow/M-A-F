@@ -11,6 +11,7 @@ export const projectStatus = [
         title: "Zaimplementowane",
         color: "primary",
         items: [
+            "Testy API",
             "Refaktoryzacja kodu InvoiceDataGrid - wydzielenie hooków",
             "Dodanie animacje do sidebaru",
             "Optymalizacja wydajności",
@@ -42,13 +43,13 @@ export const projectStatus = [
         title: "Do zrobienia",
         color: "secondary",
         items: [
+            "Dopracowanie typów stawka Vat",
             "Dodanie debounce do wyszukiwarki",
             "Wdrożenie x-data-grid do Kontrahenci",
             "Podgląd faktury w nowym oknie",
             "Rozliczanie faktur z listy",
             "AKtualizacja płatności na podstawie wpłat",
             "Ostylowanie dla wersji mobilnej",
-            "Testy API",
             "Testy E2E Frontendu"
         ]
     }
