@@ -51,8 +51,12 @@ function Sidebar() {
     const [showLogoIcon, setShowLogoIcon] = useState(savedCollapsedState);
     // Ustaw toggleActive na true jeśli sidebar jest rozwinięty
     const [toggleActive, setToggleActive] = useState(!savedCollapsedState);
+    // Nowy stan dla kontroli widoczności przycisku toggle
+    const [showToggle, setShowToggle] = useState(!savedCollapsedState);
+
     const sidebarRef = useRef<HTMLElement>(null);
     const toggleRef = useRef<HTMLDivElement>(null);
+    const menuRef = useRef<HTMLUListElement>(null);
 
     const tooltipProps = {
         arrow: true,
@@ -61,6 +65,19 @@ function Sidebar() {
     };
 
     const isMobile = useMediaQuery('(max-width: 768px)');
+
+    // Funkcje obsługi hoveru tylko dla menu
+    const handleMenuMouseEnter = () => {
+        if (collapsed && !isMobile) {
+            setShowToggle(true);
+        }
+    };
+
+    const handleMenuMouseLeave = () => {
+        if (collapsed && !isMobile && !toggleActive) {
+            setShowToggle(false);
+        }
+    };
 
     // Funkcja przełączająca sidebar
     const toggleSidebar = () => {
@@ -97,6 +114,7 @@ function Sidebar() {
                 setTimeout(() => {
                     setShowTitle(true);
                     setShowMenuIcons(true);
+                    setShowToggle(true); // Zawsze pokazuj toggle dla rozwiniętego sidebara
                 }, 50);
             } else {
                 // Po zwinięciu sidebara
@@ -106,6 +124,7 @@ function Sidebar() {
                     setShowLogoIcon(true);
                     // Toggle dezaktywowany po zakończeniu zwijania
                     setToggleActive(false);
+                    setShowToggle(false); // Domyślnie ukryj toggle dla zwiniętego sidebara
                 }, 50);
             }
         }, 300);
@@ -114,6 +133,11 @@ function Sidebar() {
     const handleToggleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         toggleSidebar();
+    };
+
+    // Efekt do obsługi hoveru na toggle
+    const handleToggleMouseEnter = () => {
+        setShowToggle(true);
     };
 
     useEffect(() => {
@@ -204,9 +228,10 @@ function Sidebar() {
             >
                 {!isMobile && (
                     <div
-                        className={`sidebar-toggle ${toggleActive ? 'active' : ''}`}
+                        className={`sidebar-toggle ${toggleActive ? 'active' : ''} ${showToggle ? 'show-toggle' : ''}`}
                         onClick={handleToggleClick}
                         ref={toggleRef}
+                        onMouseEnter={handleToggleMouseEnter}
                     />
                 )}
 
@@ -233,7 +258,12 @@ function Sidebar() {
                     </div>
                 )}
 
-                <ul className="menu">
+                <ul
+                    className="menu"
+                    ref={menuRef}
+                    onMouseEnter={handleMenuMouseEnter}
+                    onMouseLeave={handleMenuMouseLeave}
+                >
                     <li className={`menu-item ${isActive('/') ? 'active' : ''}`}>
                         <a
                             className="menu-link"
