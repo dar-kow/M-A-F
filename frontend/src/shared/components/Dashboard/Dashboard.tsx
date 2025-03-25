@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Paper, Typography, Box, Divider, CircularProgress } from '@mui/material';
-import Grid from '@mui/material/Grid2'
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title, BarElement } from 'chart.js';
 import { projectStatus, chartOptions } from './data';
@@ -161,136 +160,178 @@ function Dashboard() {
         ],
     };
 
+    // Używamy układu z dwoma kolumnami z proporcjami 67% / 33%
     return (
-        <Grid container spacing={3}>
-            {/* Statystyki */}
-            <Grid size={{ xs: 12, md: 8 }}>
-                {/* Kafelki z podstawowymi danymi */}
-                <Grid container spacing={3} sx={{ mb: 6 }}>
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                        <Paper sx={{ p: 2, height: '100%', minHeight: '120px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            {loading ? (
-                                <CircularProgress size={30} />
-                            ) : (
-                                <>
-                                    <Typography variant="h3" color="primary">{invoiceCount}</Typography>
-                                    <Typography variant="subtitle1">Faktury</Typography>
-                                </>
-                            )}
-                        </Paper>
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                        <Paper sx={{ p: 2, height: '100%', minHeight: '120px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            {loading ? (
-                                <CircularProgress size={30} />
-                            ) : (
-                                <>
-                                    <Typography variant="h3" color="primary">{contractorCount}</Typography>
-                                    <Typography variant="subtitle1">Kontrahenci</Typography>
-                                </>
-                            )}
-                        </Paper>
-                    </Grid>
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                        <Paper sx={{ p: 2, height: '100%', minHeight: '120px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            {loading ? (
-                                <CircularProgress size={30} />
-                            ) : (
-                                <>
-                                    <Typography variant="h3" color={overdueCount > 0 ? "error" : "success"}>{overdueCount}</Typography>
-                                    <Typography variant="subtitle1">Zaległe płatności</Typography>
-                                </>
-                            )}
-                        </Paper>
-                    </Grid>
-                </Grid>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, width: '100%' }}>
+            {/* Lewa kolumna - statystyki i wykresy - 67% szerokości */}
+            <Box sx={{ width: { xs: '100%', md: '80%' }, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                {/* Górny rząd - statystyki */}
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                    <Paper sx={{
+                        p: 2,
+                        flex: '1 1 0',
+                        minWidth: '200px',
+                        minHeight: '120px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        {loading ? (
+                            <CircularProgress size={30} />
+                        ) : (
+                            <>
+                                <Typography variant="h3" color="primary">{invoiceCount}</Typography>
+                                <Typography variant="subtitle1">Faktury</Typography>
+                            </>
+                        )}
+                    </Paper>
 
-                {/* Wykresy */}
-                <Grid container spacing={3}>
-                    {/* Wykres płatności */}
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <Paper sx={{ p: 3, height: '300px', display: 'flex', flexDirection: 'column' }}>
-                            <Typography variant="h6" gutterBottom>Status płatności</Typography>
-                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                                {loading ? (
-                                    <CircularProgress />
-                                ) : (
-                                    <Doughnut
-                                        data={paymentChartConfig}
-                                        options={{
-                                            responsive: true,
-                                            maintainAspectRatio: false
-                                        }}
-                                    />
-                                )}
-                            </Box>
-                        </Paper>
-                    </Grid>
+                    <Paper sx={{
+                        p: 2,
+                        flex: '1 1 0',
+                        minWidth: '200px',
+                        minHeight: '120px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        {loading ? (
+                            <CircularProgress size={30} />
+                        ) : (
+                            <>
+                                <Typography variant="h3" color="primary">{contractorCount}</Typography>
+                                <Typography variant="subtitle1">Kontrahenci</Typography>
+                            </>
+                        )}
+                    </Paper>
 
-                    {/* Wykres kategorii */}
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <Paper sx={{ p: 3, height: '300px', display: 'flex', flexDirection: 'column' }}>
-                            <Typography variant="h6" gutterBottom>Struktura obrotu</Typography>
-                            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-                                Całkowity obrót: {categoriesData.totalValue.toLocaleString()} PLN
-                            </Typography>
-                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                                {loading ? (
-                                    <CircularProgress />
-                                ) : (
-                                    <Bar
-                                        data={categoriesConfig}
-                                        options={{
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true,
-                                                    max: 100
-                                                }
+                    <Paper sx={{
+                        p: 2,
+                        flex: '1 1 0',
+                        minWidth: '200px',
+                        minHeight: '120px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        {loading ? (
+                            <CircularProgress size={30} />
+                        ) : (
+                            <>
+                                <Typography variant="h3" color={overdueCount > 0 ? "error" : "success"}>{overdueCount}</Typography>
+                                <Typography variant="subtitle1">Zaległe płatności</Typography>
+                            </>
+                        )}
+                    </Paper>
+                </Box>
+
+                {/* Środkowy rząd - wykresy */}
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                    <Paper sx={{
+                        p: 3,
+                        flex: '1 1 0',
+                        minWidth: '300px',
+                        height: '300px',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <Typography variant="h6" gutterBottom>Status płatności</Typography>
+                        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                            {loading ? (
+                                <CircularProgress />
+                            ) : (
+                                <Doughnut
+                                    data={paymentChartConfig}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false
+                                    }}
+                                />
+                            )}
+                        </Box>
+                    </Paper>
+
+                    <Paper sx={{
+                        p: 3,
+                        flex: '1 1 0',
+                        minWidth: '300px',
+                        height: '300px',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <Typography variant="h6" gutterBottom>Struktura obrotu</Typography>
+                        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                            Całkowity obrót: {categoriesData.totalValue.toLocaleString()} PLN
+                        </Typography>
+                        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                            {loading ? (
+                                <CircularProgress />
+                            ) : (
+                                <Bar
+                                    data={categoriesConfig}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                max: 100
                                             }
-                                        }}
-                                    />
-                                )}
-                            </Box>
-                        </Paper>
-                    </Grid>
+                                        }
+                                    }}
+                                />
+                            )}
+                        </Box>
+                    </Paper>
+                </Box>
 
-                    {/* Wykres miesięcznych obrotów */}
-                    <Grid size={{ xs: 12 }}>
-                        <Paper sx={{ p: 2, height: '300px', display: 'flex', flexDirection: 'column' }}>
-                            <Typography variant="h6" gutterBottom>Obrót miesięczny</Typography>
-                            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-                                Bieżący miesiąc: {monthlyRevenueData.currentMonthRevenue.toLocaleString()} PLN
-                            </Typography>
-                            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {loading ? (
-                                    <CircularProgress />
-                                ) : (
-                                    <Line
-                                        data={monthlyRevenueConfig}
-                                        options={{
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true
-                                                }
-                                            }
-                                        }}
-                                    />
-                                )}
-                            </Box>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Grid>
+                {/* Dolny rząd - wykres obrotów */}
+                <Paper sx={{
+                    p: 3,
+                    height: '300px',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                    <Typography variant="h6" gutterBottom>Obrót miesięczny</Typography>
+                    <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                        Bieżący miesiąc: {monthlyRevenueData.currentMonthRevenue.toLocaleString()} PLN
+                    </Typography>
+                    <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {loading ? (
+                            <CircularProgress />
+                        ) : (
+                            <Line
+                                data={monthlyRevenueConfig}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }}
+                            />
+                        )}
+                    </Box>
+                </Paper>
+            </Box>
 
-            {/* Status zadań - dynamiczny z danych */}
-            <Grid size={{ xs: 12, md: 4 }}>
-                <Paper sx={{ p: 2, height: '97%' }}>
-                    <Typography variant="h6" gutterBottom>Status projektu</Typography>
+            {/* Prawa kolumna - status projektu */}
+            <Paper sx={{
+                p: 3,
+                width: { xs: '100%', md: '20%' },
+                display: 'flex',
+                flexDirection: 'column',
+                height: { xs: 'auto', md: 'auto' },
+                alignSelf: 'stretch'
+            }}>
+                <Typography variant="h6" gutterBottom>Status projektu</Typography>
 
+                <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
                     {projectStatus.map((section, index) => (
                         <React.Fragment key={section.title}>
                             {index > 0 && <Divider sx={{ my: 2 }} />}
@@ -306,9 +347,9 @@ function Dashboard() {
                             </Box>
                         </React.Fragment>
                     ))}
-                </Paper>
-            </Grid>
-        </Grid>
+                </Box>
+            </Paper>
+        </Box>
     );
 }
 
