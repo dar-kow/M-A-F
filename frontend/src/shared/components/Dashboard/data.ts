@@ -1,5 +1,3 @@
-// Dane do wyświetlania na dashboardzie
-
 export interface ProjectStatusSection {
     title: string;
     color: string;
