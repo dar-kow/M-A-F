@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Global, css } from '@emotion/react';
 import { initializeGA } from './analytics';
 
-// Globalne style aplikacji
 const globalStyles = css`
   html, body, #root {
     height: 100%;
