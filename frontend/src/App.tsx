@@ -49,7 +49,6 @@ const globalStyles = css`
 
 function App() {
   useEffect(() => {
-    // Nazwa "main" dla głównej strony
     initializeGA('maf');
   }, []);
   // Użyj useRoutes do renderowania tras
