@@ -51,7 +51,6 @@ function App() {
   useEffect(() => {
     initializeGA('maf');
   }, []);
-  // Użyj useRoutes do renderowania tras
   const routeElements = useRoutes(routes);
 
   return (
