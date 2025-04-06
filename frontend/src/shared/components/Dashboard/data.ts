@@ -9,6 +9,7 @@ export const projectStatus = [
         title: "Zaimplementowane",
         color: "primary",
         items: [
+            "Dodanie tooltipów na liście faktur",
             "Poprawki sidebra",
             "Testy API",
             "Refaktoryzacja kodu InvoiceDataGrid - wydzielenie hooków",
