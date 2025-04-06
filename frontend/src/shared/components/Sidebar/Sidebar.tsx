@@ -53,8 +53,8 @@ function Sidebar() {
     const [toggleActive, setToggleActive] = useState(!savedCollapsedState);
     // Nowy stan dla kontroli widoczności przycisku toggle
     const [showToggle, setShowToggle] = useState(!savedCollapsedState);
-    // Nowy stan śledzący pozycję kursora myszy nad menu
-    const [isMouseOverMenu, setIsMouseOverMenu] = useState(false);
+    // Nowy stan śledzący ostatnią pozycję kursora myszy
+    const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
 
     const sidebarRef = useRef<HTMLElement>(null);
     const toggleRef = useRef<HTMLDivElement>(null);
@@ -68,16 +68,26 @@ function Sidebar() {
 
     const isMobile = useMediaQuery('(max-width: 768px)');
 
+    // Efekt śledzący pozycję kursora myszy
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setLastMousePosition({ x: e.clientX, y: e.clientY });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, []);
+
     // Funkcje obsługi hoveru dla menu
     const handleMenuMouseEnter = () => {
-        setIsMouseOverMenu(true);
-        if (collapsed && !isMobile) {
+        if (collapsed && !isMobile && !isTransitioning) {
             setShowToggle(true);
         }
     };
 
     const handleMenuMouseLeave = () => {
-        setIsMouseOverMenu(false);
         if (collapsed && !isMobile && !toggleActive) {
             setShowToggle(false);
         }
@@ -97,9 +107,42 @@ function Sidebar() {
 
     // Obsługa zdarzenia onMouseLeave dla trapezu
     const handleToggleMouseLeave = () => {
-        if (collapsed && !isMobile && !toggleActive && !isMouseOverMenu) {
+        if (collapsed && !isMobile && !toggleActive) {
+            // Sprawdź, czy myszka znajduje się nad menu
+            if (menuRef.current) {
+                const menuRect = menuRef.current.getBoundingClientRect();
+                const mouseX = lastMousePosition.x;
+                const mouseY = lastMousePosition.y;
+
+                // Jeśli kursor jest nad menu, nie ukrywaj trapezu
+                if (
+                    mouseX >= menuRect.left &&
+                    mouseX <= menuRect.right &&
+                    mouseY >= menuRect.top &&
+                    mouseY <= menuRect.bottom
+                ) {
+                    return;
+                }
+            }
             setShowToggle(false);
         }
+    };
+
+    // Funkcja sprawdzająca pozycję kursora względem menu
+    const checkMouseOverMenu = () => {
+        if (menuRef.current) {
+            const menuRect = menuRef.current.getBoundingClientRect();
+            const mouseX = lastMousePosition.x;
+            const mouseY = lastMousePosition.y;
+
+            return (
+                mouseX >= menuRect.left &&
+                mouseX <= menuRect.right &&
+                mouseY >= menuRect.top &&
+                mouseY <= menuRect.bottom
+            );
+        }
+        return false;
     };
 
     // Funkcja przełączająca sidebar
@@ -147,7 +190,13 @@ function Sidebar() {
                     setShowLogoIcon(true);
                     // Toggle dezaktywowany po zakończeniu zwijania
                     setToggleActive(false);
-                    setShowToggle(false); // Domyślnie ukryj toggle dla zwiniętego sidebara
+
+                    // Sprawdź pozycję kursora myszy względem menu
+                    if (checkMouseOverMenu()) {
+                        setShowToggle(true);
+                    } else {
+                        setShowToggle(false);
+                    }
                 }, 50);
             }
         }, 300);
@@ -165,13 +214,6 @@ function Sidebar() {
         };
     }, [collapsed]);
 
-    // Efekt aktualizujący widoczność trapezu po zakończeniu animacji
-    useEffect(() => {
-        if (!isTransitioning && collapsed && isMouseOverMenu) {
-            setShowToggle(true);
-        }
-    }, [isTransitioning, collapsed, isMouseOverMenu]);
-
     const handleTransitionEnd = () => {
         if (!collapsed) {
             if (!showTitle) setShowTitle(true);
@@ -180,6 +222,11 @@ function Sidebar() {
             if (!showVerticalIcons) setShowVerticalIcons(true);
             if (!showMenuIcons) setShowMenuIcons(true);
             if (!showLogoIcon) setShowLogoIcon(true);
+
+            // Sprawdź, czy kursor znajduje się nad menu
+            if (checkMouseOverMenu()) {
+                setShowToggle(true);
+            }
         }
     };
 
