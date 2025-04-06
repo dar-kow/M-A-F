@@ -53,6 +53,8 @@ function Sidebar() {
     const [toggleActive, setToggleActive] = useState(!savedCollapsedState);
     // Nowy stan dla kontroli widoczności przycisku toggle
     const [showToggle, setShowToggle] = useState(!savedCollapsedState);
+    // Nowy stan śledzący pozycję kursora myszy nad menu
+    const [isMouseOverMenu, setIsMouseOverMenu] = useState(false);
 
     const sidebarRef = useRef<HTMLElement>(null);
     const toggleRef = useRef<HTMLDivElement>(null);
@@ -66,15 +68,36 @@ function Sidebar() {
 
     const isMobile = useMediaQuery('(max-width: 768px)');
 
-    // Funkcje obsługi hoveru tylko dla menu
+    // Funkcje obsługi hoveru dla menu
     const handleMenuMouseEnter = () => {
+        setIsMouseOverMenu(true);
         if (collapsed && !isMobile) {
             setShowToggle(true);
         }
     };
 
     const handleMenuMouseLeave = () => {
+        setIsMouseOverMenu(false);
         if (collapsed && !isMobile && !toggleActive) {
+            setShowToggle(false);
+        }
+    };
+
+    // Funkcja obsługi zdarzenia onMouseLeave dla całego sidebara
+    const handleSidebarMouseLeave = () => {
+        if (collapsed && !isMobile && !toggleActive) {
+            setShowToggle(false);
+        }
+    };
+
+    // Efekt do obsługi hoveru na toggle
+    const handleToggleMouseEnter = () => {
+        setShowToggle(true);
+    };
+
+    // Obsługa zdarzenia onMouseLeave dla trapezu
+    const handleToggleMouseLeave = () => {
+        if (collapsed && !isMobile && !toggleActive && !isMouseOverMenu) {
             setShowToggle(false);
         }
     };
@@ -135,17 +158,19 @@ function Sidebar() {
         toggleSidebar();
     };
 
-    // Efekt do obsługi hoveru na toggle
-    const handleToggleMouseEnter = () => {
-        setShowToggle(true);
-    };
-
     useEffect(() => {
         document.body.classList.toggle('sidebar-collapsed', collapsed);
         return () => {
             document.body.classList.remove('sidebar-collapsed');
         };
     }, [collapsed]);
+
+    // Efekt aktualizujący widoczność trapezu po zakończeniu animacji
+    useEffect(() => {
+        if (!isTransitioning && collapsed && isMouseOverMenu) {
+            setShowToggle(true);
+        }
+    }, [isTransitioning, collapsed, isMouseOverMenu]);
 
     const handleTransitionEnd = () => {
         if (!collapsed) {
@@ -225,6 +250,7 @@ function Sidebar() {
                 className={sidebarClass}
                 ref={sidebarRef}
                 onTransitionEnd={handleTransitionEnd}
+                onMouseLeave={handleSidebarMouseLeave}
             >
                 {!isMobile && (
                     <div
@@ -232,6 +258,7 @@ function Sidebar() {
                         onClick={handleToggleClick}
                         ref={toggleRef}
                         onMouseEnter={handleToggleMouseEnter}
+                        onMouseLeave={handleToggleMouseLeave}
                     />
                 )}
 
