@@ -18,7 +18,6 @@ import { RootState } from '@store/rootReducer';
 import { Invoice } from '@app-types/types';
 import PrintService from '../../services/PrintService';
 
-// Import styli
 import './InvoiceList.scss';
 
 // Rozszerzony typ faktury z nazwą kontrahenta
