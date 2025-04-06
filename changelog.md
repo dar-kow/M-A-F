@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.3 - sidebar toggle aktywacyjny
+- Dodano automatyczną detekcję pozycji kursora myszy po zakończeniu animacji zwijania
+- Przycisk toggle pojawia się teraz prawidłowo, gdy kursor znajduje się nad ikonami menu
+- Zaimplementowano precyzyjną detekcję pozycji kursora względem obszaru menu
+- Przycisk toggle znika teraz poprawnie po opuszczeniu obszaru sidebara
+
 ## v0.5.2 - Kosmetyka dashboard'u
 - zmiana reakcji toogle na hover w sidebarze
 - wyrównanie kafelków
