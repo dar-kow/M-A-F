@@ -14,6 +14,15 @@ import {
 import { Invoice } from '@app-types/types';
 import { formatDate, formatAmount, formatPaymentMethod } from '@shared/utils/formatters';
 import { getStatusChipColor, getPaymentStatusLabel } from '@shared/utils/statusHelpers';
+import StyledTooltip from '@shared/components/StyledTooltip/StyledTooltip';
+
+// Definicja domyślnych właściwości dla tooltipa na górze - lista faktur
+const tooltipDefaultProps = {
+    arrow: true,
+    enterDelay: 700,
+    leaveDelay: 100,
+    placement: "top" 
+  };
 
 /**
  * Generuje definicje kolumn dla tabeli faktur
@@ -52,6 +61,7 @@ export const getInvoiceColumns = (
                     >
                         {params.value || '-'}
                     </Typography>
+                    <StyledTooltip title="Podgląd faktury" {...tooltipDefaultProps}>
                     <IconButton
                         size="small"
                         onClick={() => onPreviewInvoice(params.row)}
@@ -60,6 +70,7 @@ export const getInvoiceColumns = (
                     >
                         <DescriptionIcon fontSize="small" />
                     </IconButton>
+                    </StyledTooltip>
                 </Box>
             ),
         },
@@ -265,6 +276,7 @@ export const getInvoiceColumns = (
                     height: '100%',
                     boxSizing: 'border-box',
                 }}>
+                     <StyledTooltip title="Edytuj fakturę" {...tooltipDefaultProps}>
                     <IconButton
                         size="small"
                         onClick={() => onEditInvoice(params.row.id)}
@@ -272,6 +284,8 @@ export const getInvoiceColumns = (
                     >
                         <EditIcon fontSize="small" />
                     </IconButton>
+                    </StyledTooltip>
+                    <StyledTooltip title="Usuń fakturę" {...tooltipDefaultProps}>
                     <IconButton
                         size="small"
                         onClick={() => onDeleteInvoice(params.row.id)}
@@ -279,6 +293,7 @@ export const getInvoiceColumns = (
                     >
                         <DeleteIcon fontSize="small" />
                     </IconButton>
+                    </StyledTooltip>
                 </Box>
             ),
         }
