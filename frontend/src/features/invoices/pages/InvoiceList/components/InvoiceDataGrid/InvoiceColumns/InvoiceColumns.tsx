@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Chip, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Chip, Typography } from '@mui/material';
 import {
     GridColDef,
     GridRenderCellParams
@@ -256,7 +256,7 @@ export const getInvoiceColumns = (
                     height: '100%',
                     pr: 1
                 }}>
-                    <Tooltip title="Zarządzaj kolumnami">
+                    <StyledTooltip title="Zarządzaj kolumnami" placement="top">
                         <IconButton
                             size="small"
                             onClick={onOpenColumnSelector}
@@ -264,7 +264,7 @@ export const getInvoiceColumns = (
                         >
                             <ViewColumnIcon fontSize="small" />
                         </IconButton>
-                    </Tooltip>
+                    </StyledTooltip>
                 </Box>
             ),
             renderCell: (params) => (
