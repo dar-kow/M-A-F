@@ -312,6 +312,18 @@ function Dashboard() {
                                         y: {
                                             beginAtZero: true
                                         }
+                                    },
+                                    interaction: {
+                                        mode: 'index',
+                                        intersect: false,
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                            padding: 10,
+                                            cornerRadius: 4,
+                                            caretSize: 6
+                                        }
                                     }
                                 }}
                             />
