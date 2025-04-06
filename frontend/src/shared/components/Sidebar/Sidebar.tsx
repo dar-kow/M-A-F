@@ -10,29 +10,10 @@ import {
     Close as CloseIcon,
     ReceiptLong as ReceiptLongIcon
 } from '@mui/icons-material';
-import { Tooltip, useMediaQuery, IconButton, tooltipClasses, TooltipProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { useMediaQuery, IconButton} from '@mui/material';
 import { useState, useEffect, useRef } from 'react';
 import './Sidebar.scss';
-
-const StyledTooltip = styled(({ className, ...props }: { className?: string } & Omit<TooltipProps, 'classes'>) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))(() => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-        backgroundColor: '#1e293b',
-        color: '#fff',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-        padding: '8px 12px',
-        fontSize: '13px',
-        fontWeight: 400,
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '4px',
-        maxWidth: '220px',
-    },
-    [`& .${tooltipClasses.arrow}`]: {
-        color: '#1e293b',
-    },
-}));
+import StyledTooltip, { tooltipDefaultProps } from '../../components/StyledTooltip/StyledTooltip';
 
 // Klucz dla localStorage
 const SIDEBAR_STATE_KEY = 'maf_sidebar_collapsed';
@@ -324,7 +305,7 @@ function Sidebar() {
                             <StyledTooltip
                                 title="M-A-F: Moja Aplikacja Faktur"
                                 placement="right"
-                                {...tooltipProps}
+                                {...tooltipDefaultProps}
                             >
                                 <ReceiptLongIcon className="logo-icon" />
                             </StyledTooltip>
