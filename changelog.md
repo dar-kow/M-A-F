@@ -6,6 +6,7 @@
 - Zaimplementowano precyzyjną detekcję pozycji kursora względem obszaru menu
 - Przycisk toggle znika teraz poprawnie po opuszczeniu obszaru sidebara
 - Poprawka na wykresie w dashboard - wyświetlanie tooltipa też przy linni miesiąca
+- Dodanie tootlipów na liście faktur
 
 ## v0.5.2 - Kosmetyka dashboard'u
 - zmiana reakcji toogle na hover w sidebarze
