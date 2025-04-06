@@ -21,7 +21,7 @@ const tooltipDefaultProps = {
     arrow: true,
     enterDelay: 700,
     leaveDelay: 100,
-    placement: "top" 
+    placement: "top" as const
   };
 
 /**
