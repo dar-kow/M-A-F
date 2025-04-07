@@ -1,5 +1,7 @@
 # Changelog
 
+## v0.5.4 - dodanie tooltipów do listy kontrahentów
+
 ## v0.5.3 - sidebar toggle aktywacyjny - 2025.04.06
 - Dodano automatyczną detekcję pozycji kursora myszy po zakończeniu animacji zwijania
 - Przycisk toggle pojawia się teraz prawidłowo, gdy kursor znajduje się nad ikonami menu
