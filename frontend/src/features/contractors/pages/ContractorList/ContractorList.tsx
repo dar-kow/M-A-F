@@ -13,6 +13,7 @@ import useFetchContractors from '../../hooks/useFetchContractors';
 import { deleteContractorRequest } from '../../redux/contractorActions';
 import { RootState } from '../../../../store/rootReducer';
 import './ContractorList.scss';
+import StyledTooltip, { tooltipDefaultProps } from '@shared/components/StyledTooltip/StyledTooltip';
 
 function ContractorList() {
     const navigate = useNavigate();
@@ -144,18 +145,30 @@ function ContractorList() {
                                     <TableCell>{contractor.taxId}</TableCell>
                                     <TableCell>{contractor.city}</TableCell>
                                     <TableCell align="right">
-                                        <IconButton
-                                            aria-label="edit"
-                                            onClick={() => handleEditContractor(contractor.id)}
+                                        <StyledTooltip
+                                            title="Edytuj kontrahenta"
+                                            placement="top"
+                                            {...tooltipDefaultProps}
                                         >
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            aria-label="delete"
-                                            onClick={() => openDeleteDialog(contractor.id)}
+                                            <IconButton
+                                                aria-label="edit"
+                                                onClick={() => handleEditContractor(contractor.id)}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </StyledTooltip>
+                                        <StyledTooltip
+                                            title="Usuń kontrahenta"
+                                            placement="top"
+                                            {...tooltipDefaultProps}
                                         >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={() => openDeleteDialog(contractor.id)}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </StyledTooltip>
                                     </TableCell>
                                 </TableRow>
                             ))
