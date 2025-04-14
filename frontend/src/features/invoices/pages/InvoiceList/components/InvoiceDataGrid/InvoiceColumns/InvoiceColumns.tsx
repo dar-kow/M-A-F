@@ -22,7 +22,7 @@ const tooltipDefaultProps = {
     enterDelay: 700,
     leaveDelay: 100,
     placement: "top" as const
-  };
+};
 
 /**
  * Generuje definicje kolumn dla tabeli faktur
@@ -58,18 +58,20 @@ export const getInvoiceColumns = (
                             whiteSpace: 'nowrap',
                             flexGrow: 1
                         }}
+                        data-testid={`invoice-number-${params.row.id}`}
                     >
                         {params.value || '-'}
                     </Typography>
                     <StyledTooltip title="Podgląd faktury" {...tooltipDefaultProps}>
-                    <IconButton
-                        size="small"
-                        onClick={() => onPreviewInvoice(params.row)}
-                        aria-label="podgląd faktury"
-                        sx={{ ml: 1 }}
-                    >
-                        <DescriptionIcon fontSize="small" />
-                    </IconButton>
+                        <IconButton
+                            size="small"
+                            onClick={() => onPreviewInvoice(params.row)}
+                            aria-label="podgląd faktury"
+                            sx={{ ml: 1 }}
+                            data-testid={`invoice-preview-btn-${params.row.id}`}
+                        >
+                            <DescriptionIcon fontSize="small" />
+                        </IconButton>
                     </StyledTooltip>
                 </Box>
             ),
@@ -276,23 +278,25 @@ export const getInvoiceColumns = (
                     height: '100%',
                     boxSizing: 'border-box',
                 }}>
-                     <StyledTooltip title="Edytuj fakturę" {...tooltipDefaultProps}>
-                    <IconButton
-                        size="small"
-                        onClick={() => onEditInvoice(params.row.id)}
-                        aria-label="edytuj"
-                    >
-                        <EditIcon fontSize="small" />
-                    </IconButton>
+                    <StyledTooltip title="Edytuj fakturę" {...tooltipDefaultProps}>
+                        <IconButton
+                            size="small"
+                            onClick={() => onEditInvoice(params.row.id)}
+                            aria-label="edytuj"
+                            data-testid={`invoice-edit-btn-${params.row.id}`}
+                        >
+                            <EditIcon fontSize="small" />
+                        </IconButton>
                     </StyledTooltip>
                     <StyledTooltip title="Usuń fakturę" {...tooltipDefaultProps}>
-                    <IconButton
-                        size="small"
-                        onClick={() => onDeleteInvoice(params.row.id)}
-                        aria-label="usuń"
-                    >
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
+                        <IconButton
+                            size="small"
+                            onClick={() => onDeleteInvoice(params.row.id)}
+                            aria-label="usuń"
+                            data-testid={`invoice-delete-btn-${params.row.id}`}
+                        >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
                     </StyledTooltip>
                 </Box>
             ),
