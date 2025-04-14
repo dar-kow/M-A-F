@@ -160,6 +160,7 @@ const InvoiceList: React.FC = () => {
                         InputProps={{
                             startAdornment: <SearchIcon sx={{ color: 'action.active', mr: 1 }} />,
                         }}
+                        data-testid="invoice-search"
                     />
                 </div>
 
@@ -170,6 +171,7 @@ const InvoiceList: React.FC = () => {
                         startIcon={<PrintIcon />}
                         onClick={handlePrint}
                         disabled={filteredInvoices.length === 0}
+                        data-testid="invoice-print-btn"
                     >
                         Drukuj
                     </Button>
@@ -178,6 +180,7 @@ const InvoiceList: React.FC = () => {
                         color="primary"
                         startIcon={<AddIcon />}
                         onClick={handleAddInvoice}
+                        data-testid="invoice-add-btn"
                     >
                         Dodaj fakturę
                     </Button>
@@ -204,6 +207,7 @@ const InvoiceList: React.FC = () => {
                 onClose={handleClosePreview}
                 invoice={previewInvoice}
                 onEdit={previewInvoice?.id ? () => handleEditInvoice(previewInvoice.id) : undefined}
+                data-testid="invoice-preview-modal"
             />
 
             {/* Dialog potwierdzenia usunięcia */}
@@ -211,6 +215,7 @@ const InvoiceList: React.FC = () => {
                 open={deleteDialogOpen}
                 onClose={handleDeleteCancel}
                 onConfirm={handleDeleteConfirm}
+                data-testid="invoice-delete-dialog"
             />
         </div>
     );

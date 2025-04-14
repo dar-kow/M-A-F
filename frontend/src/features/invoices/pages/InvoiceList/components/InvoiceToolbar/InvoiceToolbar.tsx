@@ -44,7 +44,7 @@ const InvoiceToolbar: React.FC<InvoiceToolbarProps> = ({
 
     return (
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-            <Typography variant="h4">{title}</Typography>
+            <Typography variant="h4" data-testid="invoice-list-title">{title}</Typography>
             <Box className="action-buttons">
                 {/* <Button
                     variant="outlined"
@@ -63,6 +63,7 @@ const InvoiceToolbar: React.FC<InvoiceToolbarProps> = ({
                     startIcon={<PrintIcon />}
                     onClick={onPrint}
                     sx={{ mr: 1 }}
+                    data-testid="invoice-print-button"
                 >
                     Drukuj
                 </Button>
@@ -71,6 +72,7 @@ const InvoiceToolbar: React.FC<InvoiceToolbarProps> = ({
                     color="primary"
                     startIcon={<AddIcon />}
                     onClick={onAddInvoice}
+                    data-testid="invoice-add-button"
                 >
                     Dodaj fakturę
                 </Button>

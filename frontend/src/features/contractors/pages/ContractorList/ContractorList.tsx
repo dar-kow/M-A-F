@@ -105,6 +105,7 @@ function ContractorList() {
                     color="primary"
                     startIcon={<AddIcon />}
                     onClick={handleAddContractor}
+                    data-testid="contractor-add-btn"
                 >
                     Dodaj kontrahenta
                 </Button>
@@ -120,10 +121,11 @@ function ContractorList() {
                     InputProps={{
                         startAdornment: <SearchIcon sx={{ color: 'action.active', mr: 1 }} />,
                     }}
+                    data-testid="contractor-search"
                 />
             </Box>
 
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} data-testid="contractors-table-container">
                 <Table aria-label="contractors table">
                     <TableHead>
                         <TableRow>
@@ -138,12 +140,12 @@ function ContractorList() {
                     <TableBody>
                         {filteredContractors.length > 0 ? (
                             filteredContractors.map((contractor) => (
-                                <TableRow key={contractor.id}>
-                                    <TableCell>{contractor.name}</TableCell>
-                                    <TableCell>{`${contractor.firstName} ${contractor.lastName}`}</TableCell>
-                                    <TableCell>{contractor.email}</TableCell>
-                                    <TableCell>{contractor.taxId}</TableCell>
-                                    <TableCell>{contractor.city}</TableCell>
+                                <TableRow key={contractor.id} data-testid={`contractor-row-${contractor.id}`}>
+                                    <TableCell data-testid={`contractor-name-${contractor.id}`}>{contractor.name}</TableCell>
+                                    <TableCell data-testid={`contractor-fullname-${contractor.id}`}>{`${contractor.firstName} ${contractor.lastName}`}</TableCell>
+                                    <TableCell data-testid={`contractor-email-${contractor.id}`}>{contractor.email}</TableCell>
+                                    <TableCell data-testid={`contractor-taxid-${contractor.id}`}>{contractor.taxId}</TableCell>
+                                    <TableCell data-testid={`contractor-city-${contractor.id}`}>{contractor.city}</TableCell>
                                     <TableCell align="right">
                                         <StyledTooltip
                                             title="Edytuj kontrahenta"
@@ -153,6 +155,7 @@ function ContractorList() {
                                             <IconButton
                                                 aria-label="edit"
                                                 onClick={() => handleEditContractor(contractor.id)}
+                                                data-testid={`contractor-edit-btn-${contractor.id}`}
                                             >
                                                 <EditIcon />
                                             </IconButton>
@@ -165,6 +168,7 @@ function ContractorList() {
                                             <IconButton
                                                 aria-label="delete"
                                                 onClick={() => openDeleteDialog(contractor.id)}
+                                                data-testid={`contractor-delete-btn-${contractor.id}`}
                                             >
                                                 <DeleteIcon />
                                             </IconButton>
@@ -173,7 +177,7 @@ function ContractorList() {
                                 </TableRow>
                             ))
                         ) : (
-                            <TableRow>
+                            <TableRow data-testid="contractor-empty-row">
                                 <TableCell colSpan={6} align="center">
                                     {contractors.length === 0 ? 'Brak kontrahentów' : 'Brak wyników wyszukiwania'}
                                 </TableCell>
@@ -187,14 +191,15 @@ function ContractorList() {
             <Dialog
                 open={deleteDialogOpen}
                 onClose={handleDeleteCancel}
+                data-testid="contractor-delete-dialog"
             >
                 <DialogTitle>Potwierdzenie usunięcia</DialogTitle>
                 <DialogContent>
                     Czy na pewno chcesz usunąć tego kontrahenta? Tej operacji nie można cofnąć.
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDeleteCancel}>Anuluj</Button>
-                    <Button onClick={handleDeleteConfirm} color="error">
+                    <Button onClick={handleDeleteCancel} data-testid="contractor-delete-cancel">Anuluj</Button>
+                    <Button onClick={handleDeleteConfirm} color="error" data-testid="contractor-delete-confirm">
                         Usuń
                     </Button>
                 </DialogActions>
