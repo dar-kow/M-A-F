@@ -151,6 +151,7 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
         <Paper
             className="invoice-datagrid"
             ref={gridWrapperRef}
+            data-testid="invoice-grid"
             sx={{
                 height: `${finalHeight}px`,
                 width: '100%',
