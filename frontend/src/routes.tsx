@@ -1,4 +1,3 @@
-// Definicje routingu
 import { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
 
