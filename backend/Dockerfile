@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-COPY ["backend.csproj", "./"]
+COPY backend.csproj ./
 RUN ls -la
 RUN dotnet restore
 
