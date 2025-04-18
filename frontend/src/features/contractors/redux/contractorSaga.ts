@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { put, call, takeLatest } from 'redux-saga/effects';
 import api from '@/shared/services/api';
 import * as actions from './contractorActions';
