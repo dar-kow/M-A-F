@@ -1,11 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-COPY backend.csproj ./
-RUN ls -la
+COPY ["backend/backend.csproj", "./"]
 RUN dotnet restore
 
-COPY . .
+COPY backend/. .
 RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
