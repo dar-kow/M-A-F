@@ -39,6 +39,10 @@ class ApiService {
     return this.axiosInstance.get("/invoices/last-number");
   }
 
+  public updateInvoicePayment(id: number, paidAmount: number): Promise<AxiosResponse> {
+    return this.axiosInstance.put(`/invoices/${id}/payment`, { paidAmount });
+  }
+
   // ---------------------------
   // Endpoints for Invoice Items
   // ---------------------------
