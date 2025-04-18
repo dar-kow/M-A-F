@@ -38,7 +38,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
-      - "3003:5173"  # Mapowanie portu domyślnego Vite (5173) na port 3000 lokalnie
+      - "3005:5173"  # Mapowanie portu domyślnego Vite (5173) na port 3000 lokalnie
     environment:
       VITE_API_URL: "http://localhost:5005/api"
     volumes:
