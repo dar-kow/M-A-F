@@ -3,33 +3,33 @@ using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.Models;
 using backend.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace backend.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class InvoicesController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly RabbitMqService _rabbitMqService;
-        private readonly ILogger<InvoicesController> _logger;
 
-        public InvoicesController(AppDbContext context, RabbitMqService rabbitMqService, ILogger<InvoicesController> logger)
+        public InvoicesController(AppDbContext context, RabbitMqService rabbitMqService)
         {
             _context = context;
             _rabbitMqService = rabbitMqService;
-            _logger = logger;
         }
 
-        // GET: api/invoices
+        // GET: api/Invoices
         [HttpGet]
-        public async Task<IActionResult> GetInvoices()
+        public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices()
         {
-            var invoices = await _context.Invoices.ToListAsync();
-            return Ok(invoices);
+            return await _context.Invoices.ToListAsync();
         }
 
-        // GET: api/invoices/{id}
+        // GET: api/Invoices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Invoice>> GetInvoice(int id)
         {
@@ -45,63 +45,62 @@ namespace backend.Controllers
             return invoice;
         }
 
-        // POST: api/invoices
-        [HttpPost]
-        public async Task<IActionResult> CreateInvoice([FromBody] Invoice invoice)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            foreach (var item in invoice.InvoiceItems)
-            {
-                item.InvoiceId = invoice.Id;
-            }
-
-            _context.Invoices.Add(invoice);
-            await _context.SaveChangesAsync();
-
-            try
-            {
-                _rabbitMqService.PublishInvoiceCreated(invoice.Id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Błąd przy publikacji do RabbitMQ: {0}", ex.Message);
-            }
-
-            return CreatedAtAction(nameof(GetInvoice), new { id = invoice.Id }, invoice);
-        }
-
-        // PUT: api/invoices/{id}
+        // PUT: api/Invoices/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateInvoice(int id, [FromBody] Invoice invoice)
+        public async Task<IActionResult> UpdateInvoice(int id, Invoice invoice)
         {
             if (id != invoice.Id)
+            {
                 return BadRequest();
+            }
+
+            invoice.UpdatePaymentStatus();
 
             _context.Entry(invoice).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
+                _rabbitMqService.PublishInvoiceUpdated(id);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _context.Invoices.AnyAsync(i => i.Id == id))
+                if (!InvoiceExists(id))
+                {
                     return NotFound();
-                throw;
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return NoContent();
         }
 
-        // DELETE: api/invoices/{id}
+        // POST: api/Invoices
+        [HttpPost]
+        public async Task<ActionResult<Invoice>> CreateInvoice(Invoice invoice)
+        {
+            invoice.UpdatePaymentStatus();
+
+            _context.Invoices.Add(invoice);
+            await _context.SaveChangesAsync();
+
+            _rabbitMqService.PublishInvoiceCreated(invoice.Id);
+
+            return CreatedAtAction("GetInvoice", new { id = invoice.Id }, invoice);
+        }
+
+        // DELETE: api/Invoices/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInvoice(int id)
         {
             var invoice = await _context.Invoices.FindAsync(id);
             if (invoice == null)
+            {
                 return NotFound();
+            }
 
             _context.Invoices.Remove(invoice);
             await _context.SaveChangesAsync();
@@ -109,30 +108,34 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // GET: api/invoices/last-number
-        [HttpGet("last-number")]
-        public async Task<ActionResult<string>> GetLastInvoiceNumber()
+        [HttpPut("{id}/payment")]
+        public async Task<ActionResult<Invoice>> UpdatePayment(int id, [FromBody] PaymentUpdateDto paymentData)
         {
-            try
+            var invoice = await _context.Invoices.FindAsync(id);
+            if (invoice == null)
             {
-                // Pobierz fakturę z największym ID (zakładamy, że najnowsze faktury mają wyższe ID)
-                var lastInvoice = await _context.Invoices
-                    .OrderByDescending(i => i.Id)
-                    .FirstOrDefaultAsync();
-
-                if (lastInvoice == null)
-                {
-                    return Ok("");
-                }
-
-                _logger.LogInformation($"Ostatni numer faktury: {lastInvoice.Number}");
-                return Ok(lastInvoice.Number);
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Błąd podczas pobierania ostatniego numeru faktury");
-                return StatusCode(500, "Wystąpił błąd podczas przetwarzania żądania");
-            }
+
+            invoice.PaidAmount = paymentData.PaidAmount;
+
+            invoice.UpdatePaymentStatus();
+
+            await _context.SaveChangesAsync();
+
+            _rabbitMqService.PublishPaymentUpdated(id);
+
+            return Ok(invoice);
+        }
+
+        public class PaymentUpdateDto
+        {
+            public decimal PaidAmount { get; set; }
+        }
+
+        private bool InvoiceExists(int id)
+        {
+            return _context.Invoices.Any(e => e.Id == id);
         }
     }
 }
