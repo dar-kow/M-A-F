@@ -6,6 +6,7 @@ using backend.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace backend.Controllers
 {
@@ -15,11 +16,13 @@ namespace backend.Controllers
     {
         private readonly AppDbContext _context;
         private readonly RabbitMqService _rabbitMqService;
+        private readonly ILogger<InvoicesController> _logger;
 
-        public InvoicesController(AppDbContext context, RabbitMqService rabbitMqService)
+        public InvoicesController(AppDbContext context, RabbitMqService rabbitMqService, ILogger<InvoicesController> logger)
         {
             _context = context;
             _rabbitMqService = rabbitMqService;
+            _logger = logger;
         }
 
         // GET: api/Invoices
@@ -126,6 +129,31 @@ namespace backend.Controllers
             _rabbitMqService.PublishPaymentUpdated(id);
 
             return Ok(invoice);
+        }
+
+        // GET: api/invoices/last-number
+        [HttpGet("last-number")]
+        public async Task<ActionResult<string>> GetLastInvoiceNumber()
+        {
+            try
+            {
+                var lastInvoice = await _context.Invoices
+                    .OrderByDescending(i => i.Id)
+                    .FirstOrDefaultAsync();
+
+                if (lastInvoice == null)
+                {
+                    return Ok("");
+                }
+
+                _logger.LogInformation($"Ostatni numer faktury: {lastInvoice.Number}");
+                return Ok(lastInvoice.Number);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Błąd podczas pobierania ostatniego numeru faktury");
+                return StatusCode(500, "Wystąpił błąd podczas przetwarzania żądania");
+            }
         }
 
         public class PaymentUpdateDto
