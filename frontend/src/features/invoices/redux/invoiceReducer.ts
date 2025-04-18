@@ -177,6 +177,35 @@ const invoiceReducer = (state = initialState, action: any): InvoiceState => {
                 error: null,
                 actionSuccess: false
             };
+        case actions.UPDATE_INVOICE_PAYMENT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+                actionSuccess: false
+            };
+
+        case actions.UPDATE_INVOICE_PAYMENT_SUCCESS:
+            return {
+                ...state,
+                data: state.data.map(invoice =>
+                    invoice.id === action.payload.id ? action.payload : invoice
+                ),
+                currentInvoice: state.currentInvoice?.id === action.payload.id
+                    ? action.payload
+                    : state.currentInvoice,
+                loading: false,
+                error: null,
+                actionSuccess: true
+            };
+
+        case actions.UPDATE_INVOICE_PAYMENT_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                actionSuccess: false
+            };
         default:
             return state;
     }

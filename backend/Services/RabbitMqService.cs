@@ -19,8 +19,19 @@ namespace backend.Services
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 
-            // Deklarujemy kolejkę – przykładowa nazwa "invoice_created"
             _channel.QueueDeclare(queue: "invoice_created",
+                                  durable: false,
+                                  exclusive: false,
+                                  autoDelete: false,
+                                  arguments: null);
+
+            _channel.QueueDeclare(queue: "invoice_updated",
+                                  durable: false,
+                                  exclusive: false,
+                                  autoDelete: false,
+                                  arguments: null);
+
+            _channel.QueueDeclare(queue: "payment_updated",
                                   durable: false,
                                   exclusive: false,
                                   autoDelete: false,
@@ -34,6 +45,28 @@ namespace backend.Services
 
             _channel.BasicPublish(exchange: "",
                                   routingKey: "invoice_created",
+                                  basicProperties: null,
+                                  body: body);
+        }
+
+        public void PublishInvoiceUpdated(int invoiceId)
+        {
+            var message = invoiceId.ToString();
+            var body = Encoding.UTF8.GetBytes(message);
+
+            _channel.BasicPublish(exchange: "",
+                                  routingKey: "invoice_updated",
+                                  basicProperties: null,
+                                  body: body);
+        }
+
+        public void PublishPaymentUpdated(int invoiceId)
+        {
+            var message = invoiceId.ToString();
+            var body = Encoding.UTF8.GetBytes(message);
+
+            _channel.BasicPublish(exchange: "",
+                                  routingKey: "payment_updated",
                                   basicProperties: null,
                                   body: body);
         }

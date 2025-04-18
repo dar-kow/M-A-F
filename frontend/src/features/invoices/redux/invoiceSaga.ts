@@ -83,6 +83,16 @@ function* fetchLastInvoiceNumberSaga() {
     }
 }
 
+function* updateInvoicePaymentSaga(action: ReturnType<typeof actions.updateInvoicePaymentRequest>) {
+    try {
+        const { id, paidAmount } = action.payload;
+        const response = yield call(api.updateInvoicePayment.bind(api), id, paidAmount);
+        yield put(actions.updateInvoicePaymentSuccess(response.data));
+    } catch (error: any) {
+        yield put(actions.updateInvoicePaymentFailure(error.message || 'Failed to update payment'));
+    }
+}
+
 export function* watchInvoiceSagas() {
     yield takeLatest(actions.FETCH_INVOICES_REQUEST, fetchInvoicesSaga);
     yield takeLatest(actions.FETCH_INVOICE_REQUEST, fetchInvoiceSaga);
@@ -90,4 +100,5 @@ export function* watchInvoiceSagas() {
     yield takeLatest(actions.UPDATE_INVOICE_REQUEST, updateInvoiceSaga);
     yield takeLatest(actions.DELETE_INVOICE_REQUEST, deleteInvoiceSaga);
     yield takeLatest(actions.FETCH_LAST_INVOICE_NUMBER_REQUEST, fetchLastInvoiceNumberSaga);
+    yield takeLatest(actions.UPDATE_INVOICE_PAYMENT_REQUEST, updateInvoicePaymentSaga);
 }

@@ -9,18 +9,18 @@ import { toast } from 'react-toastify';
 import InvoiceDataGrid from './components/InvoiceDataGrid/InvoiceDataGrid';
 import InvoicePreviewModal from './components/InvoicePreviewModal/InvoicePreviewModal';
 import DeleteConfirmationDialog from './components/DeleteConfirmationDialog/DeleteConfirmationDialog';
+import InvoiceSettlementModal from './components/InvoiceSettlementModal/InvoiceSettlementModal'; // Nowy import
 
 // Hooki i akcje
 import useFetchInvoices from '../../hooks/useFetchInvoices';
 import useFetchContractors from '../../../contractors/hooks/useFetchContractors';
-import { deleteInvoiceRequest } from '../../redux/invoiceActions';
+import { deleteInvoiceRequest, updateInvoicePaymentRequest } from '../../redux/invoiceActions'; // Dodana nowa akcja
 import { RootState } from '@store/rootReducer';
 import { Invoice } from '@app-types/types';
 import PrintService from '../../services/PrintService';
 
 import './InvoiceList.scss';
 
-// Rozszerzony typ faktury z nazwą kontrahenta
 interface InvoiceWithContractorName extends Invoice {
     contractorName?: string;
 }
@@ -52,6 +52,10 @@ const InvoiceList: React.FC = () => {
     const [invoiceToDelete, setInvoiceToDelete] = useState<number | null>(null);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewInvoice, setPreviewInvoice] = useState<InvoiceWithContractorName | null>(null);
+
+    // Nowe stany dla modala rozliczenia
+    const [settlementModalOpen, setSettlementModalOpen] = useState(false);
+    const [invoiceToSettle, setInvoiceToSettle] = useState<InvoiceWithContractorName | null>(null);
 
     // Połączenie faktur z kontrahentami
     useEffect(() => {
@@ -132,6 +136,21 @@ const InvoiceList: React.FC = () => {
         }
     };
 
+    // Nowe funkcje obsługujące rozliczenie faktury
+    const handleOpenSettlement = (invoice: InvoiceWithContractorName) => {
+        setInvoiceToSettle(invoice);
+        setSettlementModalOpen(true);
+    };
+
+    const handleCloseSettlement = () => {
+        setSettlementModalOpen(false);
+    };
+
+    const handleSettleInvoice = (id: number, paidAmount: number) => {
+        dispatch(updateInvoicePaymentRequest(id, paidAmount));
+        setSettlementModalOpen(false);
+    };
+
     // Filtrowanie faktur na podstawie searchTerm
     const filteredInvoices = processedInvoices.filter(invoice =>
         invoice.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -194,9 +213,10 @@ const InvoiceList: React.FC = () => {
                     onEditInvoice={handleEditInvoice}
                     onDeleteInvoice={handleDeleteInvoice}
                     onPreviewInvoice={handleOpenPreview}
+                    onSettleInvoice={handleOpenSettlement} // Nowy prop dla obsługi rozliczenia
                     ref={gridRef}
                     autoHeight={true}
-                    containerRef={containerRef} // Przekazujemy referencję do kontenera
+                    containerRef={containerRef}
                     headerOffset={90}
                 />
             </div>
@@ -208,6 +228,15 @@ const InvoiceList: React.FC = () => {
                 invoice={previewInvoice}
                 onEdit={previewInvoice?.id ? () => handleEditInvoice(previewInvoice.id) : undefined}
                 data-testid="invoice-preview-modal"
+            />
+
+            {/* Nowy modal rozliczenia faktury */}
+            <InvoiceSettlementModal
+                open={settlementModalOpen}
+                onClose={handleCloseSettlement}
+                invoice={invoiceToSettle}
+                onConfirm={handleSettleInvoice}
+                data-testid="invoice-settlement-modal"
             />
 
             {/* Dialog potwierdzenia usunięcia */}

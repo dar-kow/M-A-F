@@ -24,10 +24,32 @@ namespace backend.Models
 
         public string Description { get; set; }
 
-        // Relacja z kontrahentem
         public int ContractorId { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }
         public ICollection<InvoiceItem> InvoiceItems { get; set; }
+
+        public void UpdatePaymentStatus()
+        {
+            if (PaidAmount >= TotalAmount)
+            {
+                PaymentStatus = PaymentStatus.Paid;
+                return;
+            }
+
+            if (PaidAmount > 0)
+            {
+                PaymentStatus = PaymentStatus.PartiallyPaid;
+            }
+            else
+            {
+                PaymentStatus = PaymentStatus.Unpaid;
+            }
+
+            if (DueDate < DateTime.Now && PaymentStatus != PaymentStatus.Paid)
+            {
+                PaymentStatus = PaymentStatus.Overdue;
+            }
+        }
     }
 }

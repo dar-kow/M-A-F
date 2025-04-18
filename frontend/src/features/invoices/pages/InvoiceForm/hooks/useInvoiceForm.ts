@@ -266,7 +266,6 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
             dueDate: data.dateDue.toJSDate(),
             contractorId: data.contractorId,
             paymentMethod: data.paymentMethod,
-            paymentStatus: paymentStatus,
             description: data.description,
             paidAmount: data.paidAmount,
             totalAmount: totals.grossTotal,

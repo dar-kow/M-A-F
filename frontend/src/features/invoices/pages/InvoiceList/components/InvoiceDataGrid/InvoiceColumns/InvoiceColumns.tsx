@@ -7,9 +7,9 @@ import {
 import {
     Delete as DeleteIcon,
     Edit as EditIcon,
-    // Visibility as VisibilityIcon,
     ViewColumn as ViewColumnIcon,
     Description as DescriptionIcon,
+    CreditCard as CreditCardIcon,
 } from '@mui/icons-material';
 import { Invoice } from '@app-types/types';
 import { formatDate, formatAmount, formatPaymentMethod } from '@shared/utils/formatters';
@@ -32,6 +32,7 @@ export const getInvoiceColumns = (
     onEditInvoice: (id: number) => void,
     onDeleteInvoice: (id: number) => void,
     onPreviewInvoice: (invoice: Invoice & { contractorName?: string }) => void,
+    onSettleInvoice: (invoice: Invoice & { contractorName?: string }) => void, // Nowy parametr dla funkcji rozliczenia
     onOpenColumnSelector: () => void,
     columnMenuButtonRef: React.RefObject<HTMLButtonElement>
 ): GridColDef[] => [
@@ -238,7 +239,7 @@ export const getInvoiceColumns = (
             headerName: '',
             sortable: false,
             filterable: false,
-            width: 120,
+            width: 160,
             align: 'center',
             headerAlign: 'center',
             resizable: false,
@@ -273,11 +274,23 @@ export const getInvoiceColumns = (
                 <Box sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center', // Środkowanie dla kolumny akcji
+                    justifyContent: 'center',
                     width: '100%',
                     height: '100%',
                     boxSizing: 'border-box',
                 }}>
+                    {/* Nowy przycisk do rozliczania faktury */}
+                    <StyledTooltip title="Rozlicz fakturę" {...tooltipDefaultProps}>
+                        <IconButton
+                            size="small"
+                            onClick={() => onSettleInvoice(params.row)}
+                            aria-label="rozlicz fakturę"
+                            data-testid={`invoice-settle-btn-${params.row.id}`}
+                        >
+                            <CreditCardIcon fontSize="small" />
+                        </IconButton>
+                    </StyledTooltip>
+
                     <StyledTooltip title="Edytuj fakturę" {...tooltipDefaultProps}>
                         <IconButton
                             size="small"
@@ -288,6 +301,7 @@ export const getInvoiceColumns = (
                             <EditIcon fontSize="small" />
                         </IconButton>
                     </StyledTooltip>
+
                     <StyledTooltip title="Usuń fakturę" {...tooltipDefaultProps}>
                         <IconButton
                             size="small"
