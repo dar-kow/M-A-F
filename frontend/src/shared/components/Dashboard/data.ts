@@ -9,6 +9,9 @@ export const projectStatus = [
         title: "Zaimplementowane",
         color: "primary",
         items: [
+            "Automatyczne rozliczanie faktur z poziomu listy",
+            "Rozliczanie faktur po stronie backendu",
+            "Dashboard z dynamicznymi wykresami",
             "Dodanie tooltipów na liście kontrahentów",
             "Dodanie tooltipów na liście faktur",
             "Poprawki sidebra",
@@ -30,14 +33,11 @@ export const projectStatus = [
         title: "W trakcie",
         color: "info",
         items: [
-            "Poprawa funkcjonalności Faktury",
-            "Poprawa statusów płaności",
-            "Dashboard z dynamicznymi wykresami",
             "System powiadomień",
             "Optymalizacja wydajności",
             "Ostylowanie tabeli",
             "Aktualizacja paczek npm",
-            "Komunikacja z backendem",
+            "Komunikacja z backendem"
         ]
     },
     {
@@ -48,10 +48,10 @@ export const projectStatus = [
             "Dodanie debounce do wyszukiwarki",
             "Wdrożenie x-data-grid do Kontrahenci",
             "Podgląd faktury w nowym oknie",
-            "Rozliczanie faktur z listy",
-            "AKtualizacja płatności na podstawie wpłat",
             "Ostylowanie dla wersji mobilnej",
-            "Testy E2E Frontendu"
+            "Testy E2E Frontendu",
+            "Integracja z API banków do śledzenia płatności",
+            "System powiadomień o zbliżających się terminach płatności"
         ]
     }
 ];
