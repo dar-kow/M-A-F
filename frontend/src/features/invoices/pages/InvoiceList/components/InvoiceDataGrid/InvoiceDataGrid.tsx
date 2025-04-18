@@ -27,6 +27,7 @@ interface InvoiceDataGridProps {
     onEditInvoice: (id: number) => void;
     onDeleteInvoice: (id: number) => void;
     onPreviewInvoice: (invoice: Invoice & { contractorName?: string }) => void;
+    onSettleInvoice: (invoice: Invoice & { contractorName?: string }) => void; // Nowy prop do obsługi rozliczenia
     height?: number;
     autoHeight?: boolean;
     containerRef?: React.RefObject<HTMLElement>;
@@ -42,6 +43,7 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
     onEditInvoice,
     onDeleteInvoice,
     onPreviewInvoice,
+    onSettleInvoice, // Nowy prop do obsługi rozliczenia
     height = 600,
     autoHeight = false,
     containerRef,
@@ -86,9 +88,9 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
     });
 
     // Handler otwierania selektora kolumn
-    const handleOpenColumnSelector = () => {
+    const handleOpenColumnSelector = React.useCallback(() => {
         setColumnsMenuOpen(true);
-    };
+    }, []);
 
     // Eksponujemy funkcje dla komponentu nadrzędnego przez ref
     useImperativeHandle(ref, () => ({
@@ -111,17 +113,18 @@ const InvoiceDataGrid = forwardRef<InvoiceDataGridRef, InvoiceDataGridProps>(({
         </ClickAwayListener>
     ), [columnFilters, handleColumnFilterChange, clearColumnFilter, activeFilterField, handleClickAwayFilter]);
 
-    // Kolumny dla tabeli
+    // Kolumny dla tabeli - dodany nowy parametr onSettleInvoice
     const columns = React.useMemo(() =>
         getInvoiceColumns(
             renderFilterHeader,
             onEditInvoice,
             onDeleteInvoice,
             onPreviewInvoice,
+            onSettleInvoice, // Nowy argument do obsługi rozliczenia
             handleOpenColumnSelector,
             columnMenuButtonRef as React.RefObject<HTMLButtonElement>
         ),
-        [renderFilterHeader, onEditInvoice, onDeleteInvoice, onPreviewInvoice]);
+        [renderFilterHeader, onEditInvoice, onDeleteInvoice, onPreviewInvoice, onSettleInvoice, handleOpenColumnSelector]);
 
     // Sortowanie kolumn
     const sortedColumns = React.useMemo(() => {
