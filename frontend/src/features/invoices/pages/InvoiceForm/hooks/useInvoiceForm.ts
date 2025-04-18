@@ -249,15 +249,6 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
 
     // Obsługa zapisu formularza
     const handleSubmit = useCallback((data: FormData) => {
-        // Aktualizacja statusu płatności na podstawie zapłaconej kwoty
-        let paymentStatus = data.paymentStatus;
-        if (data.paidAmount <= 0) {
-            paymentStatus = PaymentStatus.Unpaid;
-        } else if (data.paidAmount >= totals.grossTotal) {
-            paymentStatus = PaymentStatus.Paid;
-        } else {
-            paymentStatus = PaymentStatus.PartiallyPaid;
-        }
 
         // Przygotowanie danych do wysłania
         const invoiceData: Partial<Invoice> = {
