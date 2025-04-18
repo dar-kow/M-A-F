@@ -29,6 +29,10 @@ export const FETCH_LAST_INVOICE_NUMBER_FAILURE = 'invoices/FETCH_LAST_INVOICE_NU
 export const CLEAR_INVOICE = 'invoices/CLEAR_INVOICE';
 export const CLEAR_ERRORS = 'invoices/CLEAR_ERRORS';
 
+export const UPDATE_INVOICE_PAYMENT_REQUEST = 'invoices/UPDATE_INVOICE_PAYMENT_REQUEST';
+export const UPDATE_INVOICE_PAYMENT_SUCCESS = 'invoices/UPDATE_INVOICE_PAYMENT_SUCCESS';
+export const UPDATE_INVOICE_PAYMENT_FAILURE = 'invoices/UPDATE_INVOICE_PAYMENT_FAILURE';
+
 export const fetchInvoicesRequest = () => ({
     type: FETCH_INVOICES_REQUEST
 });
@@ -123,4 +127,19 @@ export const clearInvoice = () => ({
 
 export const clearErrors = () => ({
     type: CLEAR_ERRORS
+});
+
+export const updateInvoicePaymentRequest = (id: number, paidAmount: number) => ({
+    type: UPDATE_INVOICE_PAYMENT_REQUEST,
+    payload: { id, paidAmount }
+});
+
+export const updateInvoicePaymentSuccess = (invoice: Invoice) => ({
+    type: UPDATE_INVOICE_PAYMENT_SUCCESS,
+    payload: invoice
+});
+
+export const updateInvoicePaymentFailure = (error: string) => ({
+    type: UPDATE_INVOICE_PAYMENT_FAILURE,
+    payload: error
 });
