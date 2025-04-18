@@ -103,14 +103,31 @@ export class InvoiceActions extends ApiBase {
         return this.handleResponse(response);
     }
 
-    async createMultipleInvoices(contractorIds: number[], count: number) {
+    async createMultipleInvoices(contractorIds: number[], count: number, month?: number, year?: number) {
         const createdInvoices: Invoice[] = [];
+        const now = new Date();
+        const targetMonth = typeof month === 'number' ? month : now.getMonth(); // 0 = styczeń
+        const targetYear = typeof year === 'number' ? year : now.getFullYear();
+
+        // Ustal liczbę dni w miesiącu
+        const daysInMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
 
         for (let i = 0; i < count; i++) {
             const randomIndex = Math.floor(Math.random() * contractorIds.length);
             const contractorId = contractorIds[randomIndex];
 
-            const result = await this.createInvoice(contractorId);
+            const randomDay = Math.floor(Math.random() * daysInMonth) + 1;
+            const issueDate = new Date(targetYear, targetMonth, randomDay);
+            const dueDate = new Date(issueDate);
+            dueDate.setDate(issueDate.getDate() + 14);
+
+            let invoiceData = InvoiceData.generateRandomInvoice(contractorId);
+            invoiceData.issueDate = issueDate.toISOString();
+            invoiceData.dueDate = dueDate.toISOString();
+            invoiceData.createdAt = issueDate.toISOString();
+            invoiceData = InvoiceData.calculateInvoiceTotals(invoiceData);
+
+            const result = await this.createInvoice(contractorId, invoiceData);
             if (result.status === 201) {
                 createdInvoices.push(result.data);
             }
