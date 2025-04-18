@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.5.5 - Automatyczne rozliczanie faktur - 2025.04.20
+
+- Przeniesienie logiki ustalania statusów płatności na backend
+- Dodanie endpointu API do aktualizacji płatności za faktury
+- Implementacja komponentu InvoiceSettlementModal do rozliczania faktur
+- Dodanie przycisku rozliczania faktur w tabeli faktur
+- Automatyczne aktualizowanie statusu faktury w zależności od kwoty zapłaconej i terminu
+- Rozbudowa systemu powiadomień o zdarzeniach płatności
+- Publikowanie zdarzeń w RabbitMQ przy zmianie statusu płatności
+
 ## v0.5.4 - dodanie tooltipów do listy kontrahentów
 
 ## v0.5.3 - sidebar toggle aktywacyjny - 2025.04.06
