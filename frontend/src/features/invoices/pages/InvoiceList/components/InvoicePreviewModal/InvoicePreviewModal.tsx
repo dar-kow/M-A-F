@@ -28,17 +28,20 @@ const InvoicePreviewModal: React.FC<InvoicePreviewModalProps> = ({
             onClose={onClose}
             aria-labelledby="invoice-preview-title"
         >
-            <Box sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 480,
-                bgcolor: 'background.paper',
-                borderRadius: 1,
-                boxShadow: 24,
-                p: 4,
-            }}>
+            <Box
+                data-testid="invoice-preview-modal"
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 480,
+                    bgcolor: 'background.paper',
+                    borderRadius: 1,
+                    boxShadow: 24,
+                    p: 4,
+                }}
+            >
                 <Typography id="invoice-preview-title" variant="h6" component="h2" gutterBottom>
                     Faktura {invoice.number}
                 </Typography>
