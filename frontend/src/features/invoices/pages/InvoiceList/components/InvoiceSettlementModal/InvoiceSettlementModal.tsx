@@ -69,6 +69,7 @@ const InvoiceSettlementModal: React.FC<InvoiceSettlementModalProps> = ({
             aria-labelledby="settlement-modal-title"
         >
             <Paper
+                data-testid="invoice-settlement-modal"
                 sx={{
                     position: 'absolute',
                     top: '50%',
