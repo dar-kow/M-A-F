@@ -28,6 +28,7 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
             onClose={onClose}
             aria-labelledby="delete-dialog-title"
             aria-describedby="delete-dialog-description"
+            data-testid="invoice-delete-dialog"
         >
             <DialogTitle id="delete-dialog-title">
                 Potwierdzenie usunięcia
