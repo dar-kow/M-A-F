@@ -77,14 +77,18 @@ const InvoiceItemsTable = ({
         }
     }, [forceUpdate, localForceUpdate]);
 
-    // Funkcja wywoływana przy zmianie pola liczbowego
-    // Poprawione: wyraźne określenie typu dla parametru e
     const handleNumberFieldChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, onChange: (value: any) => void) => {
         const value = parseFloat(e.target.value) || 0;
         onChange(value);
-        // Używamy bezpiecznej funkcji aktualizacji
         setTimeout(safeForceUpdate, 0);
     }, [safeForceUpdate]);
+
+    const vatRateOptions = Object.entries(VatRate)
+        .filter(([key, value]) => typeof value === 'number')
+        .map(([key, value]) => ({
+            value: value as number,
+            label: `${value}%`
+        }));
 
     return (
         <Box sx={{ mt: 4, mb: 4 }}>
@@ -272,13 +276,7 @@ const InvoiceItemsTable = ({
                                                         setTimeout(safeForceUpdate, 0);
                                                     }}
                                                 >
-                                                    {[
-                                                        { value: 0, label: "0%" },
-                                                        { value: 3, label: "3%" },
-                                                        { value: 5, label: "5%" },
-                                                        { value: 8, label: "8%" },
-                                                        { value: 23, label: "23%" }
-                                                    ].map(option => (
+                                                    {vatRateOptions.map(option => (
                                                         <MenuItem key={option.value} value={option.value}>
                                                             {option.label}
                                                         </MenuItem>
