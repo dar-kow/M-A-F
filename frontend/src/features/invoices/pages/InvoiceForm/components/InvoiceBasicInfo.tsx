@@ -175,6 +175,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                                 {...field}
                                 labelId="payment-status-label"
                                 label="Status płatności"
+                                disabled={true} // Dodaj disabled, aby uniemożliwić zmianę
                             >
                                 {Object.values(PaymentStatus).map(status => (
                                     <MenuItem key={status} value={status}>
@@ -187,6 +188,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                         )}
                     />
                     {errors.paymentStatus && <FormHelperText>{errors.paymentStatus.message}</FormHelperText>}
+                    <FormHelperText>Status płatności jest ustalany automatycznie przez system</FormHelperText>
                 </FormControl>
             </Grid>
 
