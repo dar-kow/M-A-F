@@ -272,8 +272,16 @@ const InvoiceItemsTable = ({
                                                         setTimeout(safeForceUpdate, 0);
                                                     }}
                                                 >
-                                                    {Object.values(VatRate).map(rate => (
-                                                        <MenuItem key={rate} value={rate}>{rate}%</MenuItem>
+                                                    {[
+                                                        { value: 0, label: "0%" },
+                                                        { value: 3, label: "3%" },
+                                                        { value: 5, label: "5%" },
+                                                        { value: 8, label: "8%" },
+                                                        { value: 23, label: "23%" }
+                                                    ].map(option => (
+                                                        <MenuItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </MenuItem>
                                                     ))}
                                                 </Select>
                                                 {errors.items?.[index]?.vatRate && (
