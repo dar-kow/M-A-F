@@ -84,8 +84,8 @@ const InvoiceItemsTable = ({
     }, [safeForceUpdate]);
 
     const vatRateOptions = Object.entries(VatRate)
-        .filter(([key, value]) => typeof value === 'number')
-        .map(([key, value]) => ({
+        .filter(([_, value]) => typeof value === 'number')
+        .map(([_, value]) => ({
             value: value as number,
             label: `${value}%`
         }));
