@@ -50,20 +50,20 @@ const InvoiceItemsTable = ({
     watchedItems,
     forceUpdate
 }: InvoiceItemsTableProps) => {
-    // Dodajemy lokalny stan do wymuszenia aktualizacji
+    // Add local state to force update
     const [localUpdateCounter, setLocalUpdateCounter] = useState(0);
 
-    // Funkcja pomocnicza do formatowania wartości pieniężnych
+    // Helper function to format currency values
     const formatCurrency = (value: number): string => {
         return value.toFixed(2) + ' zł';
     };
 
-    // Lokalna funkcja wymuszająca aktualizację
+    // Local function to force update
     const localForceUpdate = useCallback(() => {
         setLocalUpdateCounter(prev => prev + 1);
     }, []);
 
-    // Bezpieczna funkcja aktualizacji - używa przekazanej lub lokalnej
+    // Safe force update function - uses provided or local
     const safeForceUpdate = useCallback(() => {
         if (typeof forceUpdate === 'function') {
             try {
@@ -94,34 +94,34 @@ const InvoiceItemsTable = ({
         <Box sx={{ mt: 4, mb: 4 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="subtitle1">
-                    Pozycje faktury
+                    Invoice items
                 </Typography>
                 <Button
                     variant="outlined"
                     startIcon={<AddIcon />}
                     onClick={handleAddItem}
                 >
-                    Dodaj pozycję
+                    Add item
                 </Button>
             </Box>
 
             <Table size="small" className="invoice-items-table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Opis</TableCell>
-                        <TableCell>Ilość</TableCell>
-                        <TableCell>Jednostka</TableCell>
-                        <TableCell>Cena netto</TableCell>
+                        <TableCell>Description</TableCell>
+                        <TableCell>Quantity</TableCell>
+                        <TableCell>Unit</TableCell>
+                        <TableCell>Net price</TableCell>
                         <TableCell>VAT</TableCell>
-                        <TableCell>Wartość netto</TableCell>
-                        <TableCell>Wartość VAT</TableCell>
-                        <TableCell>Wartość brutto</TableCell>
-                        <TableCell>Akcje</TableCell>
+                        <TableCell>Net value</TableCell>
+                        <TableCell>VAT value</TableCell>
+                        <TableCell>Gross value</TableCell>
+                        <TableCell>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {fields.map((field, index) => {
-                        // Obliczenia wartości dla wiersza
+                        // Calculations for row values
                         const quantity = parseFloat(String(watchedItems?.[index]?.quantity || 0));
                         const unitPrice = parseFloat(String(watchedItems?.[index]?.unitPrice || 0));
                         const vatRate = parseFloat(String(watchedItems?.[index]?.vatRate || 0));
@@ -329,11 +329,11 @@ const InvoiceItemsTable = ({
                         );
                     })}
 
-                    {/* Wiersz podsumowania reaguje również na lokalny licznik aktualizacji */}
+                    {/* The summary row also reacts to the local update counter */}
                     {watchedItems && watchedItems.length > 0 && (
                         <TableRow className="item-totals" key={`totals-row-${localUpdateCounter}`}>
                             <TableCell colSpan={5} align="right">
-                                <Typography variant="subtitle2">Razem:</Typography>
+                                <Typography variant="subtitle2">Total:</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2">
@@ -368,11 +368,11 @@ const InvoiceItemsTable = ({
                 </TableBody>
             </Table>
 
-            {/* Komunikat gdy brak pozycji */}
+            {/* Message when there are no items */}
             {fields.length === 0 && (
                 <Box sx={{ textAlign: 'center', p: 2 }}>
                     <Typography color="text.secondary">
-                        Brak pozycji. Dodaj pierwszą pozycję faktury.
+                        No items. Add the first invoice item.
                     </Typography>
                 </Box>
             )}
