@@ -1,7 +1,14 @@
 # Changelog
 
-## v0.5.5 - Automatyczne rozliczanie faktur - 2025.04.20
+## v0.5.6 - Usprawnienia systemu powiadomień i sortowanie - 2025.05.18
+- Dodanie deduplikacji powiadomień toast przy rozliczaniu faktur
+- Implementacja systemu powiadomień dla różnych typów operacji
+- Personalizacja komunikatów w zależności od typu akcji (utworzenie, edycja, usunięcie, rozliczenie)
+- Domyślne sortowanie faktur po dacie wystawienia malejąco
+- Zapamiętywanie ustawień sortowania między sesjami
+- Rozwiązanie problemu z duplikującymi się powiadomieniami
 
+## v0.5.5 - Automatyczne rozliczanie faktur - 2025.04.20
 - Przeniesienie logiki ustalania statusów płatności na backend
 - Dodanie endpointu API do aktualizacji płatności za faktury
 - Implementacja komponentu InvoiceSettlementModal do rozliczania faktur
