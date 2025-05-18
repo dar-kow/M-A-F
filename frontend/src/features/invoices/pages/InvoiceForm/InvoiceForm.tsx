@@ -21,6 +21,7 @@ function InvoiceForm() {
     const loading = useSelector((state: RootState) => state.invoices.loading);
     const error = useSelector((state: RootState) => state.invoices.error);
     const actionSuccess = useSelector((state: RootState) => state.invoices.actionSuccess);
+    const lastActionType = useSelector((state: RootState) => state.invoices.lastActionType);
 
     // Custom hook z całą logiką formularza
     const {
@@ -40,32 +41,45 @@ function InvoiceForm() {
     // Obsługa błędów i sukcesu
     useEffect(() => {
         if (actionSuccess) {
-            toast.success(`Faktura ${isEdit ? 'zaktualizowana' : 'dodana'} pomyślnie!`);
+            switch (lastActionType) {
+                case 'CREATE':
+                    toast.success('Faktura została pomyślnie utworzona!');
+                    break;
+                case 'UPDATE':
+                    toast.success('Faktura została pomyślnie zaktualizowana!');
+                    break;
+                default:
+                    toast.success(`Faktura ${isEdit ? 'zaktualizowana' : 'dodana'} pomyślnie!`);
+            }
         }
-    }, [actionSuccess, isEdit]);
+    }, [actionSuccess, isEdit, lastActionType]);
 
     useEffect(() => {
         if (error) {
-            toast.error(`Error: ${error}`);
+            switch (lastActionType) {
+                case 'CREATE':
+                    toast.error(`Błąd podczas tworzenia faktury: ${error}`);
+                    break;
+                case 'UPDATE':
+                    toast.error(`Błąd podczas aktualizacji faktury: ${error}`);
+                    break;
+                default:
+                    toast.error(`Error: ${error}`);
+            }
         }
-    }, [error]);
+    }, [error, lastActionType]);
 
     // Dodany efekt do aktualizacji daty płatności gdy zmienia się data wystawienia
     useEffect(() => {
         const subscription = formMethods.watch((value, { name }) => {
             if (name === 'issueDate') {
-                // Pobierz aktualne wartości
                 const issueDate = value.issueDate;
                 const currentDueDate = value.dateDue;
 
-                // Jeśli data płatności jest przed datą wystawienia, zaktualizuj ją
                 if (issueDate && currentDueDate && currentDueDate < issueDate) {
-                    // Dodaj sprawdzenie typu i rzutowanie do DateTime
                     if ('plus' in issueDate) {
-                        // Użyj bezpiecznego dostępu do metody plus
                         formMethods.setValue('dateDue', (issueDate as DateTime).plus({ days: 14 }));
                     } else {
-                        // Alternatywne podejście dla innych typów dat
                         const newDate = new Date(issueDate as string | number | Date);
                         newDate.setDate(newDate.getDate() + 14);
                         formMethods.setValue('dateDue', DateTime.fromJSDate(newDate));
@@ -99,7 +113,7 @@ function InvoiceForm() {
                         control={formMethods.control}
                         errors={formMethods.formState.errors}
                         contractors={contractors}
-                        getValues={formMethods.getValues} // Dodane przekazanie funkcji getValues
+                        getValues={formMethods.getValues}
                     />
 
                     {/* Sekcja z pozycjami faktury */}
@@ -116,7 +130,7 @@ function InvoiceForm() {
                     {/* Sekcja z podsumowaniem */}
                     <InvoiceSummary
                         totals={totals}
-                        key={`summary-${updateCounter}`} // Dodaj tę linię
+                        key={`summary-${updateCounter}`}
                     />
 
                     {/* Przyciski akcji */}
