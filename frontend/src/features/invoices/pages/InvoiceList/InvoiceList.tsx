@@ -9,12 +9,12 @@ import { toast } from 'react-toastify';
 import InvoiceDataGrid from './components/InvoiceDataGrid/InvoiceDataGrid';
 import InvoicePreviewModal from './components/InvoicePreviewModal/InvoicePreviewModal';
 import DeleteConfirmationDialog from './components/DeleteConfirmationDialog/DeleteConfirmationDialog';
-import InvoiceSettlementModal from './components/InvoiceSettlementModal/InvoiceSettlementModal'; // Nowy import
+import InvoiceSettlementModal from './components/InvoiceSettlementModal/InvoiceSettlementModal';
 
 // Hooki i akcje
 import useFetchInvoices from '../../hooks/useFetchInvoices';
 import useFetchContractors from '../../../contractors/hooks/useFetchContractors';
-import { deleteInvoiceRequest, updateInvoicePaymentRequest } from '../../redux/invoiceActions'; // Dodana nowa akcja
+import { deleteInvoiceRequest, updateInvoicePaymentRequest } from '../../redux/invoiceActions';
 import { RootState } from '@store/rootReducer';
 import { Invoice } from '@app-types/types';
 import PrintService from '../../services/PrintService';
@@ -44,6 +44,7 @@ const InvoiceList: React.FC = () => {
 
     // Redux state dla operacji
     const actionSuccess = useSelector((state: RootState) => state.invoices.actionSuccess);
+    const lastActionType = useSelector((state: RootState) => state.invoices.lastActionType);
 
     // Stan lokalny
     const [searchTerm, setSearchTerm] = useState('');
@@ -74,18 +75,49 @@ const InvoiceList: React.FC = () => {
         }
     }, [invoices, contractors]);
 
-    // Obsługa powiadomień
+    // Obsługa powiadomień 
     useEffect(() => {
         if (actionSuccess) {
-            toast.success('Operacja zakończona pomyślnie!');
+            switch (lastActionType) {
+                case 'CREATE':
+                    toast.success('Faktura została pomyślnie utworzona!');
+                    break;
+                case 'UPDATE':
+                    toast.success('Faktura została pomyślnie zaktualizowana!');
+                    break;
+                case 'DELETE':
+                    toast.success('Faktura została pomyślnie usunięta!');
+                    break;
+                case 'PAYMENT':
+                    toast.success('Płatność faktury została pomyślnie zaktualizowana!');
+                    break;
+                default:
+                    toast.success('Operacja zakończona pomyślnie!');
+            }
         }
-    }, [actionSuccess]);
+    }, [actionSuccess, lastActionType]);
 
+    // Obsługa błędów 
     useEffect(() => {
         if (error) {
-            toast.error(`Błąd: ${error}`);
+            switch (lastActionType) {
+                case 'CREATE':
+                    toast.error(`Błąd podczas tworzenia faktury: ${error}`);
+                    break;
+                case 'UPDATE':
+                    toast.error(`Błąd podczas aktualizacji faktury: ${error}`);
+                    break;
+                case 'DELETE':
+                    toast.error(`Błąd podczas usuwania faktury: ${error}`);
+                    break;
+                case 'PAYMENT':
+                    toast.error(`Błąd podczas aktualizacji płatności: ${error}`);
+                    break;
+                default:
+                    toast.error(`Błąd: ${error}`);
+            }
         }
-    }, [error]);
+    }, [error, lastActionType]);
 
     // Funkcje obsługujące akcje
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +148,12 @@ const InvoiceList: React.FC = () => {
 
     const handleDeleteConfirm = () => {
         if (invoiceToDelete !== null) {
+            // Dodane informacyjne powiadomienie
+            const invoiceToDeleteData = processedInvoices.find(i => i.id === invoiceToDelete);
+            if (invoiceToDeleteData) {
+                toast.info(`Usuwanie faktury ${invoiceToDeleteData.number}...`);
+            }
+
             dispatch(deleteInvoiceRequest(invoiceToDelete));
             setDeleteDialogOpen(false);
             setInvoiceToDelete(null);
@@ -147,6 +185,12 @@ const InvoiceList: React.FC = () => {
     };
 
     const handleSettleInvoice = (id: number, paidAmount: number) => {
+        // Dodane informacyjne powiadomienie
+        const invoiceData = processedInvoices.find(i => i.id === id);
+        if (invoiceData) {
+            toast.info(`Aktualizowanie płatności faktury ${invoiceData.number}...`);
+        }
+
         dispatch(updateInvoicePaymentRequest(id, paidAmount));
         setSettlementModalOpen(false);
     };
@@ -226,7 +270,7 @@ const InvoiceList: React.FC = () => {
                 open={previewOpen}
                 onClose={handleClosePreview}
                 invoice={previewInvoice}
-                onEdit={previewInvoice?.id ? () => handleEditInvoice(previewInvoice.id) : undefined}
+                onEdit={handleEditInvoice}
                 data-testid="invoice-preview-modal"
             />
 
