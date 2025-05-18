@@ -10,6 +10,7 @@ import {
     Divider,
     Chip
 } from '@mui/material';
+import { toast } from 'react-toastify';
 import { Invoice } from '@app-types/types';
 import { formatAmount } from '@shared/utils/formatters';
 import { getStatusChipColor, getPaymentStatusLabel } from '@shared/utils/statusHelpers';
@@ -55,6 +56,7 @@ const InvoiceSettlementModal: React.FC<InvoiceSettlementModalProps> = ({
     if (!invoice) return null;
 
     const handleConfirm = () => {
+        toast.info(`Aktualizowanie płatności faktury ${invoice.number}...`);
         onConfirm(invoice.id, paidAmount);
     };
 
