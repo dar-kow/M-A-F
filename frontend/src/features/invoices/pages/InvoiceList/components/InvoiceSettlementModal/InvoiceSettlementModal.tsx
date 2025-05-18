@@ -55,6 +55,7 @@ const InvoiceSettlementModal: React.FC<InvoiceSettlementModalProps> = ({
     if (!invoice) return null;
 
     const handleConfirm = () => {
+        // Usuwamy toast informacyjny stąd, ponieważ będzie wyświetlony w handleSettleInvoice
         onConfirm(invoice.id, paidAmount);
     };
 

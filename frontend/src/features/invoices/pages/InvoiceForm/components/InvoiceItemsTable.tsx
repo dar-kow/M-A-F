@@ -50,20 +50,20 @@ const InvoiceItemsTable = ({
     watchedItems,
     forceUpdate
 }: InvoiceItemsTableProps) => {
-    // Dodajemy lokalny stan do wymuszenia aktualizacji
+    // Add local state to force update
     const [localUpdateCounter, setLocalUpdateCounter] = useState(0);
 
-    // Funkcja pomocnicza do formatowania wartości pieniężnych
+    // Helper function to format currency values
     const formatCurrency = (value: number): string => {
         return value.toFixed(2) + ' zł';
     };
 
-    // Lokalna funkcja wymuszająca aktualizację
+    // Local function to force update
     const localForceUpdate = useCallback(() => {
         setLocalUpdateCounter(prev => prev + 1);
     }, []);
 
-    // Bezpieczna funkcja aktualizacji - używa przekazanej lub lokalnej
+    // Safe force update function - uses provided or local
     const safeForceUpdate = useCallback(() => {
         if (typeof forceUpdate === 'function') {
             try {
@@ -121,7 +121,7 @@ const InvoiceItemsTable = ({
                 </TableHead>
                 <TableBody>
                     {fields.map((field, index) => {
-                        // Obliczenia wartości dla wiersza
+                        // Calculations for row values
                         const quantity = parseFloat(String(watchedItems?.[index]?.quantity || 0));
                         const unitPrice = parseFloat(String(watchedItems?.[index]?.unitPrice || 0));
                         const vatRate = parseFloat(String(watchedItems?.[index]?.vatRate || 0));
@@ -329,7 +329,7 @@ const InvoiceItemsTable = ({
                         );
                     })}
 
-                    {/* Wiersz podsumowania reaguje również na lokalny licznik aktualizacji */}
+                    {/* The summary row also reacts to the local update counter */}
                     {watchedItems && watchedItems.length > 0 && (
                         <TableRow className="item-totals" key={`totals-row-${localUpdateCounter}`}>
                             <TableCell colSpan={5} align="right">
@@ -368,7 +368,7 @@ const InvoiceItemsTable = ({
                 </TableBody>
             </Table>
 
-            {/* Komunikat gdy brak pozycji */}
+            {/* Message when there are no items */}
             {fields.length === 0 && (
                 <Box sx={{ textAlign: 'center', p: 2 }}>
                     <Typography color="text.secondary">

@@ -5,16 +5,20 @@ import { Box, TextField, CircularProgress, Button } from '@mui/material';
 import { Search as SearchIcon, Add as AddIcon, Print as PrintIcon } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
-// Importy własnych komponentów
+// Import custom components
 import InvoiceDataGrid from './components/InvoiceDataGrid/InvoiceDataGrid';
 import InvoicePreviewModal from './components/InvoicePreviewModal/InvoicePreviewModal';
 import DeleteConfirmationDialog from './components/DeleteConfirmationDialog/DeleteConfirmationDialog';
-import InvoiceSettlementModal from './components/InvoiceSettlementModal/InvoiceSettlementModal'; // Nowy import
+import InvoiceSettlementModal from './components/InvoiceSettlementModal/InvoiceSettlementModal'; // New import
 
-// Hooki i akcje
+// Hooks and actions
 import useFetchInvoices from '../../hooks/useFetchInvoices';
 import useFetchContractors from '../../../contractors/hooks/useFetchContractors';
-import { deleteInvoiceRequest, updateInvoicePaymentRequest } from '../../redux/invoiceActions'; // Dodana nowa akcja
+import {
+    deleteInvoiceRequest,
+    updateInvoicePaymentRequest,
+    clearActionStatus  // New action
+} from '../../redux/invoiceActions';
 import { RootState } from '@store/rootReducer';
 import { Invoice } from '@app-types/types';
 import PrintService from '../../services/PrintService';
@@ -26,26 +30,27 @@ interface InvoiceWithContractorName extends Invoice {
 }
 
 /**
- * Komponent strony listy faktur
+ * Invoice list page component
  */
 const InvoiceList: React.FC = () => {
-    // Referencja do komponentu DataGrid
+    // Reference to the DataGrid component
     const gridRef = useRef<any>(null);
 
-    // Ref do kontenera całej strony
+    // Ref to the whole page container
     const containerRef = useRef<HTMLElement>(null);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Pobieranie danych
+    // Fetch data
     const { invoices, loading, error } = useFetchInvoices();
     const { contractors } = useFetchContractors();
 
-    // Redux state dla operacji
+    // Redux state for operations
     const actionSuccess = useSelector((state: RootState) => state.invoices.actionSuccess);
+    const lastActionType = useSelector((state: RootState) => state.invoices.lastActionType);
 
-    // Stan lokalny
+    // Local state
     const [searchTerm, setSearchTerm] = useState('');
     const [processedInvoices, setProcessedInvoices] = useState<InvoiceWithContractorName[]>([]);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -53,16 +58,16 @@ const InvoiceList: React.FC = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewInvoice, setPreviewInvoice] = useState<InvoiceWithContractorName | null>(null);
 
-    // Nowe stany dla modala rozliczenia
+    // New state for settlement modal
     const [settlementModalOpen, setSettlementModalOpen] = useState(false);
     const [invoiceToSettle, setInvoiceToSettle] = useState<InvoiceWithContractorName | null>(null);
 
-    // Połączenie faktur z kontrahentami
+    // Merge invoices with contractors
     useEffect(() => {
         if (invoices && contractors) {
-            // Połącz faktury z kontrahentami
+            // Merge invoices with contractors
             const invoicesWithContractors = invoices.map(invoice => {
-                // Znajdź kontrahenta dla faktury
+                // Find contractor for invoice
                 const contractor = contractors.find(c => c.id === invoice.contractorId);
                 return {
                     ...invoice,
@@ -74,20 +79,53 @@ const InvoiceList: React.FC = () => {
         }
     }, [invoices, contractors]);
 
-    // Obsługa powiadomień
     useEffect(() => {
         if (actionSuccess) {
-            toast.success('Operacja zakończona pomyślnie!');
+            switch (lastActionType) {
+                case 'CREATE':
+                    toast.success('Faktura została pomyślnie utworzona!');
+                    break;
+                case 'UPDATE':
+                    toast.success('Faktura została pomyślnie zaktualizowana!');
+                    break;
+                case 'DELETE':
+                    toast.success('Faktura została pomyślnie usunięta!');
+                    break;
+                case 'PAYMENT':
+                    toast.success('Płatność faktury została pomyślnie zaktualizowana!');
+                    break;
+                default:
+                    toast.success('Operacja zakończona pomyślnie!');
+            }
+
+            dispatch(clearActionStatus());
         }
-    }, [actionSuccess]);
+    }, [actionSuccess, lastActionType, dispatch]);
 
     useEffect(() => {
         if (error) {
-            toast.error(`Błąd: ${error}`);
-        }
-    }, [error]);
+            switch (lastActionType) {
+                case 'CREATE':
+                    toast.error(`Błąd podczas tworzenia faktury: ${error}`);
+                    break;
+                case 'UPDATE':
+                    toast.error(`Błąd podczas aktualizacji faktury: ${error}`);
+                    break;
+                case 'DELETE':
+                    toast.error(`Błąd podczas usuwania faktury: ${error}`);
+                    break;
+                case 'PAYMENT':
+                    toast.error(`Błąd podczas aktualizacji płatności: ${error}`);
+                    break;
+                default:
+                    toast.error(`Błąd: ${error}`);
+            }
 
-    // Funkcje obsługujące akcje
+            dispatch(clearActionStatus());
+        }
+    }, [error, lastActionType, dispatch]);
+
+    // Action handlers
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
@@ -116,6 +154,11 @@ const InvoiceList: React.FC = () => {
 
     const handleDeleteConfirm = () => {
         if (invoiceToDelete !== null) {
+            const invoiceToDeleteData = processedInvoices.find(i => i.id === invoiceToDelete);
+            if (invoiceToDeleteData) {
+                toast.info(`Usuwanie faktury ${invoiceToDeleteData.number}...`);
+            }
+
             dispatch(deleteInvoiceRequest(invoiceToDelete));
             setDeleteDialogOpen(false);
             setInvoiceToDelete(null);
@@ -127,7 +170,7 @@ const InvoiceList: React.FC = () => {
         setInvoiceToDelete(null);
     };
 
-    // Funkcja drukowania tabeli
+    // Print table function
     const handlePrint = () => {
         if (processedInvoices.length > 0) {
             PrintService.printInvoiceList(processedInvoices, searchTerm);
@@ -136,7 +179,7 @@ const InvoiceList: React.FC = () => {
         }
     };
 
-    // Nowe funkcje obsługujące rozliczenie faktury
+    // New handlers for invoice settlement
     const handleOpenSettlement = (invoice: InvoiceWithContractorName) => {
         setInvoiceToSettle(invoice);
         setSettlementModalOpen(true);
@@ -147,17 +190,23 @@ const InvoiceList: React.FC = () => {
     };
 
     const handleSettleInvoice = (id: number, paidAmount: number) => {
+        // Added informational notification
+        const invoiceData = processedInvoices.find(i => i.id === id);
+        if (invoiceData) {
+            toast.info(`Aktualizowanie płatności faktury ${invoiceData.number}...`);
+        }
+
         dispatch(updateInvoicePaymentRequest(id, paidAmount));
         setSettlementModalOpen(false);
     };
 
-    // Filtrowanie faktur na podstawie searchTerm
+    // Filter invoices based on searchTerm
     const filteredInvoices = processedInvoices.filter(invoice =>
         invoice.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (invoice.contractorName?.toLowerCase() || '').includes(searchTerm.toLowerCase())
     );
 
-    // Wskaźnik ładowania całej strony
+    // Loading indicator for the whole page
     if (loading && processedInvoices.length === 0) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
@@ -213,7 +262,7 @@ const InvoiceList: React.FC = () => {
                     onEditInvoice={handleEditInvoice}
                     onDeleteInvoice={handleDeleteInvoice}
                     onPreviewInvoice={handleOpenPreview}
-                    onSettleInvoice={handleOpenSettlement} // Nowy prop dla obsługi rozliczenia
+                    onSettleInvoice={handleOpenSettlement}
                     ref={gridRef}
                     autoHeight={true}
                     containerRef={containerRef}
@@ -221,16 +270,16 @@ const InvoiceList: React.FC = () => {
                 />
             </div>
 
-            {/* Modal podglądu faktury */}
+            {/* Invoice preview modal */}
             <InvoicePreviewModal
                 open={previewOpen}
                 onClose={handleClosePreview}
                 invoice={previewInvoice}
-                onEdit={previewInvoice?.id ? () => handleEditInvoice(previewInvoice.id) : undefined}
+                onEdit={handleEditInvoice}
                 data-testid="invoice-preview-modal"
             />
 
-            {/* Nowy modal rozliczenia faktury */}
+            {/* New invoice settlement modal */}
             <InvoiceSettlementModal
                 open={settlementModalOpen}
                 onClose={handleCloseSettlement}
@@ -239,7 +288,7 @@ const InvoiceList: React.FC = () => {
                 data-testid="invoice-settlement-modal"
             />
 
-            {/* Dialog potwierdzenia usunięcia */}
+            {/* Delete confirmation dialog */}
             <DeleteConfirmationDialog
                 open={deleteDialogOpen}
                 onClose={handleDeleteCancel}

@@ -24,7 +24,7 @@ import {
 } from "@app-types/types";
 import { useInvoiceTotals } from "./useInvoiceTotals";
 
-// Stałe
+// Constants
 const emptyItem = {
   description: "",
   quantity: 1,
@@ -33,7 +33,7 @@ const emptyItem = {
   vatRate: VatRate.TwentyThree,
 };
 
-// Typy
+// Types
 export type FormData = {
   invoiceNumber: string;
   issueDate: DateTime;
@@ -52,10 +52,10 @@ export type FormData = {
   }[];
 };
 
-// Funkcje pomocnicze do konwersji typów enum
+// Helper functions for enum type conversion
 const convertVatRate = (vatRate: any): VatRate => {
   if (typeof vatRate === "string") {
-    // Mapowanie nazw na wartości enum
+    // Map names to enum values
     const mapping: Record<string, VatRate> = {
       Zero: VatRate.Zero,
       Three: VatRate.Three,
@@ -63,20 +63,20 @@ const convertVatRate = (vatRate: any): VatRate => {
       Eight: VatRate.Eight,
       TwentyThree: VatRate.TwentyThree,
     };
-    return mapping[vatRate] || VatRate.TwentyThree; // domyślnie 23%
+    return mapping[vatRate] || VatRate.TwentyThree; // default 23%
   }
   return vatRate as VatRate;
 };
 
 const convertUnit = (unit: any): Unit => {
   if (typeof unit === "string") {
-    // Sprawdzenie czy to jest jedna z wartości enum Unit
+    // Check if this is one of the Unit enum values
     const unitValues = ["l", "szt", "m", "kg"];
     if (unitValues.includes(unit)) {
       return unit as Unit;
     }
 
-    // Jeśli to jest nazwa klucza Unit a nie wartość
+    // If this is a Unit key name, not value
     if (unit in Unit) {
       return Unit[unit as keyof typeof Unit];
     }
@@ -98,15 +98,15 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
     (state: RootState) => state.invoices.lastInvoiceNumber
   );
 
-  // Kontrahenci
+  // Contractors
   const { contractors } = useFetchContractors();
 
-  // Funkcja do wymuszenia przeliczenia
+  // Force update function
   const forceUpdate = useCallback(() => {
     setUpdateCounter((prev) => prev + 1);
   }, []);
 
-  // Inicjalizacja formularza
+  // Form initialization
   const formMethods = useForm<FormData>({
     defaultValues: {
       invoiceNumber: "",
@@ -123,30 +123,30 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
 
   const { control, reset, watch, setValue } = formMethods;
 
-  // Konfiguracja dynamicznej tablicy pozycji faktury
+  // Invoice items field array configuration
   const { fields, append, remove } = useFieldArray({
     control,
     name: "items",
   });
 
-  // Obserwowanie pozycji faktury
+  // Watching invoice items
   const watchedItems = watch("items");
 
-  // Obliczanie sum
+  // Calculating totals
   const totals = useInvoiceTotals(watchedItems);
 
-  // Effect dla obserwacji zmian w polach
+  // Effect for watching field changes
   useEffect(() => {
-    // To wymusza przeliczenie wartości po każdej zmianie w items
+    // This forces recalculation of values on every change in items
     const subscription = formMethods.watch((_, { name }) => {
-      // Jeśli zmiana dotyczy pozycji faktury
+      // If the change concerns invoice items
       if (
         name?.startsWith("items.") &&
         (name.includes(".quantity") ||
           name.includes(".unitPrice") ||
           name.includes(".vatRate"))
       ) {
-        // Wymuszamy rerender przez niewielką aktualizację stanu
+        // Force re-render by a slight state update
         forceUpdate();
       }
     });
@@ -154,7 +154,7 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
     return () => subscription.unsubscribe();
   }, [formMethods, forceUpdate]);
 
-  // Effect do debugowania zmian
+  // Effect for debugging changes
   useEffect(() => {
     console.log(
       "Items updated or updateCounter changed:",
@@ -164,26 +164,26 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
     );
   }, [watchedItems, updateCounter]);
 
-  // Pobierz ostatni numer faktury przy inicjalizacji
+  // Fetch last invoice number on initialization
   useEffect(() => {
     if (!isEdit) {
       dispatch(fetchLastInvoiceNumberRequest());
     }
   }, [dispatch, isEdit]);
 
-  // Ustaw automatycznie numer faktury dla nowej faktury
+  // Automatically set invoice number for new invoice
   useEffect(() => {
     if (!isEdit && lastInvoiceNumber && !watch("invoiceNumber")) {
       try {
         const currentDate = DateTime.now();
         const year = currentDate.year;
 
-        // Domyślny numer na wypadek błędu
+        // Default number in case of error
         let nextNumber = 1;
 
-        // Analizuj ostatni numer faktury
+        // Analyze the last invoice number
         if (lastInvoiceNumber) {
-          console.log("Ostatni numer faktury z API:", lastInvoiceNumber);
+          console.log("Last invoice number from API:", lastInvoiceNumber);
           // Format: FV/numer/rok
           const regex = /FV\/(\d+)\/(\d+)/;
           const match = lastInvoiceNumber.match(regex);
@@ -192,25 +192,25 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
             nextNumber = parseInt(match[1], 10) + 1;
           }
         } else {
-          console.log("Brak ostatniego numeru faktury - używam domyślnego 1");
+          console.log("No last invoice number - using default 1");
         }
 
-        // Formatuj nowy numer
+        // Format new number
         const newInvoiceNumber = `FV/${nextNumber}/${year}`;
-        console.log("Wygenerowano nowy numer faktury:", newInvoiceNumber);
+        console.log("Generated new invoice number:", newInvoiceNumber);
 
-        // Ustaw nowy numer faktury
+        // Set new invoice number
         setValue("invoiceNumber", newInvoiceNumber);
       } catch (error) {
-        console.error("Błąd podczas generowania numeru faktury:", error);
-        // Ustaw awaryjny numer faktury
+        console.error("Error generating invoice number:", error);
+        // Set fallback invoice number
         const fallbackNumber = `FV/1/${DateTime.now().year}`;
         setValue("invoiceNumber", fallbackNumber);
       }
     }
   }, [lastInvoiceNumber, isEdit, setValue, watch]);
 
-  // Ładowanie danych faktury do edycji
+  // Load invoice data for editing
   useEffect(() => {
     if (isEdit && invoiceId) {
       dispatch(fetchInvoiceRequest(invoiceId));
@@ -222,12 +222,12 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
     };
   }, [dispatch, isEdit, invoiceId]);
 
-  // Wypełnianie formularza danymi faktury
+  // Fill form with invoice data
   useEffect(() => {
     if (isEdit && invoice && invoice.invoiceItems) {
-      console.log("Dane faktury z API:", invoice);
+      console.log("Invoice data from API:", invoice);
 
-      // Funkcja pomocnicza do bezpiecznej konwersji dat
+      // Helper function for safe date conversion
       const safeToDateTime = (date: any) => {
         if (!date) return DateTime.now();
 
@@ -237,34 +237,34 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
           }
 
           if (typeof date === "string") {
-            // Próba parsowania jako string ISO
+            // Try parsing as ISO string
             const dt = DateTime.fromISO(date);
             if (dt.isValid) return dt;
 
-            // Jeśli ISO nie zadziała, spróbuj z normalnym konstruktorem Date
+            // If ISO fails, try normal Date constructor
             return DateTime.fromJSDate(new Date(date));
           }
 
           return DateTime.now();
         } catch (error) {
-          console.error("Błąd konwersji daty:", error);
+          console.error("Date conversion error:", error);
           return DateTime.now();
         }
       };
 
-      // Użyj funkcji pomocniczej do bezpiecznej konwersji dat
+      // Use helper function for safe date conversion
       const issueDateObj = safeToDateTime(invoice.issueDate);
       const dueDateObj = safeToDateTime(invoice.dueDate);
 
-      console.log("Skonwertowane do DateTime:", {
+      console.log("Converted to DateTime:", {
         issueDate: issueDateObj.toISO(),
         dueDate: dueDateObj.toISO(),
       });
 
-      // WAŻNE: Logowanie danych pozycji faktury przed konwersją
-      console.log("Oryginalne pozycje faktury:", invoice.invoiceItems);
+      // IMPORTANT: Log invoice item data before conversion
+      console.log("Original invoice items:", invoice.invoiceItems);
 
-      // Mapowanie pozycji faktury z konwersją enumeracji
+      // Mapping invoice items with enum conversion
       const mappedItems = invoice.invoiceItems.map((item) => {
         const result = {
           description: item.description,
@@ -274,10 +274,10 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
           vatRate: convertVatRate(item.vatRate),
         };
 
-        // Logowanie dla debugowania
-        console.log(`Konwersja pozycji:`, {
-          oryginalna: item,
-          przekonwertowana: result,
+        // Logging for debugging
+        console.log(`Item conversion:`, {
+          original: item,
+          converted: result,
         });
 
         return result;
@@ -295,29 +295,29 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
         items: mappedItems,
       });
 
-      // Wymuszenie przeliczenia po załadowaniu danych
+      // Force recalculation after data load
       forceUpdate();
     }
   }, [reset, invoice, isEdit, forceUpdate]);
 
-  // Obsługa dodawania pozycji
+  // Handle adding item
   const handleAddItem = useCallback(() => {
     append({ ...emptyItem });
-    // Wymuszenie przeliczenia po dodaniu pozycji
+    // Force recalculation after adding item
     setTimeout(forceUpdate, 0);
   }, [append, forceUpdate]);
 
-  // Obsługa anulowania
+  // Handle cancel
   const handleCancel = useCallback(() => {
     navigate("/invoices");
   }, [navigate]);
 
-  // Obsługa zapisu formularza
+  // Handle form submission
   const handleSubmit = useCallback(
     (data: FormData) => {
-      console.log("Dane formularza przed wysłaniem:", data);
+      console.log("Form data before submission:", data);
 
-      // Przygotowanie danych do wysłania
+      // Prepare data for submission
       const invoiceData: Partial<Invoice> = {
         number: data.invoiceNumber,
         issueDate: data.issueDate.toJSDate(),
@@ -330,7 +330,7 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
         // netAmount: totals.netTotal,
         // vatAmount: totals.vatTotal,
         invoiceItems: data.items.map((item, index) => {
-          // Upewnij się, że vatRate to poprawna wartość numeryczna
+          // Ensure vatRate is a correct numeric value
           const vatRateValue =
             typeof item.vatRate === "string"
               ? convertVatRate(item.vatRate)
@@ -353,8 +353,8 @@ export function useInvoiceForm(isEdit: boolean, invoiceId?: number) {
         }),
       };
 
-      // Logowanie dla debugowania
-      console.log("Przygotowane dane faktury do wysłania:", invoiceData);
+      // Logging for debugging
+      console.log("Prepared invoice data for submission:", invoiceData);
 
       if (isEdit && invoiceId) {
         dispatch(

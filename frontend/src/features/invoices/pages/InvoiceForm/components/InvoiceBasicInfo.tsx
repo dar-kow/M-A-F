@@ -6,12 +6,12 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { Contractor, PaymentMethod, PaymentStatus } from '@app-types/types';
 import { Settings } from 'luxon';
 
-// Ustawienie globalnej lokalizacji dla biblioteki Luxon
+// Set global locale for Luxon library
 Settings.defaultLocale = 'pl';
 
-// Konfiguracja formatów dat dla Polski
+// Date formats configuration for Poland
 const PL_FORMATS = {
-    normalDate: 'dd.MM.yyyy', // Format daty w kontrolce
+    normalDate: 'dd.MM.yyyy', // Date format in the control
 };
 
 type InvoiceBasicInfoProps = {
@@ -175,7 +175,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                                 {...field}
                                 labelId="payment-status-label"
                                 label="Status płatności"
-                                disabled={true} // Dodaj disabled, aby uniemożliwić zmianę
+                                disabled={true} // Add disabled to prevent changing
                             >
                                 {Object.values(PaymentStatus).map(status => (
                                     <MenuItem key={status} value={status}>

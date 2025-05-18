@@ -15,7 +15,7 @@ interface GridWrapperProps {
 }
 
 /**
- * Wrapper dla komponentu DataGrid z podstawową konfiguracją
+ * Wrapper for the DataGrid component with basic configuration
  */
 export const GridWrapper: React.FC<GridWrapperProps> = ({
     rows,
@@ -43,6 +43,15 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                         page: 0
                     }
                 },
+                // Added default sorting by issue date descending
+                sorting: {
+                    sortModel: [
+                        {
+                            field: 'issueDate',
+                            sort: 'desc'
+                        }
+                    ]
+                }
             }}
             columnVisibilityModel={columnVisibilityModel}
             onColumnVisibilityModelChange={onColumnVisibilityModelChange}
