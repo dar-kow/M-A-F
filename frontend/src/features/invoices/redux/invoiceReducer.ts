@@ -187,6 +187,13 @@ const invoiceReducer = (state = initialState, action: any): InvoiceState => {
         error: null,
         actionSuccess: false,
       };
+    case actions.CLEAR_ACTION_STATUS:
+      return {
+        ...state,
+        actionSuccess: false,
+        error: null,
+        lastActionType: null,
+      };
     case actions.UPDATE_INVOICE_PAYMENT_REQUEST:
       return {
         ...state,
