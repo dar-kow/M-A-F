@@ -6,12 +6,12 @@ import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { Contractor, PaymentMethod, PaymentStatus } from '@app-types/types';
 import { Settings } from 'luxon';
 
-// Ustawienie globalnej lokalizacji dla biblioteki Luxon
+// Set global locale for Luxon library
 Settings.defaultLocale = 'pl';
 
-// Konfiguracja formatów dat dla Polski
+// Date formats configuration for Poland
 const PL_FORMATS = {
-    normalDate: 'dd.MM.yyyy', // Format daty w kontrolce
+    normalDate: 'dd.MM.yyyy', // Date format in the control
 };
 
 type InvoiceBasicInfoProps = {
@@ -26,7 +26,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
         <Grid container spacing={3}>
             <Grid item xs={12}>
                 <Typography variant="subtitle1" gutterBottom>
-                    Dane podstawowe
+                    Basic data
                 </Typography>
             </Grid>
 
@@ -34,11 +34,11 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                 <Controller
                     name="invoiceNumber"
                     control={control}
-                    rules={{ required: 'Numer faktury jest wymagany' }}
+                    rules={{ required: 'Invoice number is required' }}
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            label="Numer faktury"
+                            label="Invoice number"
                             fullWidth
                             error={!!errors.invoiceNumber}
                             helperText={errors.invoiceNumber?.message}
@@ -49,21 +49,21 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
 
             <Grid item xs={12} sm={6}>
                 <FormControl fullWidth error={!!errors.contractorId}>
-                    <InputLabel id="contractor-label">Kontrahent</InputLabel>
+                    <InputLabel id="contractor-label">Contractor</InputLabel>
                     <Controller
                         name="contractorId"
                         control={control}
                         rules={{
-                            required: 'Kontrahent jest wymagany',
-                            validate: value => value > 0 || 'Wybierz kontrahenta'
+                            required: 'Contractor is required',
+                            validate: value => value > 0 || 'Select a contractor'
                         }}
                         render={({ field }) => (
                             <Select
                                 {...field}
                                 labelId="contractor-label"
-                                label="Kontrahent"
+                                label="Contractor"
                             >
-                                <MenuItem value={0} disabled>Wybierz kontrahenta</MenuItem>
+                                <MenuItem value={0} disabled>Select a contractor</MenuItem>
                                 {contractors.map(contractor => (
                                     <MenuItem key={contractor.id} value={contractor.id}>
                                         {contractor.name} - {contractor.firstName} {contractor.lastName}
@@ -81,10 +81,10 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                     <Controller
                         name="issueDate"
                         control={control}
-                        rules={{ required: 'Data wystawienia jest wymagana' }}
+                        rules={{ required: 'Issue date is required' }}
                         render={({ field }) => (
                             <DatePicker
-                                label="Data wystawienia"
+                                label="Issue date"
                                 value={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 format={PL_FORMATS.normalDate}
@@ -107,18 +107,18 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                         name="dateDue"
                         control={control}
                         rules={{
-                            required: 'Termin płatności jest wymagany',
+                            required: 'Due date is required',
                             validate: (value) => {
                                 const issueDate = getValues('issueDate');
                                 if (value && issueDate && value < issueDate) {
-                                    return 'Termin płatności nie może być wcześniejszy niż data wystawienia';
+                                    return 'Due date cannot be earlier than issue date';
                                 }
                                 return true;
                             }
                         }}
                         render={({ field }) => (
                             <DatePicker
-                                label="Termin płatności"
+                                label="Due date"
                                 value={field.value}
                                 onChange={(date) => field.onChange(date)}
                                 format={PL_FORMATS.normalDate}
@@ -138,22 +138,22 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
 
             <Grid item xs={12} sm={6}>
                 <FormControl fullWidth error={!!errors.paymentMethod}>
-                    <InputLabel id="payment-method-label">Metoda płatności</InputLabel>
+                    <InputLabel id="payment-method-label">Payment method</InputLabel>
                     <Controller
                         name="paymentMethod"
                         control={control}
-                        rules={{ required: 'Metoda płatności jest wymagana' }}
+                        rules={{ required: 'Payment method is required' }}
                         render={({ field }) => (
                             <Select
                                 {...field}
                                 labelId="payment-method-label"
-                                label="Metoda płatności"
+                                label="Payment method"
                             >
                                 {Object.values(PaymentMethod).map(method => (
                                     <MenuItem key={method} value={method}>
-                                        {method === 'Cash' ? 'Gotówka' :
-                                            method === 'Transfer' ? 'Przelew' :
-                                                method === 'Card' ? 'Karta' : 'Inna'}
+                                        {method === 'Cash' ? 'Cash' :
+                                            method === 'Transfer' ? 'Transfer' :
+                                                method === 'Card' ? 'Card' : 'Other'}
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -165,30 +165,30 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
 
             <Grid item xs={12} sm={6}>
                 <FormControl fullWidth error={!!errors.paymentStatus}>
-                    <InputLabel id="payment-status-label">Status płatności</InputLabel>
+                    <InputLabel id="payment-status-label">Payment status</InputLabel>
                     <Controller
                         name="paymentStatus"
                         control={control}
-                        rules={{ required: 'Status płatności jest wymagany' }}
+                        rules={{ required: 'Payment status is required' }}
                         render={({ field }) => (
                             <Select
                                 {...field}
                                 labelId="payment-status-label"
-                                label="Status płatności"
-                                disabled={true} // Dodaj disabled, aby uniemożliwić zmianę
+                                label="Payment status"
+                                disabled={true} // Add disabled to prevent changing
                             >
                                 {Object.values(PaymentStatus).map(status => (
                                     <MenuItem key={status} value={status}>
-                                        {status === 'Paid' ? 'Opłacona' :
-                                            status === 'PartiallyPaid' ? 'Częściowo opłacona' :
-                                                status === 'Unpaid' ? 'Nieopłacona' : 'Zaległa'}
+                                        {status === 'Paid' ? 'Paid' :
+                                            status === 'PartiallyPaid' ? 'Partially paid' :
+                                                status === 'Unpaid' ? 'Unpaid' : 'Overdue'}
                                     </MenuItem>
                                 ))}
                             </Select>
                         )}
                     />
                     {errors.paymentStatus && <FormHelperText>{errors.paymentStatus.message}</FormHelperText>}
-                    <FormHelperText>Status płatności jest ustalany automatycznie przez system</FormHelperText>
+                    <FormHelperText>Payment status is set automatically by the system</FormHelperText>
                 </FormControl>
             </Grid>
 
@@ -197,12 +197,12 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                     name="paidAmount"
                     control={control}
                     rules={{
-                        min: { value: 0, message: 'Wartość nie może być ujemna' }
+                        min: { value: 0, message: 'Value cannot be negative' }
                     }}
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            label="Zapłacono"
+                            label="Paid amount"
                             type="number"
                             fullWidth
                             InputProps={{
@@ -222,7 +222,7 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            label="Opis"
+                            label="Description"
                             fullWidth
                             multiline
                             rows={2}
