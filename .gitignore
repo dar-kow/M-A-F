@@ -34,3 +34,5 @@ vertical-slice-frontend.txt
 /playwright/.cache/
 /test-results/
 /playwright-report/
+
+darkow.md
