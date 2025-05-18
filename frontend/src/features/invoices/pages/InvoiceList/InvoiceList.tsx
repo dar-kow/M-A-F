@@ -83,19 +83,19 @@ const InvoiceList: React.FC = () => {
         if (actionSuccess) {
             switch (lastActionType) {
                 case 'CREATE':
-                    toast.success('Invoice has been created successfully!');
+                    toast.success('Faktura została pomyślnie utworzona!');
                     break;
                 case 'UPDATE':
-                    toast.success('Invoice has been updated successfully!');
+                    toast.success('Faktura została pomyślnie zaktualizowana!');
                     break;
                 case 'DELETE':
-                    toast.success('Invoice has been deleted successfully!');
+                    toast.success('Faktura została pomyślnie usunięta!');
                     break;
                 case 'PAYMENT':
-                    toast.success('Invoice payment has been updated successfully!');
+                    toast.success('Płatność faktury została pomyślnie zaktualizowana!');
                     break;
                 default:
-                    toast.success('Operation completed successfully!');
+                    toast.success('Operacja zakończona pomyślnie!');
             }
 
             dispatch(clearActionStatus());
@@ -106,19 +106,19 @@ const InvoiceList: React.FC = () => {
         if (error) {
             switch (lastActionType) {
                 case 'CREATE':
-                    toast.error(`Error while creating invoice: ${error}`);
+                    toast.error(`Błąd podczas tworzenia faktury: ${error}`);
                     break;
                 case 'UPDATE':
-                    toast.error(`Error while updating invoice: ${error}`);
+                    toast.error(`Błąd podczas aktualizacji faktury: ${error}`);
                     break;
                 case 'DELETE':
-                    toast.error(`Error while deleting invoice: ${error}`);
+                    toast.error(`Błąd podczas usuwania faktury: ${error}`);
                     break;
                 case 'PAYMENT':
-                    toast.error(`Error while updating payment: ${error}`);
+                    toast.error(`Błąd podczas aktualizacji płatności: ${error}`);
                     break;
                 default:
-                    toast.error(`Error: ${error}`);
+                    toast.error(`Błąd: ${error}`);
             }
 
             dispatch(clearActionStatus());
@@ -156,7 +156,7 @@ const InvoiceList: React.FC = () => {
         if (invoiceToDelete !== null) {
             const invoiceToDeleteData = processedInvoices.find(i => i.id === invoiceToDelete);
             if (invoiceToDeleteData) {
-                toast.info(`Deleting invoice ${invoiceToDeleteData.number}...`);
+                toast.info(`Usuwanie faktury ${invoiceToDeleteData.number}...`);
             }
 
             dispatch(deleteInvoiceRequest(invoiceToDelete));
@@ -175,7 +175,7 @@ const InvoiceList: React.FC = () => {
         if (processedInvoices.length > 0) {
             PrintService.printInvoiceList(processedInvoices, searchTerm);
         } else {
-            toast.info("No invoices to print");
+            toast.info("Brak faktur do wydrukowania");
         }
     };
 
@@ -193,7 +193,7 @@ const InvoiceList: React.FC = () => {
         // Added informational notification
         const invoiceData = processedInvoices.find(i => i.id === id);
         if (invoiceData) {
-            toast.info(`Updating payment for invoice ${invoiceData.number}...`);
+            toast.info(`Aktualizowanie płatności faktury ${invoiceData.number}...`);
         }
 
         dispatch(updateInvoicePaymentRequest(id, paidAmount));
@@ -220,7 +220,7 @@ const InvoiceList: React.FC = () => {
             <div className="invoice-list-header">
                 <div className="search-container">
                     <TextField
-                        label="Search invoice"
+                        label="Szukaj faktury"
                         variant="outlined"
                         size="small"
                         value={searchTerm}
@@ -241,7 +241,7 @@ const InvoiceList: React.FC = () => {
                         disabled={filteredInvoices.length === 0}
                         data-testid="invoice-print-btn"
                     >
-                        Print
+                        Drukuj
                     </Button>
                     <Button
                         variant="contained"
@@ -250,7 +250,7 @@ const InvoiceList: React.FC = () => {
                         onClick={handleAddInvoice}
                         data-testid="invoice-add-btn"
                     >
-                        Add invoice
+                        Dodaj fakturę
                     </Button>
                 </div>
             </div>

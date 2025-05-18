@@ -94,29 +94,29 @@ const InvoiceItemsTable = ({
         <Box sx={{ mt: 4, mb: 4 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="subtitle1">
-                    Invoice items
+                    Pozycje faktury
                 </Typography>
                 <Button
                     variant="outlined"
                     startIcon={<AddIcon />}
                     onClick={handleAddItem}
                 >
-                    Add item
+                    Dodaj pozycję
                 </Button>
             </Box>
 
             <Table size="small" className="invoice-items-table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Description</TableCell>
-                        <TableCell>Quantity</TableCell>
-                        <TableCell>Unit</TableCell>
-                        <TableCell>Net price</TableCell>
+                        <TableCell>Opis</TableCell>
+                        <TableCell>Ilość</TableCell>
+                        <TableCell>Jednostka</TableCell>
+                        <TableCell>Cena netto</TableCell>
                         <TableCell>VAT</TableCell>
-                        <TableCell>Net value</TableCell>
-                        <TableCell>VAT value</TableCell>
-                        <TableCell>Gross value</TableCell>
-                        <TableCell>Actions</TableCell>
+                        <TableCell>Wartość netto</TableCell>
+                        <TableCell>Wartość VAT</TableCell>
+                        <TableCell>Wartość brutto</TableCell>
+                        <TableCell>Akcje</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -333,7 +333,7 @@ const InvoiceItemsTable = ({
                     {watchedItems && watchedItems.length > 0 && (
                         <TableRow className="item-totals" key={`totals-row-${localUpdateCounter}`}>
                             <TableCell colSpan={5} align="right">
-                                <Typography variant="subtitle2">Total:</Typography>
+                                <Typography variant="subtitle2">Razem:</Typography>
                             </TableCell>
                             <TableCell>
                                 <Typography variant="subtitle2">
@@ -372,7 +372,7 @@ const InvoiceItemsTable = ({
             {fields.length === 0 && (
                 <Box sx={{ textAlign: 'center', p: 2 }}>
                     <Typography color="text.secondary">
-                        No items. Add the first invoice item.
+                        Brak pozycji. Dodaj pierwszą pozycję faktury.
                     </Typography>
                 </Box>
             )}

@@ -46,13 +46,13 @@ function InvoiceForm() {
         if (actionSuccess) {
             switch (lastActionType) {
                 case 'CREATE':
-                    toast.success('Invoice has been created successfully!');
+                    toast.success('Faktura została pomyślnie utworzona!');
                     break;
                 case 'UPDATE':
-                    toast.success('Invoice has been updated successfully!');
+                    toast.success('Faktura została pomyślnie zaktualizowana!');
                     break;
                 default:
-                    toast.success(`Invoice ${isEdit ? 'updated' : 'added'} successfully!`);
+                    toast.success(`Faktura ${isEdit ? 'zaktualizowana' : 'dodana'} pomyślnie!`);
             }
 
             dispatch(clearActionStatus());
@@ -63,13 +63,13 @@ function InvoiceForm() {
         if (error) {
             switch (lastActionType) {
                 case 'CREATE':
-                    toast.error(`Error while creating invoice: ${error}`);
+                    toast.error(`Błąd podczas tworzenia faktury: ${error}`);
                     break;
                 case 'UPDATE':
-                    toast.error(`Error while updating invoice: ${error}`);
+                    toast.error(`Błąd podczas aktualizacji faktury: ${error}`);
                     break;
                 default:
-                    toast.error(`Error: ${error}`);
+                    toast.error(`Błąd: ${error}`);
             }
 
             dispatch(clearActionStatus());
@@ -115,7 +115,7 @@ function InvoiceForm() {
         <div className="invoice-form">
             <Paper elevation={3} className="form-paper">
                 <Typography variant="h5" component="h2" gutterBottom>
-                    {isEdit ? 'Edit invoice' : 'Create new invoice'}
+                    {isEdit ? 'Edytuj fakturę' : 'Wystaw nową fakturę'}
                 </Typography>
                 <Divider sx={{ mb: 3 }} />
 
