@@ -192,29 +192,6 @@ const InvoiceBasicInfo = ({ control, errors, contractors, getValues }: InvoiceBa
                 </FormControl>
             </Grid>
 
-            <Grid item xs={12} sm={6}>
-                <Controller
-                    name="paidAmount"
-                    control={control}
-                    rules={{
-                        min: { value: 0, message: 'Wartość nie może być ujemna' }
-                    }}
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label="Zapłacono"
-                            type="number"
-                            fullWidth
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">zł</InputAdornment>,
-                            }}
-                            error={!!errors.paidAmount}
-                            helperText={errors.paidAmount?.message}
-                        />
-                    )}
-                />
-            </Grid>
-
             <Grid item xs={12}>
                 <Controller
                     name="description"
