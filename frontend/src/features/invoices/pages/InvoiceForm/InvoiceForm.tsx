@@ -142,10 +142,13 @@ function InvoiceForm() {
                     {/* Section with summary */}
                     <InvoiceSummary
                         totals={totals}
-                        control={formMethods.control}
                         paidAmount={formMethods.watch('paidAmount') || 0}
+                        onPaidAmountChange={(value) => {
+                            formMethods.setValue('paidAmount', value, { shouldValidate: true });
+                        }}
+                        errorMessage={formMethods.formState.errors.paidAmount?.message}
+                        disabled={loading}
                         key={`summary-${updateCounter}`}
-                        disabled={loading} // Dodajemy wyłączenie edycji podczas ładowania
                     />
 
                     {/* Action buttons */}

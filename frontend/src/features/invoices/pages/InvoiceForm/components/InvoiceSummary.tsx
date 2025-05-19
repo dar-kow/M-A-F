@@ -1,5 +1,5 @@
-import { Box, Typography, Paper, Divider, TextField, InputAdornment, Grid } from '@mui/material';
-import { Controller } from 'react-hook-form';
+import { Box, Typography, Paper, Divider, Grid, TextField, InputAdornment } from '@mui/material';
+import { useEffect, useState } from 'react';
 import './InvoiceSummary.scss';
 
 type InvoiceSummaryProps = {
@@ -8,66 +8,83 @@ type InvoiceSummaryProps = {
         vatTotal: number;
         grossTotal: number;
     };
-    control: any;
-    paidAmount: number;
+    paidAmount: number | string; // Wartość z formularza
+    onPaidAmountChange: (value: number) => void; // Callback do aktualizacji wartości
+    errorMessage?: string; // Komunikat błędu
     disabled?: boolean;
 };
 
 const InvoiceSummary = ({
     totals,
-    control,
-    paidAmount = 0,
+    paidAmount,
+    onPaidAmountChange,
+    errorMessage,
     disabled = false
 }: InvoiceSummaryProps) => {
-    // Protection against missing values
+    // Zabezpieczenie przed brakiem wartości
     const netTotal = totals?.netTotal || 0;
     const vatTotal = totals?.vatTotal || 0;
     const grossTotal = totals?.grossTotal || 0;
 
-    // Calculate remaining amount to pay
-    const remainingAmount = Math.max(0, grossTotal - paidAmount);
+    // Lokalny stan dla pola wprowadzania
+    const [localPaidAmount, setLocalPaidAmount] = useState<string>(paidAmount?.toString() || '0');
+
+    // Synchronizacja ze stanem zewnętrznym
+    useEffect(() => {
+        setLocalPaidAmount((paidAmount ?? '0').toString());
+    }, [paidAmount]);
+
+    // Handler zmiany wartości
+    const handlePaidAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        setLocalPaidAmount(newValue);
+        // Konwertujemy na liczbę i wywołujemy callback tylko jeśli wartość jest prawidłowa
+        const numValue = parseFloat(newValue);
+        if (!isNaN(numValue)) {
+            onPaidAmountChange(numValue);
+        } else {
+            onPaidAmountChange(0);
+        }
+    };
+
+    // Obliczenie pozostałej kwoty do zapłaty
+    const numericPaidAmount = parseFloat(localPaidAmount) || 0;
+    const remainingAmount = Math.max(0, grossTotal - numericPaidAmount);
 
     return (
         <Paper elevation={2} className="invoice-summary" sx={{ mt: 4, mb: 4 }}>
             <Box sx={{ p: 3 }}>
                 <Grid container spacing={3}>
-                    {/* Left column - payment information */}
+                    {/* Lewa kolumna - informacje o płatnościach */}
                     <Grid item xs={12} md={6}>
                         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
                             Informacje o płatności
                         </Typography>
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ minWidth: 130 }}>
+                            {/* Pole "Zapłacono" */}
+                            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ minWidth: 130, mt: 1 }}>
                                     Zapłacono:
                                 </Typography>
-                                <Box sx={{ ml: 2, flexGrow: 1, maxWidth: '50%' }}>
-                                    <Controller
-                                        name="paidAmount"
-                                        control={control}
-                                        rules={{
-                                            min: { value: 0, message: 'Wartość nie może być ujemna' },
-                                            max: { value: grossTotal, message: 'Wartość nie może być większa niż kwota faktury' }
+                                <Box sx={{ ml: 2, width: '160px' }}>
+                                    <TextField
+                                        value={localPaidAmount}
+                                        onChange={handlePaidAmountChange}
+                                        type="number"
+                                        size="small"
+                                        fullWidth
+                                        disabled={disabled}
+                                        InputProps={{
+                                            endAdornment: <InputAdornment position="end">zł</InputAdornment>,
                                         }}
-                                        render={({ field, fieldState }) => (
-                                            <TextField
-                                                {...field}
-                                                type="number"
-                                                size="small"
-                                                fullWidth
-                                                disabled={disabled}
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment position="end">zł</InputAdornment>,
-                                                }}
-                                                error={!!fieldState.error}
-                                                helperText={fieldState.error?.message}
-                                            />
-                                        )}
+                                        error={!!errorMessage}
+                                        helperText={errorMessage}
                                     />
                                 </Box>
                             </Box>
 
+                            {/* Pole "Do zapłaty pozostało" */}
                             <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
                                 <Typography variant="body2" color="text.secondary" sx={{ minWidth: 130 }}>
                                     Do zapłaty pozostało:
@@ -77,7 +94,8 @@ const InvoiceSummary = ({
                                     sx={{
                                         color: remainingAmount > 0 ? 'error.main' : 'success.main',
                                         fontWeight: 'bold',
-                                        ml: 2
+                                        ml: 2,
+                                        fontFamily: 'monospace'
                                     }}
                                 >
                                     {remainingAmount.toFixed(2)} zł
@@ -86,7 +104,7 @@ const InvoiceSummary = ({
                         </Box>
                     </Grid>
 
-                    {/* Right column - invoice values */}
+                    {/* Prawa kolumna - wartości faktury */}
                     <Grid item xs={12} md={6}>
                         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
                             Podsumowanie faktury
