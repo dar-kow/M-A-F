@@ -142,7 +142,10 @@ function InvoiceForm() {
                     {/* Section with summary */}
                     <InvoiceSummary
                         totals={totals}
+                        control={formMethods.control}
+                        paidAmount={formMethods.watch('paidAmount') || 0}
                         key={`summary-${updateCounter}`}
+                        disabled={loading} // Dodajemy wyłączenie edycji podczas ładowania
                     />
 
                     {/* Action buttons */}
