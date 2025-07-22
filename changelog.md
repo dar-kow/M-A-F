@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.6.0 - Dark Mode i optymalizacja UX - 2025.07.22
+- Implementacja kompleksowego wsparcia dla dark mode w całej aplikacji
+- Redux store do zarządzania stanem motywu z persystencją w localStorage
+- Animowany komponent przełącznika motywu z ikonami słońca/księżyca
+- Konfiguracja Material-UI dla jasnego i ciemnego motywu
+- Dostosowanie wszystkich komponentów do dark mode:
+  - DataGrid z odpowiednimi kolorami i obramowaniami
+  - Formularze z ciemnym tłem i kontrastowym tekstem
+  - Loadery przyjazne dla oczu w ciemnym motywie
+  - Wykresy z dynamicznymi schematami kolorów
+- Płynne animacje przejść między motywami
+- Optymalizacja kontrastu i czytelności w obu motywach
+- Usunięcie zbędnej siatki z wykresu kołowego
+- Dostosowanie scrollbarów do dark mode
+
 ## v0.5.6 - Usprawnienia systemu powiadomień i sortowanie - 2025.05.18
 - Dodanie deduplikacji powiadomień toast przy rozliczaniu faktur
 - Implementacja systemu powiadomień dla różnych typów operacji
