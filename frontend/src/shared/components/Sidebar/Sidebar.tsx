@@ -30,16 +30,14 @@ function Sidebar() {
     const [showVerticalIcons, setShowVerticalIcons] = useState(savedCollapsedState);
     const [showMenuIcons, setShowMenuIcons] = useState(true);
     const [showLogoIcon, setShowLogoIcon] = useState(savedCollapsedState);
-    // Set toggleActive to true if sidebar is expanded
-    const [toggleActive, setToggleActive] = useState(!savedCollapsedState);
-    // New state for controlling toggle button visibility
-    const [showToggle, setShowToggle] = useState(!savedCollapsedState);
-    // New state tracking last mouse cursor position
-    const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
+    // Toggle pokazuje się na hover na menu
+    const [showToggleOnHover, setShowToggleOnHover] = useState(false);
+    // Stan dla hover na samym toggle
+    const [isToggleHovered, setIsToggleHovered] = useState(false);
 
     const sidebarRef = useRef<HTMLElement>(null);
-    const toggleRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLUListElement>(null);
+    const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const tooltipProps = {
         arrow: true,
@@ -49,102 +47,76 @@ function Sidebar() {
 
     const isMobile = useMediaQuery('(max-width: 768px)');
 
-    // Effect tracking mouse cursor position
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setLastMousePosition({ x: e.clientX, y: e.clientY });
-        };
+    // Funkcja pokazywania toggle z anulowaniem timeout
+    const showToggle = () => {
+        if (hideTimeoutRef.current) {
+            clearTimeout(hideTimeoutRef.current);
+            hideTimeoutRef.current = null;
+        }
+        setShowToggleOnHover(true);
+    };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, []);
+    // Funkcja ukrywania toggle z opóźnieniem
+    const hideToggle = () => {
+        if (!isToggleHovered) {
+            hideTimeoutRef.current = setTimeout(() => {
+                setShowToggleOnHover(false);
+            }, 200);
+        }
+    };
 
-    // Menu hover handlers
+    // Obsługa hover na menu
     const handleMenuMouseEnter = () => {
         if (collapsed && !isMobile && !isTransitioning) {
-            setShowToggle(true);
+            showToggle();
         }
     };
 
     const handleMenuMouseLeave = () => {
-        if (collapsed && !isMobile && !toggleActive) {
-            setShowToggle(false);
+        if (collapsed && !isMobile && !isTransitioning) {
+            hideToggle();
         }
     };
 
-    // Handler for onMouseLeave event for the entire sidebar
-    const handleSidebarMouseLeave = () => {
-        if (collapsed && !isMobile && !toggleActive) {
-            setShowToggle(false);
-        }
-    };
-
-    // Effect for handling hover on toggle
+    // Obsługa hover na toggle
     const handleToggleMouseEnter = () => {
-        setShowToggle(true);
+        setIsToggleHovered(true);
+        if (collapsed) {
+            showToggle();
+        }
     };
 
-    // Handler for onMouseLeave event for the toggle
     const handleToggleMouseLeave = () => {
-        if (collapsed && !isMobile && !toggleActive) {
-            // Check if mouse is over the menu
-            if (menuRef.current) {
-                const menuRect = menuRef.current.getBoundingClientRect();
-                const mouseX = lastMousePosition.x;
-                const mouseY = lastMousePosition.y;
+        setIsToggleHovered(false);
+        if (collapsed) {
+            hideToggle();
+        }
+    };
 
-                // If cursor is over the menu, do not hide the toggle
-                if (
-                    mouseX >= menuRect.left &&
-                    mouseX <= menuRect.right &&
-                    mouseY >= menuRect.top &&
-                    mouseY <= menuRect.bottom
-                ) {
-                    return;
-                }
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (hideTimeoutRef.current) {
+                clearTimeout(hideTimeoutRef.current);
             }
-            setShowToggle(false);
-        }
-    };
-
-    // Function to check cursor position relative to menu
-    const checkMouseOverMenu = () => {
-        if (menuRef.current) {
-            const menuRect = menuRef.current.getBoundingClientRect();
-            const mouseX = lastMousePosition.x;
-            const mouseY = lastMousePosition.y;
-
-            return (
-                mouseX >= menuRect.left &&
-                mouseX <= menuRect.right &&
-                mouseY >= menuRect.top &&
-                mouseY <= menuRect.bottom
-            );
-        }
-        return false;
-    };
+        };
+    }, []);
 
     // Function to toggle sidebar
     const toggleSidebar = () => {
         setIsTransitioning(true);
 
         if (!collapsed) {
-            // Collapse sidebar
+            // Zwijamy sidebar - ukrywamy elementy
             setShowTitle(false);
             setShowVerticalIcons(false);
             setShowMenuIcons(false);
             setShowLogoIcon(false);
-            // Toggle active during collapsing
-            setToggleActive(true);
         } else {
-            // Expand sidebar
+            // Rozwijamy sidebar - resetujemy stan
             setShowVerticalIcons(false);
             setShowMenuIcons(false);
             setShowLogoIcon(false);
-            // Toggle active during expanding
-            setToggleActive(true);
         }
 
         const newCollapsedState = !collapsed;
@@ -157,27 +129,17 @@ function Sidebar() {
             setIsTransitioning(false);
 
             if (collapsed) {
-                // After expanding sidebar
+                // Po rozwinięciu sidebara - pokazujemy elementy
                 setTimeout(() => {
                     setShowTitle(true);
                     setShowMenuIcons(true);
-                    setShowToggle(true); // Always show toggle for expanded sidebar
                 }, 50);
             } else {
-                // After collapsing sidebar
+                // Po zwinięciu sidebara - pokazujemy elementy
                 setTimeout(() => {
                     setShowVerticalIcons(true);
                     setShowMenuIcons(true);
                     setShowLogoIcon(true);
-                    // Toggle deactivated after collapsing
-                    setToggleActive(false);
-
-                    // Check mouse position relative to menu
-                    if (checkMouseOverMenu()) {
-                        setShowToggle(true);
-                    } else {
-                        setShowToggle(false);
-                    }
                 }, 50);
             }
         }, 300);
@@ -203,11 +165,6 @@ function Sidebar() {
             if (!showVerticalIcons) setShowVerticalIcons(true);
             if (!showMenuIcons) setShowMenuIcons(true);
             if (!showLogoIcon) setShowLogoIcon(true);
-
-            // Check if cursor is over the menu
-            if (checkMouseOverMenu()) {
-                setShowToggle(true);
-            }
         }
     };
 
@@ -279,14 +236,12 @@ function Sidebar() {
                 className={sidebarClass}
                 ref={sidebarRef}
                 onTransitionEnd={handleTransitionEnd}
-                onMouseLeave={handleSidebarMouseLeave}
                 data-testid="sidebar-root"
             >
                 {!isMobile && (
                     <div
-                        className={`sidebar-toggle ${toggleActive ? 'active' : ''} ${showToggle ? 'show-toggle' : ''}`}
+                        className={`sidebar-toggle ${!collapsed ? 'show' : ''} ${showToggleOnHover ? 'show-on-hover' : ''}`}
                         onClick={handleToggleClick}
-                        ref={toggleRef}
                         onMouseEnter={handleToggleMouseEnter}
                         onMouseLeave={handleToggleMouseLeave}
                         data-testid="sidebar-toggle"
@@ -316,8 +271,8 @@ function Sidebar() {
                     </div>
                 )}
 
-                <ul
-                    className="menu"
+                <ul 
+                    className="menu" 
                     ref={menuRef}
                     onMouseEnter={handleMenuMouseEnter}
                     onMouseLeave={handleMenuMouseLeave}

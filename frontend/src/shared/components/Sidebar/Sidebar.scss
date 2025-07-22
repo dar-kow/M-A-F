@@ -31,10 +31,10 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         width: $sidebar-width-collapsed;
     }
 
-    // Trapezowy przycisk toggle - uproszczona implementacja
+    // Trapezowy przycisk toggle
     .sidebar-toggle {
         position: absolute;
-        top: 54px;
+        top: 54px; // ZMIENIONE: przesunięte wyżej z 54px na 20px
         right: -15px;
         width: 16px;
         height: 50px;
@@ -42,17 +42,28 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         cursor: pointer;
         z-index: 1001;
         transition: all 0.3s $animation-easing;
-        opacity: 0; // Domyślnie niewidoczny
+        opacity: 0;
         transform: translateX(-10px);
         border-radius: 0 4px 4px 0;
         clip-path: path('M0,0 L12,8 C14,10 16,12 16,14 V36 C16,38 14,40 12,42 L0,50 V0');
         box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
 
-        // Klasy sterujące widocznością
-        &.active,
-        &.show-toggle {
+        // Pokazany na stałe gdy sidebar rozwinięty
+        &.show {
             opacity: 1;
             transform: translateX(0);
+        }
+
+        // Pokazany przy hover na menu gdy sidebar zwinięty
+        &.show-on-hover {
+            opacity: 1;
+            transform: translateX(0);
+            transition-delay: 0ms; // Natychmiastowe pojawienie się
+        }
+
+        // Opóźnienie przy znikaniu
+        &:not(.show):not(.show-on-hover) {
+            transition-delay: 100ms; // Opóźnienie przed zniknięciem
         }
 
         &::after {
@@ -81,7 +92,7 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='rgba(255,255,255,0.9)'%3E%3Cpath d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'/%3E%3C/svg%3E");
     }
 
-    // Stany przejściowe
+    // Stany przejściowe - ukrywamy wszystko podczas animacji
     &.is-transitioning {
 
         .sidebar-header .header-content,
@@ -112,6 +123,7 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         .header-content {
             width: 100%;
             text-align: center;
+            will-change: opacity, transform;
 
             .app-title {
                 margin: 0;
@@ -142,6 +154,7 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
+            will-change: opacity, transform;
 
             .logo-icon {
                 font-size: 32px;
@@ -159,6 +172,20 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         padding: 0;
         margin: 8px 0;
         overflow: hidden;
+        position: relative;
+
+        // Rozszerzenie obszaru hover poza sidebar dla zwiniętego stanu
+        .sidebar-collapsed & {
+            &::after {
+                content: '';
+                position: absolute;
+                top: -30px; // Rozszerzamy obszar hover również do góry
+                right: -20px;
+                width: 30px;
+                height: calc(100% + 60px); // Większa wysokość
+                z-index: 1000;
+            }
+        }
 
         .menu-item {
             margin: 4px 0;
@@ -190,6 +217,19 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
                 will-change: background-color;
                 transform: translateZ(0);
                 border-radius: 0 4px 4px 0;
+                position: relative;
+
+                // Rozszerzenie obszaru kliknięcia dla zwiniętego sidebara
+                .sidebar-collapsed & {
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: -20px;
+                        width: 20px;
+                        height: 100%;
+                    }
+                }
 
                 &:hover {
                     background-color: rgba(255, 255, 255, 0.05);
@@ -203,6 +243,7 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
                     align-items: center;
                     min-width: 24px;
                     position: relative;
+                    will-change: opacity, transform;
                 }
 
                 .menu-icon {

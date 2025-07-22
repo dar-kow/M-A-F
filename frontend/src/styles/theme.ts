@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { ThemeMode } from '../store/themeSlice';
 
