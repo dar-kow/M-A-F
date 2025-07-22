@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { Paper, Typography, Box, Divider, CircularProgress } from '@mui/material';
+import { Paper, Typography, Box, Divider, CircularProgress, useTheme } from '@mui/material';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title, BarElement } from 'chart.js';
-import { projectStatus, chartOptions } from './data';
+import { projectStatus, chartOptions, lightChartColors, darkChartColors, getChartOptions } from './data';
 
 import useFetchInvoices from '../../../features/invoices/hooks/useFetchInvoices';
 import useFetchContractors from '../../../features/contractors/hooks/useFetchContractors';
@@ -21,6 +21,11 @@ ChartJS.register(
 );
 
 function Dashboard() {
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === 'dark';
+    const chartColors = isDarkMode ? darkChartColors : lightChartColors;
+    const baseChartOptions = getChartOptions(isDarkMode);
+
     const { invoices, loading: loadingInvoices } = useFetchInvoices();
     const { contractors, loading: loadingContractors } = useFetchContractors();
 
@@ -114,22 +119,14 @@ function Dashboard() {
         };
     }, [invoices]);
 
-    const updatedChartOptions = {
-        payments: {
-            labels: ["Opłacone", "Nieopłacone", "Częściowo opłacone"],
-            colors: ["#4CAF50", "#f44336", "#FFC107"]
-        },
-        monthlyRevenue: chartOptions.monthlyRevenue,
-        categories: chartOptions.categories
-    };
-
     const paymentChartConfig = {
-        labels: updatedChartOptions.payments.labels,
+        labels: chartColors.payments.labels,
         datasets: [
             {
                 data: paymentStatusData.data,
-                backgroundColor: updatedChartOptions.payments.colors,
-                borderWidth: 1
+                backgroundColor: chartColors.payments.colors,
+                borderWidth: isDarkMode ? 0 : 1,
+                borderColor: isDarkMode ? 'transparent' : chartColors.payments.colors.map(color => color.replace('0.6', '1'))
             },
         ],
     };
@@ -140,24 +137,53 @@ function Dashboard() {
             {
                 label: 'Miesięczny obrót (PLN)',
                 data: monthlyRevenueData.data,
-                borderColor: '#3f51b5',
-                backgroundColor: 'rgba(63, 81, 181, 0.1)',
+                borderColor: chartColors.monthlyRevenue.borderColor,
+                backgroundColor: chartColors.monthlyRevenue.backgroundColor,
                 fill: true,
-                tension: 0.3
+                tension: 0.3,
+                borderWidth: 2,
+                pointBackgroundColor: chartColors.monthlyRevenue.borderColor,
+                pointBorderColor: isDarkMode ? '#1e1e1e' : '#fff',
+                pointHoverBackgroundColor: chartColors.monthlyRevenue.borderColor,
+                pointHoverBorderColor: isDarkMode ? '#1e1e1e' : '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
             },
         ],
     };
 
     const categoriesConfig = {
-        labels: chartOptions.categories.labels,
+        labels: chartColors.categories.labels,
         datasets: [
             {
                 label: 'Udział kategorii w %',
                 data: categoriesData.data,
-                backgroundColor: chartOptions.categories.colors,
-                borderWidth: 1
+                backgroundColor: chartColors.categories.colors,
+                borderWidth: isDarkMode ? 0 : 1,
+                borderColor: isDarkMode ? 'transparent' : chartColors.categories.colors.map(color => color.replace('0.7', '1'))
             },
         ],
+    };
+
+    // Loader color for dark mode
+    const loaderColor = isDarkMode ? '#42a5f5' : 'primary';
+
+    // Specjalne opcje dla wykresu kołowego - bez siatki!
+    const doughnutOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '50%',
+        plugins: {
+            legend: {
+                labels: {
+                    color: baseChartOptions.plugins?.legend?.labels?.color,
+                },
+                position: 'bottom' as const,
+            },
+            tooltip: baseChartOptions.plugins?.tooltip,
+        },
+        // Brak scales dla wykresu kołowego - to eliminuje siatkę
     };
 
     // Używamy układu z dwoma kolumnami z proporcjami 67% / 33%
@@ -178,7 +204,7 @@ function Dashboard() {
                         justifyContent: 'center'
                     }}>
                         {loading ? (
-                            <CircularProgress size={30} />
+                            <CircularProgress size={30} sx={{ color: loaderColor }} />
                         ) : (
                             <>
                                 <Typography variant="h3" color="primary">{invoiceCount}</Typography>
@@ -198,7 +224,7 @@ function Dashboard() {
                         justifyContent: 'center'
                     }}>
                         {loading ? (
-                            <CircularProgress size={30} />
+                            <CircularProgress size={30} sx={{ color: loaderColor }} />
                         ) : (
                             <>
                                 <Typography variant="h3" color="primary">{contractorCount}</Typography>
@@ -218,7 +244,7 @@ function Dashboard() {
                         justifyContent: 'center'
                     }}>
                         {loading ? (
-                            <CircularProgress size={30} />
+                            <CircularProgress size={30} sx={{ color: loaderColor }} />
                         ) : (
                             <>
                                 <Typography variant="h3" color={overdueCount > 0 ? "error" : "success"}>{overdueCount}</Typography>
@@ -241,14 +267,11 @@ function Dashboard() {
                         <Typography variant="h6" gutterBottom>Status płatności</Typography>
                         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                             {loading ? (
-                                <CircularProgress />
+                                <CircularProgress sx={{ color: loaderColor }} />
                             ) : (
                                 <Doughnut
                                     data={paymentChartConfig}
-                                    options={{
-                                        responsive: true,
-                                        maintainAspectRatio: false
-                                    }}
+                                    options={doughnutOptions}
                                 />
                             )}
                         </Box>
@@ -268,17 +291,26 @@ function Dashboard() {
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                             {loading ? (
-                                <CircularProgress />
+                                <CircularProgress sx={{ color: loaderColor }} />
                             ) : (
                                 <Bar
                                     data={categoriesConfig}
                                     options={{
                                         responsive: true,
                                         maintainAspectRatio: false,
+                                        ...baseChartOptions,
                                         scales: {
+                                            ...baseChartOptions.scales,
                                             y: {
+                                                ...baseChartOptions.scales?.y,
                                                 beginAtZero: true,
-                                                max: 100
+                                                max: 100,
+                                                ticks: {
+                                                    ...baseChartOptions.scales?.y?.ticks,
+                                                    callback: function(value) {
+                                                        return value + '%';
+                                                    }
+                                                }
                                             }
                                         }
                                     }}
@@ -301,28 +333,29 @@ function Dashboard() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {loading ? (
-                            <CircularProgress />
+                            <CircularProgress sx={{ color: loaderColor }} />
                         ) : (
                             <Line
                                 data={monthlyRevenueConfig}
                                 options={{
                                     responsive: true,
                                     maintainAspectRatio: false,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    },
+                                    ...baseChartOptions,
                                     interaction: {
                                         mode: 'index',
                                         intersect: false,
                                     },
-                                    plugins: {
-                                        tooltip: {
-                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                            padding: 10,
-                                            cornerRadius: 4,
-                                            caretSize: 6
+                                    scales: {
+                                        ...baseChartOptions.scales,
+                                        y: {
+                                            ...baseChartOptions.scales?.y,
+                                            beginAtZero: true,
+                                            ticks: {
+                                                ...baseChartOptions.scales?.y?.ticks,
+                                                callback: function(value) {
+                                                    return value.toLocaleString() + ' zł';
+                                                }
+                                            }
                                         }
                                     }
                                 }}
@@ -351,9 +384,13 @@ function Dashboard() {
                                 <Typography variant="subtitle2" fontWeight="bold" color={section.color}>
                                     {section.title}
                                 </Typography>
-                                <ul style={{ paddingLeft: '20px', margin: '8px 0' }}>
+                                <ul style={{ 
+                                    paddingLeft: '20px', 
+                                    margin: '8px 0',
+                                    color: theme.palette.text.secondary 
+                                }}>
                                     {section.items.map((item, itemIndex) => (
-                                        <li key={itemIndex}>{item}</li>
+                                        <li key={itemIndex} style={{ marginBottom: '4px' }}>{item}</li>
                                     ))}
                                 </ul>
                             </Box>
