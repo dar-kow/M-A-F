@@ -6,6 +6,7 @@ import {
 } from '@mui/icons-material';
 import { IconButton, Badge, Avatar, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useState, MouseEvent } from 'react';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import './Navbar.scss';
 
 interface NavbarProps {
@@ -48,6 +49,9 @@ function Navbar({ pageTitle, onPrint }: NavbarProps) {
                         </IconButton>
                     </Tooltip>
                 )}
+
+                {/* Przełącznik dark/light mode */}
+                <ThemeToggle />
 
                 <Tooltip title="Powiadomienia">
                     <IconButton color="inherit" className="navbar-icon">

@@ -1,19 +1,21 @@
 .navbar {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    background-color: var(--navbar-bg, #fff);
+    box-shadow: 0 2px 4px var(--navbar-shadow, rgba(0, 0, 0, 0.08));
     padding: 0 24px;
     height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 100;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
     .navbar-section {
         .section-title {
             font-size: 20px;
             font-weight: 500;
             margin: 0;
-            color: #333;
+            color: var(--text-primary, #333);
+            transition: color 0.3s ease;
         }
     }
 
@@ -27,6 +29,34 @@
 
         .navbar-icon {
             margin-left: 8px;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+            }
+
+            &.theme-toggle {
+                .MuiSvgIcon-root {
+                    transition: transform 0.3s ease;
+                }
+
+                &:active .MuiSvgIcon-root {
+                    transform: rotate(180deg);
+                }
+            }
         }
     }
+}
+
+// Dark mode styles
+:root {
+    --navbar-bg: #fff;
+    --navbar-shadow: rgba(0, 0, 0, 0.08);
+    --text-primary: #333;
+}
+
+[data-theme='dark'] {
+    --navbar-bg: #1e1e1e;
+    --navbar-shadow: rgba(0, 0, 0, 0.3);
+    --text-primary: rgba(255, 255, 255, 0.87);
 }

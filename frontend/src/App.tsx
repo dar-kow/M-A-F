@@ -1,5 +1,8 @@
 import { Suspense, useEffect } from 'react';
 import { useRoutes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import routes from './routes';
 import Loader from './shared/components/Loader/Loader';
 
@@ -9,8 +12,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Global, css } from '@emotion/react';
 import { initializeGA } from './analytics';
+import { RootState } from './store/rootReducer';
+import { getTheme } from './styles/theme';
 
-const globalStyles = css`
+const getGlobalStyles = (isDarkMode: boolean) => css`
   html, body, #root {
     height: 100%;
     margin: 0;
@@ -35,8 +40,9 @@ const globalStyles = css`
   .content {
     flex: 1;
     overflow: auto;
-    background-color: #f8f9fa;
+    background-color: ${isDarkMode ? '#121212' : '#f8f9fa'};
     padding: 24px;
+    transition: background-color 0.3s ease;
   }
   
   /* Style dla responsywności */
@@ -45,18 +51,39 @@ const globalStyles = css`
       padding: 16px;
     }
   }
+
+  /* Toast notification dark mode support */
+  .Toastify__toast-theme--dark {
+    background: #1e1e1e;
+    color: rgba(255, 255, 255, 0.87);
+  }
+
+  /* Smooth transitions for all elements */
+  * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
 `;
 
 function App() {
+  const themeMode = useSelector((state: RootState) => state.theme.mode);
+  const theme = getTheme(themeMode);
+
   useEffect(() => {
     initializeGA('maf');
   }, []);
+
+  // Ustaw data-theme na body
+  useEffect(() => {
+    document.body.setAttribute('data-theme', themeMode);
+  }, [themeMode]);
+
   const routeElements = useRoutes(routes);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       {/* Dodajemy globalne style jako element */}
-      <Global styles={globalStyles} />
+      <Global styles={getGlobalStyles(themeMode === 'dark')} />
 
       <div className="app">
         <Navbar />
@@ -78,9 +105,10 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          theme={themeMode}
         />
       </div>
-    </>
+    </ThemeProvider>
   );
 }
 
