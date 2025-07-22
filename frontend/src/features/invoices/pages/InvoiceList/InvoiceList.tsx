@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, TextField, CircularProgress, Button } from '@mui/material';
+import { Box, TextField, CircularProgress, Button, useTheme } from '@mui/material';
 import { Search as SearchIcon, Add as AddIcon, Print as PrintIcon } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
@@ -41,6 +41,7 @@ const InvoiceList: React.FC = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     // Fetch data
     const { invoices, loading, error } = useFetchInvoices();
@@ -209,8 +210,20 @@ const InvoiceList: React.FC = () => {
     // Loading indicator for the whole page
     if (loading && processedInvoices.length === 0) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-                <CircularProgress />
+            <Box 
+                display="flex" 
+                justifyContent="center" 
+                alignItems="center" 
+                minHeight="200px"
+                sx={{
+                    backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : 'inherit'
+                }}
+            >
+                <CircularProgress 
+                    sx={{
+                        color: theme.palette.mode === 'dark' ? '#42a5f5' : 'primary.main'
+                    }}
+                />
             </Box>
         );
     }

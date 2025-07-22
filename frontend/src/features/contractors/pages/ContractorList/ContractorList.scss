@@ -4,4 +4,39 @@
     .search-container {
         margin-bottom: 20px;
     }
+
+    // Fix for Paper component background in dark mode
+    .MuiTableContainer-root {
+        transition: background-color 0.3s ease;
+    }
+}
+
+// Dark mode support
+[data-theme='dark'] {
+    .contractor-list {
+        .MuiTableContainer-root {
+            background-color: #1e1e1e;
+            
+            .MuiTable-root {
+                .MuiTableHead-root {
+                    .MuiTableCell-root {
+                        background-color: rgba(255, 255, 255, 0.03);
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+                    }
+                }
+                
+                .MuiTableBody-root {
+                    .MuiTableRow-root {
+                        &:hover {
+                            background-color: rgba(66, 165, 245, 0.08);
+                        }
+                        
+                        .MuiTableCell-root {
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

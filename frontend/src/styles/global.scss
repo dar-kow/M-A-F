@@ -1,7 +1,14 @@
+// Light mode colors
 $separator-color: rgba(25, 118, 210, 0.4);
 $separator-hover-color: rgba(25, 118, 210, 0.8);
 $border-color: rgba(0, 0, 0, 0.08);
 
+// Dark mode colors
+$separator-color-dark: rgba(66, 165, 245, 0.4);
+$separator-hover-color-dark: rgba(66, 165, 245, 0.8);
+$border-color-dark: rgba(255, 255, 255, 0.08);
+
+// Light mode styles (default)
 .MuiDataGrid-root {
     .MuiDataGrid-cell {
         border-right: 1px solid $border-color;
@@ -72,48 +79,78 @@ $border-color: rgba(0, 0, 0, 0.08);
     }
 }
 
+// Dark mode overrides
+[data-theme='dark'] {
+    .MuiDataGrid-root {
+        background-color: transparent !important;
+        
+        .MuiDataGrid-cell {
+            border-right: 1px solid $border-color-dark;
+            border-bottom: 1px solid $border-color-dark;
+        }
 
-// .MuiDataGrid-columnHeader[data-filtered="true"] {
-//     border: 1px solid #1976d2 !important;
-//     position: relative;
+        .MuiDataGrid-columnHeader {
+            border-right: 1px solid $border-color-dark;
+            border-bottom: 1px solid $border-color-dark;
+        }
 
-//     // Pasek z filtrem na dole nagłówka
-//     &::after {
-//         content: attr(data-filter-value);
-//         position: absolute;
-//         bottom: 0;
-//         left: 0;
-//         width: calc(100% - 16px);
-//         font-size: 0.65rem;
-//         color: #1976d2;
-//         padding: 1px 4px;
-//         white-space: nowrap;
-//         overflow: hidden;
-//         text-overflow: ellipsis;
-//         border-top: 1px dashed rgba(25, 118, 210, 0.4);
-//         font-style: italic;
-//         background-color: rgba(255, 255, 255, 0.95);
-//     }
+        .MuiDataGrid-columnSeparator {
+            color: $separator-color-dark;
 
-//     // Ikona X do anulowania filtra
-//     &::before {
-//         content: "×";
-//         position: absolute;
-//         bottom: 0;
-//         right: 0;
-//         width: 16px;
-//         height: 16px;
-//         line-height: 14px;
-//         text-align: center;
-//         font-size: 12px;
-//         font-weight: bold;
-//         color: #1976d2;
-//         cursor: pointer;
-//         background-color: rgba(255, 255, 255, 0.95);
-//         border-left: 1px dashed rgba(25, 118, 210, 0.4);
-//         z-index: 10;
-//     }
-// }
+            &::after {
+                background-color: $separator-color-dark;
+            }
+        }
+
+        .MuiDataGrid-columnSeparator:hover {
+            &::after {
+                background-color: $separator-hover-color-dark;
+                box-shadow: 0 0 4px rgba(66, 165, 245, 0.5);
+            }
+        }
+        
+        // Ensure virtual scroller has no background
+        .MuiDataGrid-virtualScroller {
+            background-color: transparent !important;
+        }
+        
+        .MuiDataGrid-virtualScrollerContent {
+            background-color: transparent !important;
+        }
+    }
+
+    // Invoice form specific dark mode styles
+    .invoice-form {
+        .form-paper {
+            background-color: #1e1e1e;
+            color: rgba(255, 255, 255, 0.87);
+        }
+
+        .invoice-summary {
+            background-color: #252525;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .invoice-items-table {
+            .item-totals {
+                background-color: rgba(255, 255, 255, 0.03);
+            }
+        }
+    }
+
+    // Sidebar adjustments for dark mode
+    .sidebar-social .social-icon-link,
+    .vertical-social .vertical-social-icon-link {
+        &:hover {
+            color: #42a5f5;
+        }
+    }
+    
+    // Ensure all Paper components have dark background
+    .MuiPaper-root {
+        background-color: #1e1e1e !important;
+    }
+}
 
 /* Globalne optymalizacje wydajności */
 * {
@@ -138,4 +175,17 @@ body {
 .MuiPaper-root {
     isolation: isolate;
     contain: content;
+}
+
+/* Smooth theme transitions */
+body[data-theme] * {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Prevent transition on page load */
+body:not([data-theme]) * {
+    transition: none !important;
 }

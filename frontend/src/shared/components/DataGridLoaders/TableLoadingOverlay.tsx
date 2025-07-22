@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, LinearProgress } from '@mui/material';
+import { Box, LinearProgress, useTheme } from '@mui/material';
 import { GridOverlay } from '@mui/x-data-grid';
 
 /**
@@ -8,6 +8,8 @@ import { GridOverlay } from '@mui/x-data-grid';
  */
 export const TableLoadingOverlay: React.FC = () => {
     const [, setCounter] = useState(0);
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === 'dark';
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -21,11 +23,13 @@ export const TableLoadingOverlay: React.FC = () => {
         <GridOverlay
             sx={{
                 zIndex: 9999,
-                backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                backgroundColor: isDarkMode 
+                    ? 'rgba(0, 0, 0, 0.75)' 
+                    : 'rgba(255, 255, 255, 0.75)',
                 backdropFilter: 'blur(2px)'
             }}
         >
-            {/* Pasek ładowania pod nagłówkami - dobrze widoczny - nie ruszaj kolorów!*/}
+            {/* Pasek ładowania pod nagłówkami - dostosowany do motywu */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -34,7 +38,9 @@ export const TableLoadingOverlay: React.FC = () => {
                     right: 0,
                     height: 6,
                     zIndex: 10000,
-                    backgroundColor: '#bbdefb',
+                    backgroundColor: isDarkMode
+                        ? 'rgba(66, 165, 245, 0.1)'
+                        : '#bbdefb',
                 }}
             >
                 <LinearProgress
@@ -43,7 +49,19 @@ export const TableLoadingOverlay: React.FC = () => {
                     sx={{
                         height: '100%',
                         '.MuiLinearProgress-bar': {
-                            backgroundColor: '#42a5f5',
+                            backgroundColor: isDarkMode 
+                                ? '#42a5f5' 
+                                : '#1976d2',
+                        },
+                        '.MuiLinearProgress-bar1Indeterminate': {
+                            backgroundColor: isDarkMode 
+                                ? '#42a5f5' 
+                                : '#1976d2',
+                        },
+                        '.MuiLinearProgress-bar2Indeterminate': {
+                            backgroundColor: isDarkMode 
+                                ? '#6cb8e6' 
+                                : '#42a5f5',
                         }
                     }}
                 />

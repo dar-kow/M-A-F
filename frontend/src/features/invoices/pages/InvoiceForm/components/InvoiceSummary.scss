@@ -1,6 +1,7 @@
 .invoice-summary {
     margin-top: 2rem;
     margin-bottom: 2rem;
+    transition: all 0.3s ease;
 
     .summary-row {
         display: flex;
@@ -10,16 +11,39 @@
 
         &.total {
             margin-top: 8px;
+            font-weight: 600;
+            
+            .summary-label,
+            .summary-value {
+                font-weight: 600;
+            }
         }
     }
 
     .summary-label {
         color: rgba(0, 0, 0, 0.6);
+        transition: color 0.3s ease;
     }
 
     .summary-value {
         font-family: 'Mulish', sans-serif;
         text-align: right;
         min-width: 100px;
+        transition: color 0.3s ease;
+    }
+}
+
+// Dark mode support
+[data-theme='dark'] {
+    .invoice-summary {
+        background-color: #252525;
+        
+        .summary-label {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .summary-value {
+            color: rgba(255, 255, 255, 0.87);
+        }
     }
 }

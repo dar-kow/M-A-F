@@ -45,7 +45,6 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     flex: 1;
-
     overflow: hidden;
     margin-bottom: 8px;
     border-bottom: 1px solid #e0e0e0;
@@ -54,19 +53,23 @@
         0 4px 8px -4px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 1;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 
     .MuiDataGrid-root {
         border: none;
         overflow: hidden !important;
         padding-bottom: 1px;
+        background-color: transparent;
 
         .MuiDataGrid-columnHeaders {
             background-color: #f8f9fa;
             border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .MuiDataGrid-cell {
             border-bottom: 1px solid #f0f0f0;
+            transition: border-color 0.3s ease;
         }
 
         .MuiDataGrid-row:hover {
@@ -79,11 +82,13 @@
 
         .last-normal-column {
             border-right: 1px solid #f0f0f0;
+            transition: border-color 0.3s ease;
         }
 
         .MuiDataGrid-footerContainer {
             border-top: 1px solid #e0e0e0;
             background-color: #f8f9fa;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
     }
 }
@@ -94,11 +99,66 @@
     height: 100%;
 
     .MuiDataGrid-virtualScroller {
-
         &::after {
             content: '';
             display: block;
             height: 8px;
+        }
+    }
+}
+
+// Dark mode support
+[data-theme='dark'] {
+    .invoice-list-container {
+        background-color: #1e1e1e;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.3),
+            0 4px 8px -4px rgba(0, 0, 0, 0.2);
+
+        .MuiDataGrid-root {
+            .MuiDataGrid-columnHeaders {
+                background-color: rgba(255, 255, 255, 0.03);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            }
+
+            .MuiDataGrid-cell {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .MuiDataGrid-row:hover {
+                background-color: rgba(66, 165, 245, 0.08);
+            }
+
+            .last-normal-column {
+                border-right: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .MuiDataGrid-footerContainer {
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
+                background-color: rgba(255, 255, 255, 0.03);
+            }
+
+            // Scrollbar styling for dark mode
+            .MuiDataGrid-virtualScroller {
+                &::-webkit-scrollbar {
+                    width: 8px;
+                    height: 8px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.03);
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.2);
+                    border-radius: 4px;
+
+                    &:hover {
+                        background: rgba(255, 255, 255, 0.3);
+                    }
+                }
+            }
         }
     }
 }

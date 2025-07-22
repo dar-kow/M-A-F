@@ -2,6 +2,7 @@
 import React from 'react';
 import { DataGrid, gridClasses, GridColDef } from '@mui/x-data-grid';
 import { plPL } from '@mui/x-data-grid/locales';
+import { useTheme } from '@mui/material/styles';
 import TableLoadingOverlay from '@shared/components/DataGridLoaders/TableLoadingOverlay';
 
 interface GridWrapperProps {
@@ -26,6 +27,9 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
     apiRef,
     height
 }) => {
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === 'dark';
+
     return (
         <DataGrid
             showCellVerticalBorder={false}
@@ -71,8 +75,9 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                 footer: {
                     sx: {
                         marginBottom: 0,
-                        borderTop: '1px solid #e0e0e0',
-                        paddingBottom: 0
+                        borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.12)' : '#e0e0e0'}`,
+                        paddingBottom: 0,
+                        backgroundColor: 'transparent'
                     }
                 }
             }}
@@ -85,6 +90,7 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                 flexGrow: 1,
                 width: '100%',
                 height,
+                backgroundColor: 'transparent',
                 '& .MuiDataGrid-main': {
                     overflow: 'auto !important',
                 },
@@ -94,6 +100,16 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                     "&::-webkit-scrollbar": {
                         width: "6px",
                         height: "0",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                        background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)',
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                        background: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                        borderRadius: '3px',
+                        "&:hover": {
+                            background: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+                        }
                     },
                     marginBottom: 0
                 },
@@ -119,7 +135,8 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                 '.MuiDataGrid-footerContainer': {
                     marginTop: 'auto',
                     paddingBottom: 0,
-                    borderTop: '1px solid #e0e0e0',
+                    borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.12)' : '#e0e0e0'}`,
+                    backgroundColor: 'transparent',
                 },
             }}
         />

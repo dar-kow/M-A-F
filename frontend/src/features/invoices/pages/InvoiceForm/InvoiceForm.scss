@@ -3,6 +3,7 @@
 
     .form-paper {
         padding: 24px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .item-row {
@@ -12,5 +13,15 @@
     .summary-section {
         margin-top: 32px;
         text-align: right;
+    }
+}
+
+// Dark mode support
+[data-theme='dark'] {
+    .invoice-form {
+        .form-paper {
+            background-color: #1e1e1e;
+            color: rgba(255, 255, 255, 0.87);
+        }
     }
 }

@@ -5,7 +5,8 @@ import {
     Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, Paper, Button, IconButton,
     Typography, TextField, Box, CircularProgress,
-    Dialog, DialogActions, DialogContent, DialogTitle
+    Dialog, DialogActions, DialogContent, DialogTitle,
+    useTheme
 } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon, Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { toast } from 'react-toastify';
@@ -18,6 +19,7 @@ import StyledTooltip, { tooltipDefaultProps } from '@shared/components/StyledToo
 function ContractorList() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const theme = useTheme();
     const { contractors, loading, error } = useFetchContractors();
 
     // Redux state for operations
@@ -90,8 +92,20 @@ function ContractorList() {
 
     if (loading) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-                <CircularProgress />
+            <Box 
+                display="flex" 
+                justifyContent="center" 
+                alignItems="center" 
+                minHeight="200px"
+                sx={{
+                    backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : 'inherit'
+                }}
+            >
+                <CircularProgress 
+                    sx={{
+                        color: theme.palette.mode === 'dark' ? '#42a5f5' : 'primary.main'
+                    }}
+                />
             </Box>
         );
     }
