@@ -1,0 +1,103 @@
+.theme-toggle-button {
+    position: relative;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    
+    .icon-wrapper {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .theme-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        &.light-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0);
+            
+            &.active {
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+            }
+        }
+        
+        &.dark-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0);
+            
+            &.active {
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+            }
+        }
+    }
+
+    &:hover {
+        .theme-icon.active {
+            animation: pulse 0.6s ease-in-out;
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+// Theme transition overlay effect
+body.theme-transitioning {
+    position: relative;
+    
+    &::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, transparent 0%, currentColor 100%);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 9999;
+        animation: themeTransition 0.3s ease-in-out;
+    }
+}
+
+[data-theme='light'] body.theme-transitioning::after {
+    color: #121212;
+}
+
+[data-theme='dark'] body.theme-transitioning::after {
+    color: #ffffff;
+}
+
+@keyframes themeTransition {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 0.1;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(3);
+    }
+}
