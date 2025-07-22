@@ -105,6 +105,10 @@ function Sidebar() {
     // Function to toggle sidebar
     const toggleSidebar = () => {
         setIsTransitioning(true);
+        
+        // Resetujemy stan hover przy kliknięciu
+        setShowToggleOnHover(false);
+        setIsToggleHovered(false);
 
         if (!collapsed) {
             // Zwijamy sidebar - ukrywamy elementy
@@ -240,7 +244,7 @@ function Sidebar() {
             >
                 {!isMobile && (
                     <div
-                        className={`sidebar-toggle ${!collapsed ? 'show' : ''} ${showToggleOnHover ? 'show-on-hover' : ''}`}
+                        className={`sidebar-toggle ${!collapsed && !isTransitioning ? 'show' : ''} ${showToggleOnHover ? 'show-on-hover' : ''}`}
                         onClick={handleToggleClick}
                         onMouseEnter={handleToggleMouseEnter}
                         onMouseLeave={handleToggleMouseLeave}

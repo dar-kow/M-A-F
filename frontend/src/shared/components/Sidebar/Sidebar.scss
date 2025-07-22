@@ -1,5 +1,7 @@
-$animation-duration: 300ms;
+$animation-duration: 600ms; // Zwiększone z 400ms dla płynniejszego efektu
 $animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+$animation-easing-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94); // Płynniejsze dla sidebara
+$animation-easing-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 $animation-delay-show: 80ms;
 $animation-delay-hide: 0ms;
 $sidebar-width-expanded: 180px;
@@ -9,15 +11,25 @@ $sidebar-highlight: #3498db;
 $sidebar-text: #fff;
 $sidebar-text-muted: rgba(255, 255, 255, 0.7);
 
+// Mixin dla płynnych animacji
+@mixin smooth-transition($properties, $duration: $animation-duration, $easing: $animation-easing) {
+    transition-property: $properties;
+    transition-duration: $duration;
+    transition-timing-function: $easing;
+    will-change: $properties;
+}
+
 .sidebar {
     width: $sidebar-width-expanded;
     height: 100%;
     background-color: $sidebar-bg;
     color: $sidebar-text;
-    transition: width $animation-duration $animation-easing;
+    // Płynniejsza animacja szerokości
+    transition: width 700ms $animation-easing-smooth,
+        transform 600ms $animation-easing-smooth,
+        box-shadow 400ms ease;
     overflow: visible;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    will-change: width;
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
@@ -27,23 +39,54 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
     position: relative;
     z-index: 10;
 
+    // Dodatkowy efekt podczas animacji
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%);
+        opacity: 0;
+        transition: opacity 300ms ease;
+        pointer-events: none;
+    }
+
+    &.is-transitioning::before {
+        opacity: 1;
+    }
+
     &.sidebar-collapsed {
         width: $sidebar-width-collapsed;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+
+        // Delikatny efekt "squeeze" podczas chowania
+        transform: translateZ(0) scaleX(0.95);
+        transition: width 700ms $animation-easing-smooth,
+            transform 500ms cubic-bezier(0.4, 0, 0.6, 1) 100ms,
+            box-shadow 400ms ease;
+
+        // Po zakończeniu animacji resetujemy scale
+        &:not(.is-transitioning) {
+            transform: translateZ(0) scaleX(1);
+            transition: transform 300ms ease 100ms;
+        }
     }
 
     // Trapezowy przycisk toggle
     .sidebar-toggle {
         position: absolute;
-        top: 54px; // ZMIENIONE: przesunięte wyżej z 54px na 20px
+        top: 54px;
         right: -15px;
         width: 16px;
         height: 50px;
         background-color: $sidebar-bg;
         cursor: pointer;
         z-index: 1001;
-        transition: all 0.3s $animation-easing;
+        @include smooth-transition((all), 350ms, $animation-easing-elastic);
         opacity: 0;
-        transform: translateX(-10px);
+        transform: translateX(-10px) scale(0.8);
         border-radius: 0 4px 4px 0;
         clip-path: path('M0,0 L12,8 C14,10 16,12 16,14 V36 C16,38 14,40 12,42 L0,50 V0');
         box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
@@ -51,19 +94,19 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         // Pokazany na stałe gdy sidebar rozwinięty
         &.show {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateX(0) scale(1);
         }
 
         // Pokazany przy hover na menu gdy sidebar zwinięty
         &.show-on-hover {
             opacity: 1;
-            transform: translateX(0);
-            transition-delay: 0ms; // Natychmiastowe pojawienie się
+            transform: translateX(0) scale(1);
+            transition-delay: 0ms;
         }
 
         // Opóźnienie przy znikaniu
         &:not(.show):not(.show-on-hover) {
-            transition-delay: 100ms; // Opóźnienie przed zniknięciem
+            transition-delay: 200ms;
         }
 
         &::after {
@@ -76,33 +119,61 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
             background-repeat: no-repeat;
             background-position: center;
             background-size: 10px;
-            // Strzałka w lewo gdy sidebar rozwinięty
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='rgba(255,255,255,0.9)'%3E%3Cpath d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'/%3E%3C/svg%3E");
-            transition: background-image 0.3s;
+            @include smooth-transition(transform, 300ms);
         }
 
         &:hover {
             background-color: lighten($sidebar-bg, 8%);
+            transform: translateX(0) scale(1.1);
+            box-shadow: 3px 0 8px rgba(0, 0, 0, 0.3);
         }
     }
 
     // Zmiana strzałki dla zwiniętego sidebara
     &.sidebar-collapsed .sidebar-toggle::after {
-        // Strzałka w prawo gdy sidebar jest zwinięty
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='rgba(255,255,255,0.9)'%3E%3Cpath d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'/%3E%3C/svg%3E");
+        transform: rotate(0deg);
     }
 
-    // Stany przejściowe - ukrywamy wszystko podczas animacji
+    // Stany przejściowe - sekwencyjne ukrywanie
     &.is-transitioning {
+        .sidebar-header .header-content {
+            opacity: 0;
+            transform: translateX(-20px) scale(0.9);
+            filter: blur(2px);
+            transition: all 250ms $animation-easing 0ms;
+        }
 
-        .sidebar-header .header-content,
-        .sidebar-header .logo-icon-container,
-        .menu-text,
-        .menu-icon-container,
-        .sidebar-social,
+        .sidebar-header .logo-icon-container {
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg);
+            filter: blur(2px);
+            transition: all 250ms $animation-easing 50ms;
+        }
+
+        .menu-text {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 200ms $animation-easing 0ms;
+        }
+
+        .menu-icon-container {
+            opacity: 0.3;
+            transform: scale(0.8);
+            transition: all 300ms $animation-easing 100ms;
+        }
+
+        .sidebar-social {
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transition: all 250ms $animation-easing 0ms;
+        }
+
         .vertical-social {
             opacity: 0;
-            transition: none !important;
+            transform: translateY(20px) scale(0.9);
+            transition: all 250ms $animation-easing 100ms;
         }
     }
 
@@ -123,24 +194,26 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         .header-content {
             width: 100%;
             text-align: center;
-            will-change: opacity, transform;
+            @include smooth-transition((opacity, transform, filter));
 
             .app-title {
                 margin: 0;
                 text-align: center;
-                will-change: opacity, transform;
+                @include smooth-transition((opacity, transform));
 
                 &:first-child {
                     font-size: 20px;
                     font-weight: 700;
                     letter-spacing: 1px;
                     margin-bottom: 4px;
+                    animation-delay: 50ms;
                 }
 
                 &:last-child {
                     font-size: 14px;
                     font-weight: 400;
                     color: $sidebar-text-muted;
+                    animation-delay: 100ms;
                 }
             }
         }
@@ -154,14 +227,18 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            will-change: opacity, transform;
+            @include smooth-transition((opacity, transform, filter));
 
             .logo-icon {
                 font-size: 32px;
                 color: $sidebar-highlight;
                 filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-                will-change: transform, opacity;
-                transform: translateZ(0);
+                @include smooth-transition((transform, filter));
+
+                &:hover {
+                    transform: rotate(10deg) scale(1.1);
+                    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+                }
             }
         }
     }
@@ -179,24 +256,36 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
             &::after {
                 content: '';
                 position: absolute;
-                top: -30px; // Rozszerzamy obszar hover również do góry
+                top: -30px;
                 right: -20px;
                 width: 30px;
-                height: calc(100% + 60px); // Większa wysokość
+                height: calc(100% + 60px);
                 z-index: 1000;
             }
         }
 
         .menu-item {
             margin: 4px 0;
+            @include smooth-transition(transform);
+
+            // Efekt kaskadowy dla elementów menu
+            @for $i from 1 through 5 {
+                &:nth-child(#{$i}) {
+                    .menu-link {
+                        transition-delay: #{$i * 50}ms;
+                    }
+                }
+            }
 
             &.active {
                 .menu-link {
                     background-color: rgba(255, 255, 255, 0.08);
                     border-left: 3px solid $sidebar-highlight;
+                    transform: translateX(2px);
 
                     .menu-icon {
                         color: $sidebar-highlight;
+                        transform: scale(1.1);
                     }
 
                     .menu-text {
@@ -212,9 +301,8 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
                 padding: 12px 16px;
                 text-decoration: none;
                 color: $sidebar-text;
-                transition: all 0.2s ease;
+                @include smooth-transition((all), 250ms);
                 border-left: 3px solid transparent;
-                will-change: background-color;
                 transform: translateZ(0);
                 border-radius: 0 4px 4px 0;
                 position: relative;
@@ -233,6 +321,11 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
 
                 &:hover {
                     background-color: rgba(255, 255, 255, 0.05);
+                    transform: translateX(4px);
+
+                    .menu-icon {
+                        transform: scale(1.15) rotate(5deg);
+                    }
                 }
 
                 .menu-icon-container {
@@ -243,15 +336,13 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
                     align-items: center;
                     min-width: 24px;
                     position: relative;
-                    will-change: opacity, transform;
+                    @include smooth-transition((opacity, transform));
                 }
 
                 .menu-icon {
                     font-size: 20px;
-                    will-change: transform, opacity;
-                    transform: translateZ(0);
                     color: $sidebar-text-muted;
-                    transition: color 0.2s ease;
+                    @include smooth-transition((transform, color), 200ms);
                 }
 
                 .menu-text {
@@ -259,8 +350,7 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
                     white-space: nowrap;
                     font-size: 14px;
                     color: $sidebar-text-muted;
-                    will-change: opacity, transform;
-                    transform: translateZ(0);
+                    @include smooth-transition((opacity, transform, filter));
                 }
             }
         }
@@ -273,24 +363,28 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         display: flex;
         justify-content: center;
         gap: 16px;
-        will-change: opacity, transform;
-        transform: translateZ(0);
+        @include smooth-transition((opacity, transform));
 
         .social-icon-link {
             color: $sidebar-text-muted;
-            transition: all 0.2s ease;
+            @include smooth-transition((all), 200ms, $animation-easing-elastic);
             display: flex;
             align-items: center;
             justify-content: center;
 
             &:hover {
                 color: $sidebar-text;
-                transform: translateY(-2px);
+                transform: translateY(-3px) scale(1.1);
+
+                .social-icon {
+                    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+                }
             }
         }
 
         .social-icon {
             font-size: 22px;
+            @include smooth-transition((transform, filter));
         }
     }
 
@@ -306,19 +400,25 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
         justify-content: center;
         gap: 16px;
         padding: 16px 0;
-        will-change: opacity, transform;
-        transform: translateZ(0);
+        @include smooth-transition((opacity, transform));
 
         .vertical-social-icon-link {
             color: $sidebar-text-muted;
-            transition: all 0.2s ease;
+            @include smooth-transition((all), 200ms, $animation-easing-elastic);
             display: flex;
             align-items: center;
             justify-content: center;
 
+            // Efekt kaskadowy
+            @for $i from 1 through 3 {
+                &:nth-child(#{$i}) {
+                    transition-delay: #{$i * 50}ms;
+                }
+            }
+
             &:hover {
                 color: $sidebar-text;
-                transform: translateY(-2px);
+                transform: translateY(-3px) scale(1.1);
             }
 
             .social-icon {
@@ -328,58 +428,146 @@ $sidebar-text-muted: rgba(255, 255, 255, 0.7);
     }
 }
 
-// Klasy animacji
-.show-title,
-.show-menu-icon {
-    opacity: 1;
-    transform: translateX(0);
-    transition:
-        opacity $animation-duration $animation-easing $animation-delay-show,
-        transform $animation-duration $animation-easing $animation-delay-show;
+// Klasy animacji z efektem spring
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px) scale(0.8);
+        filter: blur(5px);
+    }
+
+    60% {
+        opacity: 0.8;
+        transform: translateX(5px) scale(1.02);
+        filter: blur(1px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+    }
 }
 
-.hide-title,
+@keyframes slideOutLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.9);
+        filter: blur(4px);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-20deg);
+        filter: blur(6px);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1) rotate(5deg);
+        filter: blur(2px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+    }
+}
+
+@keyframes scaleOut {
+    from {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.6) rotate(-15deg);
+        filter: blur(4px);
+    }
+}
+
+.show-title {
+    animation: slideInRight 500ms $animation-easing-smooth forwards;
+}
+
+.hide-title {
+    animation: slideOutLeft 250ms $animation-easing forwards;
+}
+
+.show-menu-icon {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    transition: all 450ms $animation-easing-smooth $animation-delay-show;
+}
+
 .hide-menu-icon {
     opacity: 0;
-    transform: translateX(-8px);
-    transition:
-        opacity $animation-duration * 0.5 $animation-easing $animation-delay-hide,
-        transform $animation-duration * 0.5 $animation-easing $animation-delay-hide;
+    transform: translateX(-8px) scale(0.8);
+    transition: all 250ms $animation-easing;
     pointer-events: none;
 }
 
 .show-logo-icon {
-    opacity: 1;
-    transform: scale(1);
-    transition:
-        opacity $animation-duration $animation-easing $animation-delay-show,
-        transform $animation-duration $animation-easing $animation-delay-show;
+    animation: scaleIn 500ms $animation-easing-smooth forwards;
 }
 
 .hide-logo-icon {
-    opacity: 0;
-    transform: scale(0.8);
-    transition:
-        opacity $animation-duration * 0.5 $animation-easing $animation-delay-hide,
-        transform $animation-duration * 0.5 $animation-easing $animation-delay-hide;
+    animation: scaleOut 250ms $animation-easing forwards;
     pointer-events: none;
 }
 
 .show-vertical-icons {
-    opacity: 1;
-    transform: translateY(0);
-    transition:
-        opacity $animation-duration $animation-easing $animation-delay-show,
-        transform $animation-duration $animation-easing $animation-delay-show;
+    animation: slideInUp 500ms $animation-easing-smooth forwards;
 }
 
 .hide-vertical-icons {
-    opacity: 0;
-    transform: translateY(8px);
-    transition:
-        opacity $animation-duration * 0.5 $animation-easing $animation-delay-hide,
-        transform $animation-duration * 0.5 $animation-easing $animation-delay-hide;
+    animation: slideOutDown 250ms $animation-easing forwards;
     pointer-events: none;
+}
+
+@keyframes slideInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+        filter: blur(5px);
+    }
+
+    60% {
+        opacity: 0.8;
+        transform: translateY(-5px) scale(1.02);
+        filter: blur(1px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+        filter: blur(4px);
+    }
 }
 
 // Responsywność
